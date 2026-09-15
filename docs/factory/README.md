@@ -1,6 +1,6 @@
 # Fábrica de software · instalación y operación
 
-**Estado: en construcción; todavía no habilitada en GitHub.**
+**Estado: infraestructura publicada; baseline e integraciones en validación.** Consultar [evidencia](EVIDENCE.md).
 
 La fábrica convierte una issue autorizada en una propuesta verificable. El resultado es una draft PR o un estado explicado. La integración del producto sigue siendo humana.
 
@@ -37,4 +37,4 @@ La suite E2E usa los tests existentes de búsqueda, detalle y administración. L
 
 ## Continuidad
 
-El listado de trabajo y la evidencia de implantación viven por ahora en [`../../../bitacora-fabrica-hoteles.md`](../../../bitacora-fabrica-hoteles.md) dentro del proyecto docente. La guía final será autocontenida en este repositorio.
+Seguir [instalación](INSTALL.md), [operación](OPERATE.md) y [evidencia](EVIDENCE.md). La bitácora de coordinación docente se conserva además en `bitacora-fabrica-hoteles.md`, en la raíz del proyecto del máster; no es necesaria para ejecutar el instalador.

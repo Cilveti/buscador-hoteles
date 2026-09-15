@@ -21,8 +21,9 @@ cache=${FACTORY_BUN_CACHE:-$evidence/bun-cache}
 mkdir -p "$cache"
 start=$SECONDS
 # Resolve/install Linux packages in the same OS as verification; do not copy macOS node_modules.
-docker run --rm --cap-drop ALL --security-opt no-new-privileges \
-    -v "$snapshot:/work" -v "$cache:/root/.bun/install/cache" "$image" \
+docker run --rm --user "$(id -u):$(id -g)" --cap-drop ALL --security-opt no-new-privileges \
+    -e BUN_INSTALL_CACHE_DIR=/cache -e TMPDIR=/tmp \
+    -v "$snapshot:/work" -v "$cache:/cache" "$image" \
     bun install --frozen-lockfile --ignore-scripts > "$evidence/install.log" 2>&1
 printf '{"installationSeconds":%s}\n' "$((SECONDS-start))" > "$evidence/timing.json"
 exit_code=0

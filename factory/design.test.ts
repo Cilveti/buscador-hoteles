@@ -1,5 +1,5 @@
 import { afterEach, expect, test } from 'bun:test';
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { designIdFromIssue, readDesign } from './design';
@@ -39,5 +39,13 @@ test('design validation rejects changed exports and credential-bearing URLs', ()
   writeFileSync(join(directory, 'tokens.json'), '{}');
   manifest.source.fileUrl = 'https://design.penpot.app/mcp/stream?userToken=TEST_ONLY';
   save();
+  expect(() => readDesign(root, 'demo')).toThrow();
+  manifest.source.fileUrl = 'https://design.penpot.app/#/workspace?userToken=TEST_ONLY';
+  save();
+  expect(() => readDesign(root, 'demo')).toThrow();
+  manifest.source.fileUrl = 'https://design.penpot.app/#/workspace/example';
+  writeFileSync(join(root, 'outside.json'), JSON.stringify(manifest));
+  rmSync(join(directory, 'manifest.json'));
+  symlinkSync(join(root, 'outside.json'), join(directory, 'manifest.json'));
   expect(() => readDesign(root, 'demo')).toThrow();
 });

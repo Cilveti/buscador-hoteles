@@ -14,6 +14,12 @@ export function designIdFromIssue(body: string): string | null {
 export function readDesign(root: string, id: string) {
   if (!/^[a-z0-9][a-z0-9-]{0,63}$/.test(id)) throw new Error('Invalid design ID');
   const directory = resolve(root, 'factory/designs', id);
+  if (!lstatSync(directory).isDirectory() || lstatSync(directory).isSymbolicLink())
+    throw new Error('Design snapshot must be a regular directory');
+  const manifestPath = join(directory, 'manifest.json');
+  const manifestStat = lstatSync(manifestPath);
+  if (!manifestStat.isFile() || manifestStat.isSymbolicLink() || manifestStat.size > 64_000)
+    throw new Error('Invalid design manifest file');
   const bytes = readFileSync(join(directory, 'manifest.json'));
   const manifest = object(JSON.parse(bytes.toString()));
   if (manifest.schemaVersion !== 1 || manifest.id !== id)
@@ -24,7 +30,7 @@ export function readDesign(root: string, id: string) {
     url.protocol !== 'https:' ||
     url.username ||
     url.password ||
-    /token|key|secret/i.test(url.search)
+    /token|key|secret/i.test(url.search + url.hash)
   )
     throw new Error('Use a design URL without credentials or MCP tokens');
   string(source.revision);

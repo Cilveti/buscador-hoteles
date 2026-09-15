@@ -54,7 +54,10 @@ function prepare(): void {
     const design = readDesign(root, task.design.id);
     if (design.manifestSha !== task.design.manifestSha)
       throw new Error('Design changed after admission');
-    cpSync(design.directory, join(candidate, 'context/design'), { recursive: true });
+    const destination = join(candidate, 'context/design');
+    mkdirSync(destination, { recursive: true });
+    for (const file of ['manifest.json', ...design.files.map((asset) => asset.path)])
+      cpSync(join(design.directory, file), join(destination, file));
   }
   git(candidate, 'init', '-q');
   git(candidate, 'config', 'user.name', 'Factory snapshot');

@@ -46,6 +46,8 @@ bun factory/improvements.ts 12 15 19
 
 Genera una propuesta local desde estados reales. Añadir `--publish` crea una issue de mejora que no se ejecuta automáticamente. Un agente puede investigar la causa y preparar un cambio, comparándolo sobre tareas congeladas y un caso de control. La aprobación humana decide su incorporación. No se permite que el worker modifique su controlador para pasar sus propios checks.
 
+Ejemplo real de una corrección de infraestructura y su comparación: [mejora observada](IMPROVEMENT-EXAMPLE.md).
+
 ## Medición
 
 Conservar tiempo de instalación y de cada fase, intentos, estado final y atención humana solicitada. Separar:

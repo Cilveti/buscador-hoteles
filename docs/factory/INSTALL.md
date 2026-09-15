@@ -7,7 +7,7 @@
 1. Leer `AGENTS.md`, comprobar remoto, cuenta efectiva (`gh api user`) y cambios pendientes.
 2. Confirmar que es el buscador ficticio o un fork compatible. Para otro producto hay que adaptar comandos, rutas y aceptaciones, no solo cambiar el nombre del repo.
 3. Leer `factory/config.ts`, `factory/policy.ts`, `factory/ci/` y los workflows. Conservar la separación entre controlador, modelo, candidato y publicador.
-4. Instalar Bun 1.4.2 y Docker. La imagen fija las bases por digest; PostgreSQL instalado en esa imagen debe registrarse con su versión efectiva.
+4. Instalar Bun 1.4.2 y Docker. La imagen fija las bases por digest; PostgreSQL está fijado a 17.11 mediante PGDG. La clave pública de firma está en `factory/ci/postgresql.asc`; su fuente es https://www.postgresql.org/media/keys/ACCC4CF8.asc. Si PGDG retira esa revisión del paquete, actualizar el pin deliberadamente y repetir baseline, no sustituirlo por una versión flotante.
 
 ## 2. Configurar
 

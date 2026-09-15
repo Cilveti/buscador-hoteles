@@ -1,0 +1,14 @@
+{
+  "name": "@hoteles/adapters",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./synthetic-stays": "./src/synthetic-stays/search.ts"
+  },
+  "dependencies": {
+    "@hoteles/core": "workspace:*",
+    "@hoteles/contracts": "workspace:*",
+    "zod": "4.6.1"
+  }
+}

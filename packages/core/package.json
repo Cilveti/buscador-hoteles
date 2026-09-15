@@ -1,0 +1,10 @@
+{
+  "name": "@hoteles/core",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./search": "./src/search/index.ts",
+    "./catalog": "./src/catalog/index.ts"
+  }
+}

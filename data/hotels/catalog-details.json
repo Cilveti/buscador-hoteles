@@ -1,0 +1,1204 @@
+{
+  "hotels": [
+    {
+      "hotelId": "hotel-001",
+      "locationText": "Málaga, Spain",
+      "ratingText": "4.5/5",
+      "reviewCountText": "80 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-1.svg",
+          "alt": "Ilustración de Aurora Patio Azul"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-002",
+      "locationText": "Marbella, Spain",
+      "ratingText": "4.6/5",
+      "reviewCountText": "97 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-2.svg",
+          "alt": "Ilustración de Aurora Jardín de Sal"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-003",
+      "locationText": "Sevilla, Spain",
+      "ratingText": "4.7/5",
+      "reviewCountText": "114 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-3.svg",
+          "alt": "Ilustración de Aurora Plaza del Olivo"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-004",
+      "locationText": "Bilbao, Spain",
+      "ratingText": "4.8/5",
+      "reviewCountText": "131 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-4.svg",
+          "alt": "Ilustración de Aurora Casa de la Lluvia"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-005",
+      "locationText": "Valencia, Spain",
+      "ratingText": "4.9/5",
+      "reviewCountText": "148 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-5.svg",
+          "alt": "Ilustración de Aurora Balcón de Azahar"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-006",
+      "locationText": "Granada, Spain",
+      "ratingText": "4.5/5",
+      "reviewCountText": "165 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-6.svg",
+          "alt": "Ilustración de Aurora Huerto de la Luna"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-007",
+      "locationText": "Cádiz, Spain",
+      "ratingText": "4.6/5",
+      "reviewCountText": "182 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-1.svg",
+          "alt": "Ilustración de Aurora Dunas del Viento"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-008",
+      "locationText": "Santander, Spain",
+      "ratingText": "4.7/5",
+      "reviewCountText": "199 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-2.svg",
+          "alt": "Ilustración de Aurora Faro de Cristal"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-009",
+      "locationText": "Oviedo, Spain",
+      "ratingText": "4.8/5",
+      "reviewCountText": "216 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-3.svg",
+          "alt": "Ilustración de Aurora Bosque del Alba"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-010",
+      "locationText": "Salamanca, Spain",
+      "ratingText": "4.9/5",
+      "reviewCountText": "233 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-4.svg",
+          "alt": "Ilustración de Aurora Claustro de Papel"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-011",
+      "locationText": "Córdoba, Spain",
+      "ratingText": "4.5/5",
+      "reviewCountText": "250 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-5.svg",
+          "alt": "Ilustración de Aurora Patio del Agua"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-012",
+      "locationText": "Toledo, Spain",
+      "ratingText": "4.6/5",
+      "reviewCountText": "267 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-6.svg",
+          "alt": "Ilustración de Aurora Mirador de Cobre"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-013",
+      "locationText": "Lisboa, Portugal",
+      "ratingText": "4.2/5",
+      "reviewCountText": "284 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-1.svg",
+          "alt": "Ilustración de Aurora Terraza del Tajo"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-014",
+      "locationText": "Oporto, Portugal",
+      "ratingText": "4.3/5",
+      "reviewCountText": "301 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-2.svg",
+          "alt": "Ilustración de Aurora Casa del Puente"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-015",
+      "locationText": "Coímbra, Portugal",
+      "ratingText": "4.4/5",
+      "reviewCountText": "318 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-3.svg",
+          "alt": "Ilustración de Aurora Jardín del Río"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-016",
+      "locationText": "Lyon, France",
+      "ratingText": "4.5/5",
+      "reviewCountText": "335 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-4.svg",
+          "alt": "Ilustración de Aurora Atelier del Sol"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-017",
+      "locationText": "Nantes, France",
+      "ratingText": "4.6/5",
+      "reviewCountText": "352 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-5.svg",
+          "alt": "Ilustración de Aurora Isla de los Sauces"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-018",
+      "locationText": "Bordeaux, France",
+      "ratingText": "4.7/5",
+      "reviewCountText": "369 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-6.svg",
+          "alt": "Ilustración de Aurora Viña de las Nubes"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-019",
+      "locationText": "Bologna, Italy",
+      "ratingText": "4.8/5",
+      "reviewCountText": "386 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-1.svg",
+          "alt": "Ilustración de Aurora Pórtico de Arena"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-020",
+      "locationText": "Verona, Italy",
+      "ratingText": "4.9/5",
+      "reviewCountText": "403 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-2.svg",
+          "alt": "Ilustración de Aurora Casa del Ciprés"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-021",
+      "locationText": "Málaga, Spain",
+      "ratingText": "4.5/5",
+      "reviewCountText": "420 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-3.svg",
+          "alt": "Ilustración de Aurora Patio Azul del Parque"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-022",
+      "locationText": "Marbella, Spain",
+      "ratingText": "4.6/5",
+      "reviewCountText": "437 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-4.svg",
+          "alt": "Ilustración de Aurora Jardín de Sal del Parque"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-023",
+      "locationText": "Sevilla, Spain",
+      "ratingText": "4.2/5",
+      "reviewCountText": "454 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-5.svg",
+          "alt": "Ilustración de Brisa Plaza del Olivo del Parque"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-024",
+      "locationText": "Bilbao, Spain",
+      "ratingText": "4.3/5",
+      "reviewCountText": "471 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-6.svg",
+          "alt": "Ilustración de Brisa Casa de la Lluvia del Parque"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-025",
+      "locationText": "Valencia, Spain",
+      "ratingText": "4.4/5",
+      "reviewCountText": "488 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-1.svg",
+          "alt": "Ilustración de Brisa Balcón de Azahar del Parque"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-026",
+      "locationText": "Granada, Spain",
+      "ratingText": "4.5/5",
+      "reviewCountText": "505 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-2.svg",
+          "alt": "Ilustración de Brisa Huerto de la Luna del Parque"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-027",
+      "locationText": "Cádiz, Spain",
+      "ratingText": "4.6/5",
+      "reviewCountText": "522 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-3.svg",
+          "alt": "Ilustración de Brisa Dunas del Viento del Parque"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-028",
+      "locationText": "Santander, Spain",
+      "ratingText": "4.7/5",
+      "reviewCountText": "539 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-4.svg",
+          "alt": "Ilustración de Brisa Faro de Cristal del Parque"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-029",
+      "locationText": "Oviedo, Spain",
+      "ratingText": "4.8/5",
+      "reviewCountText": "556 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-5.svg",
+          "alt": "Ilustración de Brisa Bosque del Alba del Parque"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-030",
+      "locationText": "Salamanca, Spain",
+      "ratingText": "4.9/5",
+      "reviewCountText": "573 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-6.svg",
+          "alt": "Ilustración de Brisa Claustro de Papel del Parque"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-031",
+      "locationText": "Córdoba, Spain",
+      "ratingText": "4.0/5",
+      "reviewCountText": "590 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-1.svg",
+          "alt": "Ilustración de Mirador Patio del Agua del Parque"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-032",
+      "locationText": "Toledo, Spain",
+      "ratingText": "4.1/5",
+      "reviewCountText": "607 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-2.svg",
+          "alt": "Ilustración de Mirador Mirador de Cobre del Parque"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-033",
+      "locationText": "Lisboa, Portugal",
+      "ratingText": "4.2/5",
+      "reviewCountText": "624 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-3.svg",
+          "alt": "Ilustración de Mirador Terraza del Tajo del Parque"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-034",
+      "locationText": "Oporto, Portugal",
+      "ratingText": "4.3/5",
+      "reviewCountText": "641 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-4.svg",
+          "alt": "Ilustración de Mirador Casa del Puente del Parque"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-035",
+      "locationText": "Coímbra, Portugal",
+      "ratingText": "4.4/5",
+      "reviewCountText": "658 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-5.svg",
+          "alt": "Ilustración de Mirador Jardín del Río del Parque"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-036",
+      "locationText": "Lyon, France",
+      "ratingText": "4.5/5",
+      "reviewCountText": "675 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-6.svg",
+          "alt": "Ilustración de Mirador Atelier del Sol del Parque"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-037",
+      "locationText": "Nantes, France",
+      "ratingText": "4.6/5",
+      "reviewCountText": "692 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-1.svg",
+          "alt": "Ilustración de Mirador Isla de los Sauces del Parque"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-038",
+      "locationText": "Bordeaux, France",
+      "ratingText": "4.7/5",
+      "reviewCountText": "709 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-2.svg",
+          "alt": "Ilustración de Mirador Viña de las Nubes del Parque"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-039",
+      "locationText": "Bologna, Italy",
+      "ratingText": "4.8/5",
+      "reviewCountText": "726 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-3.svg",
+          "alt": "Ilustración de Mirador Pórtico de Arena del Parque"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-040",
+      "locationText": "Verona, Italy",
+      "ratingText": "4.9/5",
+      "reviewCountText": "743 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-4.svg",
+          "alt": "Ilustración de Mirador Casa del Ciprés del Parque"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-041",
+      "locationText": "Málaga, Spain",
+      "ratingText": "4.0/5",
+      "reviewCountText": "760 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-5.svg",
+          "alt": "Ilustración de Natura Patio Azul del Este"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-042",
+      "locationText": "Marbella, Spain",
+      "ratingText": "4.1/5",
+      "reviewCountText": "777 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-6.svg",
+          "alt": "Ilustración de Natura Jardín de Sal del Este"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-043",
+      "locationText": "Sevilla, Spain",
+      "ratingText": "4.2/5",
+      "reviewCountText": "794 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-1.svg",
+          "alt": "Ilustración de Natura Plaza del Olivo del Este"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-044",
+      "locationText": "Bilbao, Spain",
+      "ratingText": "4.3/5",
+      "reviewCountText": "811 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-2.svg",
+          "alt": "Ilustración de Natura Casa de la Lluvia del Este"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-045",
+      "locationText": "Valencia, Spain",
+      "ratingText": "4.4/5",
+      "reviewCountText": "828 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-3.svg",
+          "alt": "Ilustración de Natura Balcón de Azahar del Este"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-046",
+      "locationText": "Granada, Spain",
+      "ratingText": "4.5/5",
+      "reviewCountText": "845 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-4.svg",
+          "alt": "Ilustración de Natura Huerto de la Luna del Este"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-047",
+      "locationText": "Cádiz, Spain",
+      "ratingText": "4.6/5",
+      "reviewCountText": "862 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-5.svg",
+          "alt": "Ilustración de Natura Dunas del Viento del Este"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-048",
+      "locationText": "Santander, Spain",
+      "ratingText": "4.7/5",
+      "reviewCountText": "879 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-6.svg",
+          "alt": "Ilustración de Natura Faro de Cristal del Este"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-049",
+      "locationText": "Oviedo, Spain",
+      "ratingText": "4.8/5",
+      "reviewCountText": "896 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-1.svg",
+          "alt": "Ilustración de Natura Bosque del Alba del Este"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-050",
+      "locationText": "Salamanca, Spain",
+      "ratingText": "4.9/5",
+      "reviewCountText": "913 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-2.svg",
+          "alt": "Ilustración de Natura Claustro de Papel del Este"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-051",
+      "locationText": "Córdoba, Spain",
+      "ratingText": "4.0/5",
+      "reviewCountText": "930 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-3.svg",
+          "alt": "Ilustración de Urbana Patio del Agua del Este"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-052",
+      "locationText": "Toledo, Spain",
+      "ratingText": "4.1/5",
+      "reviewCountText": "947 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-4.svg",
+          "alt": "Ilustración de Urbana Mirador de Cobre del Este"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-053",
+      "locationText": "Lisboa, Portugal",
+      "ratingText": "4.2/5",
+      "reviewCountText": "964 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-5.svg",
+          "alt": "Ilustración de Urbana Terraza del Tajo del Este"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-054",
+      "locationText": "Oporto, Portugal",
+      "ratingText": "4.3/5",
+      "reviewCountText": "981 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-6.svg",
+          "alt": "Ilustración de Urbana Casa del Puente del Este"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-055",
+      "locationText": "Coímbra, Portugal",
+      "ratingText": "4.4/5",
+      "reviewCountText": "998 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-1.svg",
+          "alt": "Ilustración de Urbana Jardín del Río del Este"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-056",
+      "locationText": "Lyon, France",
+      "ratingText": "4.5/5",
+      "reviewCountText": "1015 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-2.svg",
+          "alt": "Ilustración de Urbana Atelier del Sol del Este"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-057",
+      "locationText": "Nantes, France",
+      "ratingText": "4.6/5",
+      "reviewCountText": "1032 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-3.svg",
+          "alt": "Ilustración de Urbana Isla de los Sauces del Este"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-058",
+      "locationText": "Bordeaux, France",
+      "ratingText": "4.7/5",
+      "reviewCountText": "1049 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-4.svg",
+          "alt": "Ilustración de Urbana Viña de las Nubes del Este"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-059",
+      "locationText": "Bologna, Italy",
+      "ratingText": "4.8/5",
+      "reviewCountText": "1066 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-5.svg",
+          "alt": "Ilustración de Urbana Pórtico de Arena del Este"
+        }
+      ]
+    },
+    {
+      "hotelId": "hotel-060",
+      "locationText": "Verona, Italy",
+      "ratingText": "4.9/5",
+      "reviewCountText": "1083 reseñas",
+      "highlights": [
+        "Wi-Fi",
+        "Recepción 24 horas",
+        "Patio interior"
+      ],
+      "labels": [
+        "Hotel ficticio"
+      ],
+      "images": [
+        {
+          "url": "/images/hotel-6.svg",
+          "alt": "Ilustración de Urbana Casa del Ciprés del Este"
+        }
+      ]
+    }
+  ]
+}

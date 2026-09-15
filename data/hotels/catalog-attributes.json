@@ -1,0 +1,2974 @@
+{
+  "hotels": [
+    {
+      "hotelId": "hotel-001",
+      "brand": "aurora",
+      "attributes": {
+        "stars": 3,
+        "destinations": [
+          {
+            "value": "city/málaga",
+            "label": "Málaga",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          },
+          {
+            "value": "province/malaga",
+            "label": "Malaga",
+            "level": "province"
+          }
+        ],
+        "themes": [
+          {
+            "value": "relax",
+            "label": "Descanso"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "unknown",
+          "policyText": null,
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": true,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-001",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-002",
+      "brand": "aurora",
+      "attributes": {
+        "stars": 4,
+        "destinations": [
+          {
+            "value": "city/marbella",
+            "label": "Marbella",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          },
+          {
+            "value": "province/malaga",
+            "label": "Malaga",
+            "level": "province"
+          }
+        ],
+        "themes": [
+          {
+            "value": "city",
+            "label": "Ciudad"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "allowed",
+          "policyText": "Se admiten mascotas.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-002",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-003",
+      "brand": "aurora",
+      "attributes": {
+        "stars": 5,
+        "destinations": [
+          {
+            "value": "city/sevilla",
+            "label": "Sevilla",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "relax",
+            "label": "Descanso"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "conditional",
+          "policyText": "Consultar tamaño y suplemento.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-003",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-004",
+      "brand": "aurora",
+      "attributes": {
+        "stars": 3,
+        "destinations": [
+          {
+            "value": "city/bilbao",
+            "label": "Bilbao",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "city",
+            "label": "Ciudad"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "not-allowed",
+          "policyText": "No se admiten mascotas.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-004",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-005",
+      "brand": "aurora",
+      "attributes": {
+        "stars": 4,
+        "destinations": [
+          {
+            "value": "city/valencia",
+            "label": "Valencia",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "relax",
+            "label": "Descanso"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "unknown",
+          "policyText": null,
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-005",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-006",
+      "brand": "aurora",
+      "attributes": {
+        "stars": 5,
+        "destinations": [
+          {
+            "value": "city/granada",
+            "label": "Granada",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "city",
+            "label": "Ciudad"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "allowed",
+          "policyText": "Se admiten mascotas.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-006",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-007",
+      "brand": "aurora",
+      "attributes": {
+        "stars": 3,
+        "destinations": [
+          {
+            "value": "city/cádiz",
+            "label": "Cádiz",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "relax",
+            "label": "Descanso"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "conditional",
+          "policyText": "Consultar tamaño y suplemento.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-007",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-008",
+      "brand": "aurora",
+      "attributes": {
+        "stars": 4,
+        "destinations": [
+          {
+            "value": "city/santander",
+            "label": "Santander",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "city",
+            "label": "Ciudad"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "not-allowed",
+          "policyText": "No se admiten mascotas.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": true,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-008",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-009",
+      "brand": "aurora",
+      "attributes": {
+        "stars": 5,
+        "destinations": [
+          {
+            "value": "city/oviedo",
+            "label": "Oviedo",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "relax",
+            "label": "Descanso"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "unknown",
+          "policyText": null,
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-009",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-010",
+      "brand": "aurora",
+      "attributes": {
+        "stars": 3,
+        "destinations": [
+          {
+            "value": "city/salamanca",
+            "label": "Salamanca",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "city",
+            "label": "Ciudad"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "allowed",
+          "policyText": "Se admiten mascotas.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-010",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-011",
+      "brand": "aurora",
+      "attributes": {
+        "stars": 4,
+        "destinations": [
+          {
+            "value": "city/córdoba",
+            "label": "Córdoba",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "relax",
+            "label": "Descanso"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "conditional",
+          "policyText": "Consultar tamaño y suplemento.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-011",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-012",
+      "brand": "aurora",
+      "attributes": {
+        "stars": 5,
+        "destinations": [
+          {
+            "value": "city/toledo",
+            "label": "Toledo",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "city",
+            "label": "Ciudad"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "not-allowed",
+          "policyText": "No se admiten mascotas.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-012",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-013",
+      "brand": "aurora",
+      "attributes": {
+        "stars": 3,
+        "destinations": [
+          {
+            "value": "city/lisboa",
+            "label": "Lisboa",
+            "level": "city"
+          },
+          {
+            "value": "country/portugal",
+            "label": "Portugal",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "relax",
+            "label": "Descanso"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "unknown",
+          "policyText": null,
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-013",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-014",
+      "brand": "aurora",
+      "attributes": {
+        "stars": 4,
+        "destinations": [
+          {
+            "value": "city/oporto",
+            "label": "Oporto",
+            "level": "city"
+          },
+          {
+            "value": "country/portugal",
+            "label": "Portugal",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "city",
+            "label": "Ciudad"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "allowed",
+          "policyText": "Se admiten mascotas.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-014",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-015",
+      "brand": "aurora",
+      "attributes": {
+        "stars": 5,
+        "destinations": [
+          {
+            "value": "city/coímbra",
+            "label": "Coímbra",
+            "level": "city"
+          },
+          {
+            "value": "country/portugal",
+            "label": "Portugal",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "relax",
+            "label": "Descanso"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "conditional",
+          "policyText": "Consultar tamaño y suplemento.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": true,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-015",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-016",
+      "brand": "aurora",
+      "attributes": {
+        "stars": 3,
+        "destinations": [
+          {
+            "value": "city/lyon",
+            "label": "Lyon",
+            "level": "city"
+          },
+          {
+            "value": "country/france",
+            "label": "France",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "city",
+            "label": "Ciudad"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "not-allowed",
+          "policyText": "No se admiten mascotas.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-016",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-017",
+      "brand": "aurora",
+      "attributes": {
+        "stars": 4,
+        "destinations": [
+          {
+            "value": "city/nantes",
+            "label": "Nantes",
+            "level": "city"
+          },
+          {
+            "value": "country/france",
+            "label": "France",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "relax",
+            "label": "Descanso"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "unknown",
+          "policyText": null,
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-017",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-018",
+      "brand": "aurora",
+      "attributes": {
+        "stars": 5,
+        "destinations": [
+          {
+            "value": "city/bordeaux",
+            "label": "Bordeaux",
+            "level": "city"
+          },
+          {
+            "value": "country/france",
+            "label": "France",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "city",
+            "label": "Ciudad"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "allowed",
+          "policyText": "Se admiten mascotas.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-018",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-019",
+      "brand": "aurora",
+      "attributes": {
+        "stars": 3,
+        "destinations": [
+          {
+            "value": "city/bologna",
+            "label": "Bologna",
+            "level": "city"
+          },
+          {
+            "value": "country/italy",
+            "label": "Italy",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "relax",
+            "label": "Descanso"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "conditional",
+          "policyText": "Consultar tamaño y suplemento.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-019",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-020",
+      "brand": "aurora",
+      "attributes": {
+        "stars": 4,
+        "destinations": [
+          {
+            "value": "city/verona",
+            "label": "Verona",
+            "level": "city"
+          },
+          {
+            "value": "country/italy",
+            "label": "Italy",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "city",
+            "label": "Ciudad"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "not-allowed",
+          "policyText": "No se admiten mascotas.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-020",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-021",
+      "brand": "aurora",
+      "attributes": {
+        "stars": 5,
+        "destinations": [
+          {
+            "value": "city/málaga",
+            "label": "Málaga",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          },
+          {
+            "value": "province/malaga",
+            "label": "Malaga",
+            "level": "province"
+          }
+        ],
+        "themes": [
+          {
+            "value": "relax",
+            "label": "Descanso"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "unknown",
+          "policyText": null,
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-021",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-022",
+      "brand": "aurora",
+      "attributes": {
+        "stars": 3,
+        "destinations": [
+          {
+            "value": "city/marbella",
+            "label": "Marbella",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          },
+          {
+            "value": "province/malaga",
+            "label": "Malaga",
+            "level": "province"
+          }
+        ],
+        "themes": [
+          {
+            "value": "city",
+            "label": "Ciudad"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "allowed",
+          "policyText": "Se admiten mascotas.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": true,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-022",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-023",
+      "brand": "brisa",
+      "attributes": {
+        "stars": 4,
+        "destinations": [
+          {
+            "value": "city/sevilla",
+            "label": "Sevilla",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "relax",
+            "label": "Descanso"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "conditional",
+          "policyText": "Consultar tamaño y suplemento.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-023",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-024",
+      "brand": "brisa",
+      "attributes": {
+        "stars": 5,
+        "destinations": [
+          {
+            "value": "city/bilbao",
+            "label": "Bilbao",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "city",
+            "label": "Ciudad"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "not-allowed",
+          "policyText": "No se admiten mascotas.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-024",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-025",
+      "brand": "brisa",
+      "attributes": {
+        "stars": 3,
+        "destinations": [
+          {
+            "value": "city/valencia",
+            "label": "Valencia",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "relax",
+            "label": "Descanso"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "unknown",
+          "policyText": null,
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-025",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-026",
+      "brand": "brisa",
+      "attributes": {
+        "stars": 4,
+        "destinations": [
+          {
+            "value": "city/granada",
+            "label": "Granada",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "city",
+            "label": "Ciudad"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "allowed",
+          "policyText": "Se admiten mascotas.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-026",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-027",
+      "brand": "brisa",
+      "attributes": {
+        "stars": 5,
+        "destinations": [
+          {
+            "value": "city/cádiz",
+            "label": "Cádiz",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "relax",
+            "label": "Descanso"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "conditional",
+          "policyText": "Consultar tamaño y suplemento.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-027",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-028",
+      "brand": "brisa",
+      "attributes": {
+        "stars": 3,
+        "destinations": [
+          {
+            "value": "city/santander",
+            "label": "Santander",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "city",
+            "label": "Ciudad"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "not-allowed",
+          "policyText": "No se admiten mascotas.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-028",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-029",
+      "brand": "brisa",
+      "attributes": {
+        "stars": 4,
+        "destinations": [
+          {
+            "value": "city/oviedo",
+            "label": "Oviedo",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "relax",
+            "label": "Descanso"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "unknown",
+          "policyText": null,
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": true,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-029",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-030",
+      "brand": "brisa",
+      "attributes": {
+        "stars": 5,
+        "destinations": [
+          {
+            "value": "city/salamanca",
+            "label": "Salamanca",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "city",
+            "label": "Ciudad"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "allowed",
+          "policyText": "Se admiten mascotas.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-030",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-031",
+      "brand": "mirador",
+      "attributes": {
+        "stars": 3,
+        "destinations": [
+          {
+            "value": "city/córdoba",
+            "label": "Córdoba",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "relax",
+            "label": "Descanso"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "conditional",
+          "policyText": "Consultar tamaño y suplemento.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-031",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-032",
+      "brand": "mirador",
+      "attributes": {
+        "stars": 4,
+        "destinations": [
+          {
+            "value": "city/toledo",
+            "label": "Toledo",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "city",
+            "label": "Ciudad"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "not-allowed",
+          "policyText": "No se admiten mascotas.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-032",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-033",
+      "brand": "mirador",
+      "attributes": {
+        "stars": 5,
+        "destinations": [
+          {
+            "value": "city/lisboa",
+            "label": "Lisboa",
+            "level": "city"
+          },
+          {
+            "value": "country/portugal",
+            "label": "Portugal",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "relax",
+            "label": "Descanso"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "unknown",
+          "policyText": null,
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-033",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-034",
+      "brand": "mirador",
+      "attributes": {
+        "stars": 3,
+        "destinations": [
+          {
+            "value": "city/oporto",
+            "label": "Oporto",
+            "level": "city"
+          },
+          {
+            "value": "country/portugal",
+            "label": "Portugal",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "city",
+            "label": "Ciudad"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "allowed",
+          "policyText": "Se admiten mascotas.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-034",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-035",
+      "brand": "mirador",
+      "attributes": {
+        "stars": 4,
+        "destinations": [
+          {
+            "value": "city/coímbra",
+            "label": "Coímbra",
+            "level": "city"
+          },
+          {
+            "value": "country/portugal",
+            "label": "Portugal",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "relax",
+            "label": "Descanso"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "conditional",
+          "policyText": "Consultar tamaño y suplemento.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-035",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-036",
+      "brand": "mirador",
+      "attributes": {
+        "stars": 5,
+        "destinations": [
+          {
+            "value": "city/lyon",
+            "label": "Lyon",
+            "level": "city"
+          },
+          {
+            "value": "country/france",
+            "label": "France",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "city",
+            "label": "Ciudad"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "not-allowed",
+          "policyText": "No se admiten mascotas.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": true,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-036",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-037",
+      "brand": "mirador",
+      "attributes": {
+        "stars": 3,
+        "destinations": [
+          {
+            "value": "city/nantes",
+            "label": "Nantes",
+            "level": "city"
+          },
+          {
+            "value": "country/france",
+            "label": "France",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "relax",
+            "label": "Descanso"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "unknown",
+          "policyText": null,
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-037",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-038",
+      "brand": "mirador",
+      "attributes": {
+        "stars": 4,
+        "destinations": [
+          {
+            "value": "city/bordeaux",
+            "label": "Bordeaux",
+            "level": "city"
+          },
+          {
+            "value": "country/france",
+            "label": "France",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "city",
+            "label": "Ciudad"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "allowed",
+          "policyText": "Se admiten mascotas.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-038",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-039",
+      "brand": "mirador",
+      "attributes": {
+        "stars": 5,
+        "destinations": [
+          {
+            "value": "city/bologna",
+            "label": "Bologna",
+            "level": "city"
+          },
+          {
+            "value": "country/italy",
+            "label": "Italy",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "relax",
+            "label": "Descanso"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "conditional",
+          "policyText": "Consultar tamaño y suplemento.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-039",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-040",
+      "brand": "mirador",
+      "attributes": {
+        "stars": 3,
+        "destinations": [
+          {
+            "value": "city/verona",
+            "label": "Verona",
+            "level": "city"
+          },
+          {
+            "value": "country/italy",
+            "label": "Italy",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "city",
+            "label": "Ciudad"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "not-allowed",
+          "policyText": "No se admiten mascotas.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-040",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-041",
+      "brand": "natura",
+      "attributes": {
+        "stars": 4,
+        "destinations": [
+          {
+            "value": "city/málaga",
+            "label": "Málaga",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          },
+          {
+            "value": "province/malaga",
+            "label": "Malaga",
+            "level": "province"
+          }
+        ],
+        "themes": [
+          {
+            "value": "relax",
+            "label": "Descanso"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "unknown",
+          "policyText": null,
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-041",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-042",
+      "brand": "natura",
+      "attributes": {
+        "stars": 5,
+        "destinations": [
+          {
+            "value": "city/marbella",
+            "label": "Marbella",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          },
+          {
+            "value": "province/malaga",
+            "label": "Malaga",
+            "level": "province"
+          }
+        ],
+        "themes": [
+          {
+            "value": "city",
+            "label": "Ciudad"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "allowed",
+          "policyText": "Se admiten mascotas.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-042",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-043",
+      "brand": "natura",
+      "attributes": {
+        "stars": 3,
+        "destinations": [
+          {
+            "value": "city/sevilla",
+            "label": "Sevilla",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "relax",
+            "label": "Descanso"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "conditional",
+          "policyText": "Consultar tamaño y suplemento.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": true,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-043",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-044",
+      "brand": "natura",
+      "attributes": {
+        "stars": 4,
+        "destinations": [
+          {
+            "value": "city/bilbao",
+            "label": "Bilbao",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "city",
+            "label": "Ciudad"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "not-allowed",
+          "policyText": "No se admiten mascotas.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-044",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-045",
+      "brand": "natura",
+      "attributes": {
+        "stars": 5,
+        "destinations": [
+          {
+            "value": "city/valencia",
+            "label": "Valencia",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "relax",
+            "label": "Descanso"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "unknown",
+          "policyText": null,
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-045",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-046",
+      "brand": "natura",
+      "attributes": {
+        "stars": 3,
+        "destinations": [
+          {
+            "value": "city/granada",
+            "label": "Granada",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "city",
+            "label": "Ciudad"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "allowed",
+          "policyText": "Se admiten mascotas.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-046",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-047",
+      "brand": "natura",
+      "attributes": {
+        "stars": 4,
+        "destinations": [
+          {
+            "value": "city/cádiz",
+            "label": "Cádiz",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "relax",
+            "label": "Descanso"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "conditional",
+          "policyText": "Consultar tamaño y suplemento.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-047",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-048",
+      "brand": "natura",
+      "attributes": {
+        "stars": 5,
+        "destinations": [
+          {
+            "value": "city/santander",
+            "label": "Santander",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "city",
+            "label": "Ciudad"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "not-allowed",
+          "policyText": "No se admiten mascotas.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-048",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-049",
+      "brand": "natura",
+      "attributes": {
+        "stars": 3,
+        "destinations": [
+          {
+            "value": "city/oviedo",
+            "label": "Oviedo",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "relax",
+            "label": "Descanso"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "unknown",
+          "policyText": null,
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-049",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-050",
+      "brand": "natura",
+      "attributes": {
+        "stars": 4,
+        "destinations": [
+          {
+            "value": "city/salamanca",
+            "label": "Salamanca",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "city",
+            "label": "Ciudad"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "allowed",
+          "policyText": "Se admiten mascotas.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": true,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-050",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-051",
+      "brand": "urbana",
+      "attributes": {
+        "stars": 5,
+        "destinations": [
+          {
+            "value": "city/córdoba",
+            "label": "Córdoba",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "relax",
+            "label": "Descanso"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "conditional",
+          "policyText": "Consultar tamaño y suplemento.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-051",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-052",
+      "brand": "urbana",
+      "attributes": {
+        "stars": 3,
+        "destinations": [
+          {
+            "value": "city/toledo",
+            "label": "Toledo",
+            "level": "city"
+          },
+          {
+            "value": "country/spain",
+            "label": "Spain",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "city",
+            "label": "Ciudad"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "not-allowed",
+          "policyText": "No se admiten mascotas.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-052",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-053",
+      "brand": "urbana",
+      "attributes": {
+        "stars": 4,
+        "destinations": [
+          {
+            "value": "city/lisboa",
+            "label": "Lisboa",
+            "level": "city"
+          },
+          {
+            "value": "country/portugal",
+            "label": "Portugal",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "relax",
+            "label": "Descanso"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "unknown",
+          "policyText": null,
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-053",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-054",
+      "brand": "urbana",
+      "attributes": {
+        "stars": 5,
+        "destinations": [
+          {
+            "value": "city/oporto",
+            "label": "Oporto",
+            "level": "city"
+          },
+          {
+            "value": "country/portugal",
+            "label": "Portugal",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "city",
+            "label": "Ciudad"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "allowed",
+          "policyText": "Se admiten mascotas.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-054",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-055",
+      "brand": "urbana",
+      "attributes": {
+        "stars": 3,
+        "destinations": [
+          {
+            "value": "city/coímbra",
+            "label": "Coímbra",
+            "level": "city"
+          },
+          {
+            "value": "country/portugal",
+            "label": "Portugal",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "relax",
+            "label": "Descanso"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "conditional",
+          "policyText": "Consultar tamaño y suplemento.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-055",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-056",
+      "brand": "urbana",
+      "attributes": {
+        "stars": 4,
+        "destinations": [
+          {
+            "value": "city/lyon",
+            "label": "Lyon",
+            "level": "city"
+          },
+          {
+            "value": "country/france",
+            "label": "France",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "city",
+            "label": "Ciudad"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "not-allowed",
+          "policyText": "No se admiten mascotas.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-056",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-057",
+      "brand": "urbana",
+      "attributes": {
+        "stars": 5,
+        "destinations": [
+          {
+            "value": "city/nantes",
+            "label": "Nantes",
+            "level": "city"
+          },
+          {
+            "value": "country/france",
+            "label": "France",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "relax",
+            "label": "Descanso"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "unknown",
+          "policyText": null,
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": true,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-057",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-058",
+      "brand": "urbana",
+      "attributes": {
+        "stars": 3,
+        "destinations": [
+          {
+            "value": "city/bordeaux",
+            "label": "Bordeaux",
+            "level": "city"
+          },
+          {
+            "value": "country/france",
+            "label": "France",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "city",
+            "label": "Ciudad"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "allowed",
+          "policyText": "Se admiten mascotas.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-058",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-059",
+      "brand": "urbana",
+      "attributes": {
+        "stars": 4,
+        "destinations": [
+          {
+            "value": "city/bologna",
+            "label": "Bologna",
+            "level": "city"
+          },
+          {
+            "value": "country/italy",
+            "label": "Italy",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "relax",
+            "label": "Descanso"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "conditional",
+          "policyText": "Consultar tamaño y suplemento.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-059",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "hotelId": "hotel-060",
+      "brand": "urbana",
+      "attributes": {
+        "stars": 5,
+        "destinations": [
+          {
+            "value": "city/verona",
+            "label": "Verona",
+            "level": "city"
+          },
+          {
+            "value": "country/italy",
+            "label": "Italy",
+            "level": "country"
+          }
+        ],
+        "themes": [
+          {
+            "value": "city",
+            "label": "Ciudad"
+          }
+        ],
+        "services": [
+          {
+            "value": "wifi",
+            "label": "Wi-Fi",
+            "availability": "available"
+          },
+          {
+            "value": "parking",
+            "label": "Aparcamiento",
+            "availability": "conditional"
+          }
+        ],
+        "pets": {
+          "status": "not-allowed",
+          "policyText": "No se admiten mascotas.",
+          "sourceUrl": null,
+          "sourceConflict": false
+        },
+        "adultsOnly": false,
+        "provenance": {
+          "kind": "synthetic",
+          "sourceUrl": "https://hoteles.example/hotel-060",
+          "capturedAt": "2026-09-15T00:00:00.000Z"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "mutate": ["packages/core/src/search/eligibility.ts"],
+  "testRunner": "command",
+  "commandRunner": {
+    "command": "bun test ./packages/core/src/search/eligibility.test.ts"
+  },
+  "coverageAnalysis": "off",
+  "concurrency": 2,
+  "reporters": ["clear-text", "json", "html"],
+  "jsonReporter": {
+    "fileName": ".tmp/mutation/eligibility.json"
+  },
+  "htmlReporter": {
+    "fileName": ".tmp/mutation/eligibility.html"
+  },
+  "tempDirName": ".tmp/stryker-sandbox",
+  "inPlace": false,
+  "ignorePatterns": [
+    ".env*",
+    "**/.env*",
+    ".agents/**",
+    ".tmp/**",
+    "data/**",
+    "docs/**",
+    "apps/**",
+    "scripts/**",
+    "tests/**",
+    "test-results/**",
+    "playwright-report/**",
+    "packages/adapters/**",
+    "packages/contracts/**",
+    "packages/core/src/catalog/**"
+  ],
+  "thresholds": {
+    "break": null
+  }
+}

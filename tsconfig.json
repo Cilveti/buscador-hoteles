@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "types": ["bun"],
+    "allowImportingTsExtensions": true,
+    "paths": {
+      "@payload-config": ["./apps/web/src/payload.config.ts"]
+    }
+  },
+  "include": [
+    "packages/**/*.ts",
+    "scripts/**/*.ts",
+    "tests/architecture/**/*.ts",
+    "tests/e2e/**/*.ts",
+    "playwright.config.ts"
+  ],
+  "exclude": ["node_modules", "**/node_modules", "tests/browser"]
+}

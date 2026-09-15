@@ -1,0 +1,7 @@
+{
+  "extends": "./apps/web/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "./apps/web",
+    "ignoreDeprecations": "6.0"
+  }
+}

@@ -1,0 +1,23 @@
+/* Extraídos de Travel A2B en Penpot; conservados de la interfaz del proyecto original. */
+:root {
+  --background: #fafafa;
+  --foreground: #091d20;
+  --card: #ffffff;
+  --card-foreground: #091d20;
+  --popover: #ffffff;
+  --popover-foreground: #091d20;
+  --primary: #6ebbc8;
+  --primary-foreground: #091d20;
+  --secondary: #e9f4f6;
+  --secondary-foreground: #163f46;
+  --muted: #f1f3f3;
+  --muted-foreground: #647175;
+  --accent: #edf6f7;
+  --accent-foreground: #091d20;
+  --destructive: #b13b3b;
+  --border: #dfe6e7;
+  --input: #d3dcde;
+  --ring: #398d9d;
+  --coral: #f18e8e;
+  --radius: 0.75rem;
+}

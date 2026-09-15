@@ -1,0 +1,45 @@
+{
+  "name": "buscador-hoteles",
+  "private": true,
+  "type": "module",
+  "packageManager": "bun@1.4.2",
+  "workspaces": [
+    "apps/web",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "bun run --cwd apps/web --env-file=../../.env.local dev",
+    "setup": "bun scripts/dev/provision-local-env.ts",
+    "db:up": "docker compose --env-file .env.local -f infra/compose.yaml up -d --wait",
+    "db:stop": "docker compose --env-file .env.local -f infra/compose.yaml stop",
+    "seed": "bun run --cwd apps/web seed",
+    "lint": "biome check . --diagnostic-level=error",
+    "lint:report": "biome check . --max-diagnostics=none",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "typecheck": "tsc --noEmit -p apps/web/tsconfig.json && tsc --noEmit -p tsconfig.json && tsc --noEmit -p tests/browser/tsconfig.json",
+    "test": "bun test ./packages/core ./packages/contracts ./packages/adapters ./tests/architecture ./apps/web/src/features ./apps/web/src/composition ./apps/web/src/app/api/catalog ./scripts/verification",
+    "check:architecture": "bun test ./tests/architecture/dependencies.test.ts",
+    "test:browser": "node node_modules/@playwright/test/cli.js test --config tests/browser/playwright.config.ts",
+    "test:e2e": "node --env-file=.env.local node_modules/@playwright/test/cli.js test",
+    "test:mutation": "stryker run",
+    "verify": "bun scripts/verification/verify.ts --browser",
+    "explore": "bun --env-file=.env.local scripts/browser/open.ts"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@hoteles/adapters": "workspace:*",
+    "@hoteles/contracts": "workspace:*",
+    "@hoteles/core": "workspace:*",
+    "@biomejs/biome": "2.5.13",
+    "@playwright/test": "1.63.0",
+    "@stryker-mutator/core": "10.0.0",
+    "@tailwindcss/postcss": "4.3.3",
+    "@types/bun": "1.4.2",
+    "dependency-cruiser": "18.3.1",
+    "postcss": "8.5.23",
+    "tsx": "4.22.4",
+    "typescript": "6.0.3",
+    "zod": "4.6.1"
+  }
+}

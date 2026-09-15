@@ -13,7 +13,7 @@
 
 - `factory/config.ts`: repo, rama base, operadores y modelos.
 - `factory/sonar-project.properties`: organización y proyecto SonarQube reales.
-- Los pins de Bun/OpenCode/Playwright están también en workflows, action local e imagen. Si se cambian versiones, actualizar todas esas referencias y repetir baseline. No usar `latest` para el worker.
+- Los pins de Bun/OpenCode/Playwright están también en workflows, action local, imagen y `factory/dependencies.ts`. Si se cambian versiones, actualizar todas esas referencias y repetir baseline. No usar `latest` para el worker.
 - Si la rama base no es `main`, adaptar triggers de baseline y `sonar.pullrequest.base`.
 - Elegir el modelo según la credencial del proveedor; `opencode-go/...` requiere OpenCode Go. La key del proveedor no se convierte en una suscripción nueva por configurar el workflow.
 
@@ -21,6 +21,7 @@
 
 ```bash
 bun test factory
+bun factory/checks/dependencies.integration.ts
 bunx --no-install tsc --noEmit -p factory/tsconfig.json
 bun factory/setup.ts
 ```

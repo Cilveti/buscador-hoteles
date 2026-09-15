@@ -54,7 +54,9 @@ jobs:
         with:
           model: ${{ inputs.model }}
           api-key: ${{ secrets.OPENCODE_API_KEY }}
-      - name: Validate the external patch policy
+      - name: Resolve authorized dependency changes without scripts or credentials
+        run: bun factory/worker.ts resolve-dependencies
+      - name: Validate and freeze the final original proposal
         id: serialize
         run: bun factory/worker.ts serialize
       - name: Save original proposal or decision request

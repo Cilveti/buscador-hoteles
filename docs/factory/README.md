@@ -1,6 +1,6 @@
 # Fábrica de software · instalación y operación
 
-**Estado: infraestructura publicada; tres baselines GitHub verdes, integraciones externas pendientes.** Consultar [evidencia](EVIDENCE.md).
+**Estado: infraestructura publicada; cuatro baselines GitHub verdes, integraciones externas pendientes.** Consultar [evidencia](EVIDENCE.md).
 
 La fábrica convierte una issue autorizada en una propuesta verificable. El resultado es una draft PR o un estado explicado. La integración del producto sigue siendo humana.
 

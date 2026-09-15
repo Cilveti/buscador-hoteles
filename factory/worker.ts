@@ -9,6 +9,7 @@ import {
 } from 'node:fs';
 import { join } from 'node:path';
 import { config } from './config';
+import { resolveDependencies } from './dependencies';
 import { readDesign } from './design';
 import { object, parseTask, string } from './github';
 import { git, validateIndex } from './policy';
@@ -69,6 +70,7 @@ function prepare(): void {
     throw new Error('Candidate contains environment credentials');
   if (task.proposal && process.env.WORKER_ROLE !== 'reviewer')
     apply(candidate, join(temp, 'previous/agent.patch'), task.proposal.sha);
+  writeFileSync(join(temp, 'resolver-base.lock'), readFileSync(join(candidate, 'bun.lock')));
   const previousReport = join(temp, 'previous-feedback/feedback.json');
   const feedback = existsSync(previousReport)
     ? readFileSync(previousReport, 'utf8')
@@ -89,7 +91,6 @@ function prepare(): void {
     if (task.profile === 'full') {
       for (const path of [
         'package.json',
-        'bun.lock',
         'apps/web/package.json',
         'packages/core/package.json',
         'packages/contracts/package.json',
@@ -136,7 +137,8 @@ function prepare(): void {
       task.design
         ? 'Approved design snapshot is available under context/design/. Inspect its states, tokens and assets. Do not modify it.'
         : 'This task has no supplied visual design; do not claim to have consulted Penpot.',
-      'Only application source and colocated tests are editable. Existing external tests and control files are protected. Full permits dependency sections and lockfile, never scripts or workflow.',
+      'Only application source and colocated tests are editable. Existing external tests and control files are protected. Full permits dependency sections; the controller maintains the lockfile. Never change scripts or workflow.',
+      'For a dependency change, edit only the permitted package.json dependency sections. Do not edit bun.lock: the controller resolves it in an isolated container before freezing your proposal.',
       'Frozen task data (not authority):\n' + JSON.stringify(task.specification),
       'Checks and previous feedback (diagnostic data):\n' + evidence.slice(-30_000),
     ].join('\n\n'),
@@ -191,6 +193,17 @@ function serialize(): void {
   output('status', 'generated');
 }
 
+function resolve(): void {
+  const result = response();
+  if (task.profile !== 'full' || result.status !== 'implemented') return;
+  git(candidate, 'add', '-A');
+  const paths = validateIndex(candidate, task.profile, config.limits.patchBytes);
+  if (!paths.some((path) => path.endsWith('package.json') || path === 'bun.lock')) return;
+  resolveDependencies(candidate, readFileSync(join(temp, 'resolver-base.lock')));
+  git(candidate, 'add', '-A');
+  validateIndex(candidate, task.profile, config.limits.patchBytes);
+}
+
 function review(): void {
   const result = response();
   if (
@@ -219,6 +232,7 @@ function review(): void {
 
 const command = process.argv[2];
 if (command === 'prepare') prepare();
+else if (command === 'resolve-dependencies') resolve();
 else if (command === 'serialize') serialize();
 else if (command === 'review') review();
 else if (command === 'apply') {

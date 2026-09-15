@@ -23,6 +23,12 @@
 - Creación de PR desde Actions desactivada; conexión del modelo y Sonar pendientes de autorización/configuración.
 - Penpot: contrato de exportación y validación por hashes implementados; consulta/exportación real pendiente.
 
+- [Baseline de integridad del candidato](https://github.com/Cilveti/buscador-hoteles/actions/runs/35032213155), `d0721fd`: **verde**, 293 s totales.
+
+## Resolución de dependencias
+
+Prueba local real con Docker y registro npm: una copia desechable de los manifiestos añade `is-number@7.0.0`; el resolver conserva los manifiestos, ignora un postinstall que fallaría y mantiene estable el lock al repetir. No se ejecutó el modelo. El nuevo paso de baseline ejecuta también este ensayo en GitHub; su primera comprobación remota está pendiente.
+
 ## Controles probados localmente
 
 - Presupuesto máximo de tres intentos; no se reinicia por aprobación.

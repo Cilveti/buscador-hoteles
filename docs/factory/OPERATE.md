@@ -27,6 +27,8 @@ El agente explica el bloqueo. El controlador publica una petición con UUID, esp
 
 Una aprobación concede el perfil completo para **esa tarea**, no para todo el repositorio ni tareas futuras. Completo permite dependencias de registro, pero no scripts de package.json, workflows, checks externos, secretos o diseños aprobados. El comentario debe venir de un operador humano configurado.
 
+Después del modelo, el controlador valida los manifiestos y resuelve el lockfile en un contenedor Bun fijado. Ese contenedor recibe únicamente los manifiestos y el lockfile anterior: no recibe código, Git ni credenciales; usa `--lockfile-only --ignore-scripts`. El parche se congela y se calcula su hash **después** de resolver dependencias; verificador, revisor y publicador usan exactamente ese resultado. El agente no edita directamente `bun.lock`.
+
 La versión inicial de este protocolo resuelve solicitudes de permiso de dependencias. Una ambigüedad de producto que cambie requisitos debe resolverse en una nueva especificación/issue; aprobar un permiso no inventa una respuesta de producto.
 
 ## Fallos y recuperación

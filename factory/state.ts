@@ -4,6 +4,7 @@ export type Profile = 'basic' | 'full';
 export type TaskStatus =
   | 'ready'
   | 'running'
+  | 'publishing'
   | 'retry'
   | 'waiting-human'
   | 'review'
@@ -85,7 +86,8 @@ export function finishAttempt(
   max: number,
 ): Task {
   // A cancellation/decision in another event always wins over a late model response.
-  if (task.status !== 'running' || task.activeRun !== run) throw new Error('Stale completion');
+  if (!['running', 'publishing'].includes(task.status) || task.activeRun !== run)
+    throw new Error('Stale completion');
   const status: TaskStatus =
     result.status === 'needs-human'
       ? 'waiting-human'
@@ -144,11 +146,44 @@ export function decide(
 
 export function cancel(task: Task, actor: string, operators: readonly string[]): Task {
   if (!operators.includes(actor)) throw new Error('Unauthorized cancellation actor');
-  if (['review', 'rejected', 'cancelled'].includes(task.status))
-    throw new Error('Task already terminal');
+  if (['publishing', 'review', 'rejected', 'cancelled'].includes(task.status))
+    throw new Error('Task is terminal or publication has already been reserved; inspect its draft');
   return {
     ...task,
     status: 'cancelled',
     history: [...task.history, entry('cancelled', actor, 'Operator stopped the task')],
+  };
+}
+
+/** Caller verifies the old run is completed and has never published a candidate branch. */
+export function recover(
+  task: Task,
+  previousRun: string,
+  actor: string,
+  operators: readonly string[],
+  max: number,
+): Task {
+  if (!operators.includes(actor)) throw new Error('Unauthorized recovery actor');
+  if (
+    !['running', 'publishing', 'failed', 'retry'].includes(task.status) ||
+    task.activeRun !== previousRun
+  )
+    throw new Error('Recovery does not match a recoverable run');
+  if (task.attempts >= max) throw new Error('Recovery cannot reset the attempt budget');
+  return {
+    ...task,
+    status: 'ready',
+    history: [...task.history, entry('recovered', actor, `completed run=${previousRun}`)],
+  };
+}
+
+/** Persist with compare-and-swap before writing a branch. Cancellation and reservation race once. */
+export function reservePublication(task: Task, run: string): Task {
+  if (task.status !== 'running' || task.activeRun !== run)
+    throw new Error('Publication authority revoked or stale');
+  return {
+    ...task,
+    status: 'publishing',
+    history: [...task.history, entry('publishing', 'controller', `run=${run}`)],
   };
 }

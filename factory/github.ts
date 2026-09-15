@@ -61,6 +61,7 @@ export function parseTask(value: unknown): Task {
     ![
       'ready',
       'running',
+      'publishing',
       'retry',
       'waiting-human',
       'review',

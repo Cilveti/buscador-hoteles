@@ -2,14 +2,15 @@ import { execFileSync } from 'node:child_process';
 import { appendFileSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { config } from './config';
-import { api, number, object, parseTask, readTask, repoPath, string } from './github';
+import { api, number, object, parseTask, readTask, repoPath, string, writeTask } from './github';
 import { git, validateIndex } from './policy';
-import { hash } from './state';
+import { hash, reservePublication } from './state';
 
 const temp = process.env.RUNNER_TEMP ?? '/tmp';
 const task = parseTask(JSON.parse(readFileSync(join(temp, 'task/task.json'), 'utf8')));
 const run = string(process.env.GITHUB_RUN_ID);
-const live = readTask(task.issue)?.task;
+const state = readTask(task.issue);
+const live = state?.task;
 if (
   live?.status !== 'running' ||
   live.activeRun !== run ||
@@ -21,6 +22,8 @@ if (git(process.cwd(), 'rev-parse', 'HEAD') !== task.baseSha)
 validateIndex(process.cwd(), task.profile, config.limits.patchBytes);
 const patch = execFileSync('git', ['diff', '--cached', '--binary', '--full-index']);
 if (hash(patch) !== process.env.PATCH_SHA) throw new Error('Publication patch was not verified');
+if (!state) throw new Error('Missing publication state');
+writeTask(reservePublication(state.task, run), state.sha);
 const branch = `factory/issue-${task.issue}/attempt-${task.attempts}-${run}`;
 git(process.cwd(), 'switch', '-c', branch);
 git(process.cwd(), 'config', 'user.name', 'github-actions[bot]');

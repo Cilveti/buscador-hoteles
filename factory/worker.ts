@@ -123,7 +123,7 @@ function prepare(): void {
   );
   const contract = reviewer
     ? 'Review the frozen proposal independently against the task and check evidence. Do not edit files. Report actionable defects with paths and explanations. Do not invent executed tests. Return ONLY JSON: {"status":"pass"|"changes-requested", "summary":"...", "findings":[{"path":"...","reason":"..."}]}.'
-    : 'Implement the task with focused code and useful colocated tests. No shell or publication tools: independent CI runs the app after your turn and returns feedback. Do not claim to have run tests. Return ONLY JSON: {"status":"implemented"|"needs-human", "summary":"..."}. If blocked by a product decision or a dependency permission, make no unauthorized changes and explain the concrete decision needed. A request asks the human for the full dependency profile on this task; never request it merely to bypass a failing check.';
+    : 'Implement the task with focused code and useful colocated tests. No shell or publication tools: independent CI runs the app after your turn and returns feedback. Do not claim to have run tests. Return ONLY JSON: {"status":"implemented"|"needs-human"|"blocked", "summary":"..."}. Use needs-human ONLY when the basic profile blocks a necessary dependency change: explain the exact package, version, purpose and alternatives. This asks for the full dependency profile on this frozen task. For a missing product decision use blocked: the operator must clarify the specification in a new task. Never request permissions merely to bypass a failing check.';
   writeFileSync(
     join(temp, 'worker-prompt.txt'),
     [
@@ -164,11 +164,17 @@ function response(): Record<string, unknown> {
 
 function serialize(): void {
   const result = response();
-  if (!['implemented', 'needs-human'].includes(string(result.status)))
+  if (!['implemented', 'needs-human', 'blocked'].includes(string(result.status)))
     throw new Error('Invalid worker status');
   git(candidate, 'add', '-A');
   const paths = validateIndex(candidate, task.profile, config.limits.patchBytes);
+  if (result.status === 'blocked') {
+    output('status', 'failed');
+    writeFileSync(join(temp, 'decision.json'), JSON.stringify({ reason: result.summary }));
+    return;
+  }
   if (result.status === 'needs-human') {
+    if (task.profile !== 'basic') throw new Error('Full profile cannot request more authority');
     output('status', 'needs-human');
     writeFileSync(join(temp, 'decision.json'), JSON.stringify({ reason: result.summary }));
     return;

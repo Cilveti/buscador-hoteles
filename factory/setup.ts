@@ -74,3 +74,15 @@ if (process.argv.includes('--enable-prs')) {
   });
   console.log('Actions PR creation enabled; job-level permissions remain explicit.');
 }
+if (process.argv.includes('--check-ready')) {
+  const currentPermissions = object(api(repoPath('actions/permissions/workflow')));
+  const missing = [
+    !currentPermissions.can_approve_pull_request_reviews && 'Actions PR creation',
+    !secretNames.includes('OPENCODE_API_KEY') && 'OPENCODE_API_KEY',
+    !secretNames.includes('SONAR_TOKEN') && 'SONAR_TOKEN',
+  ].filter(Boolean);
+  if (missing.length) throw new Error(`Not ready for a model run: ${missing.join(', ')}`);
+  console.log(
+    'Required settings exist. Provider validity and Sonar PR support still require the end-to-end trial.',
+  );
+}

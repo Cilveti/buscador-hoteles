@@ -2,12 +2,15 @@
 
 ## Estados
 
-`ready → running → retry | waiting-human | review | exhausted | failed`.
+`ready → running → retry | waiting-human | publishing | exhausted | failed`.
+
+`publishing → review | failed`.
 
 - `retry` inicia otro run con contexto nuevo, parche anterior y feedback. Máximo tres intentos acumulados.
 - `waiting-human` termina el run; espera una respuesta a la petición identificada.
+- `publishing` reserva la publicación con una escritura condicional en el ledger. Desde ese punto una cancelación se rechaza: hay que inspeccionar la propuesta, que sigue siendo draft. Si cancelar gana la escritura, el publicador no puede reservar ni crear la rama.
 - `review` significa que el proceso terminó con una propuesta y sus gates verdes; sigue siendo draft para revisión humana.
-- `failed` es infraestructura/publicación/integración o respuesta inválida; no se disfraza de defecto de producto.
+- `failed` es infraestructura/publicación/integración, respuesta inválida o requisito sin resolver; no se disfraza de defecto de producto.
 - `rejected` y `cancelled` son finales. Una respuesta tardía del modelo no debe reabrirlos.
 
 La fuente de estado está en `factory-state:tasks/<issue>.json`, escrita por el controlador. Las etiquetas sirven para admisión y visibilidad, no como contador de gasto. Solo los operadores configurados pueden iniciar o decidir. El presupuesto de intentos es por issue; abrir otra issue sigue siendo una nueva autorización y puede consumir. No es un límite monetario de cuenta.
@@ -29,7 +32,7 @@ La versión inicial de este protocolo resuelve solicitudes de permiso de depende
 ## Fallos y recuperación
 
 - No usar re-run como forma de reiniciar intentos: conserva SHA y contexto de GitHub, y el ledger rechaza duplicados.
-- Si falla la infraestructura, revisar el estado y las evidencias antes de reanudar. Recuperación administrativa aún en validación; no borrar el ledger para fingir una primera ejecución.
+- Si falla la infraestructura, revisar el estado y comentar `/factory retry ID-DEL-RUN-ANTERIOR`. Solo un operador puede hacerlo, con el run terminado y sin rama de candidato publicada. Conserva especificación, base y presupuesto; si ya se usaron tres intentos, se rechaza. Está validado por tests locales, todavía pendiente del ensayo remoto. No borrar el ledger para fingir una primera ejecución.
 - Los artefactos se conservan siete días. Una reanudación que necesita un artefacto expirado debe detenerse, no continuar sin el parche o feedback.
 - Un fallo después de publicar puede dejar una draft PR. Comprobar sus gates antes de crear otra tarea.
 - El análisis Sonar se ejecuta después de abrir la draft para poder asociarlo a la PR. La mera existencia de esa PR no demuestra que Sonar haya pasado.
@@ -53,3 +56,11 @@ Conservar tiempo de instalación y de cada fase, intentos, estado final y atenci
 - factura o cuota real del proveedor.
 
 Resultados locales iniciales: instalación 32 s fría y 25 s con caché, 10 E2E en 21,2 s sobre `67e61d3` y Docker local. No son tiempos prometidos para otra cuenta o GitHub Actions.
+
+Para medir una ejecución terminada sin acceder a credenciales del modelo:
+
+```bash
+bun factory/measure.ts ID-DEL-RUN
+```
+
+Devuelve duración por job y suma de minutos redondeados. Si se proporciona `FACTORY_USD_PER_LINUX_MINUTE`, calcula un equivalente antes de cuotas; sin precio o datos de tokens devuelve `null`, nunca cero inventado. No sustituye la factura del proveedor.

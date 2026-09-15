@@ -55,6 +55,8 @@ La conexión Sonar debe admitir **análisis de PR privadas**. Validar el plan re
 
 Si el plan del repositorio admite protección de ramas, exigir `Factory / acceptance`, `Factory / quality` y revisión humana. Sin esa protección, el workflow evita hacer merge pero un usuario con escritura puede saltarse el proceso: no prometer una prohibición impuesta por GitHub.
 
+Antes de etiquetar una tarea, ejecutar `bun factory/setup.ts --check-ready`. Falla si faltan los dos secretos o el permiso de PR. No invoca el modelo y no prueba por sí solo la validez de la cuenta Sonar.
+
 ## 5. Preparar Penpot
 
 Seguir `factory/designs/README.md`. Probar la consulta real de archivo/componentes y conservar una exportación identificada. CI consume el snapshot, no el ordenador del diseñador. No introducir la clave MCP en el repositorio.
@@ -66,7 +68,7 @@ Seguir `factory/designs/README.md`. Probar la consulta real de archivo/component
 3. Comprobar estado persistido, código propuesto, pruebas reales, review independiente, Sonar y draft PR.
 4. Ensayar una corrección; conservar fallo original y feedback del siguiente intento. No afirmar escalado real si el tercer modelo no se ejecutó.
 5. Ensayar una petición de permiso: verificar que el job termina, que un actor no autorizado no reanuda, y que el propietario puede aprobar/rechazar la solicitud exacta.
-6. Ensayar cancelación y evento duplicado. Ninguno debe publicar un candidato después de revocarse la autorización ni reiniciar el contador.
+6. Ensayar cancelación y evento duplicado. Una cancelación aceptada debe impedir la publicación. Si la reserva de publicación ya ganó, el sistema debe rechazar la cancelación y señalar que hay que inspeccionar la propuesta. Ningún evento debe reiniciar el contador.
 7. Registrar URLs, commits, hash del parche/diseño, modelos, duración y costes disponibles. Desconocido no significa cero.
 
 La prueba acaba con propuestas revisables. No hacer merge/despliegue de producto como parte del instalador.

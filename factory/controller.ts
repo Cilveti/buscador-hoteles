@@ -1,4 +1,4 @@
-import { appendFileSync, readFileSync, writeFileSync } from 'node:fs';
+import { appendFileSync, existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { config } from './config';
 import { designIdFromIssue, readDesign } from './design';
@@ -13,7 +13,7 @@ import {
   string,
   writeTask,
 } from './github';
-import { cancel, createTask, decide, finishAttempt, hash, startAttempt } from './state';
+import { cancel, createTask, decide, finishAttempt, hash, recover, startAttempt } from './state';
 
 const temp = process.env.RUNNER_TEMP ?? '/tmp';
 const actor = process.env.GITHUB_ACTOR ?? '';
@@ -34,6 +34,8 @@ function requireRepo(): void {
 
 function admit() {
   requireRepo();
+  const trigger = process.env.GITHUB_TRIGGERING_ACTOR ?? actor;
+  if (trigger !== actor && !operators.includes(trigger)) return output('admitted', 'false');
   const event = object(JSON.parse(readFileSync(string(process.env.GITHUB_EVENT_PATH), 'utf8')));
   const eventName = process.env.GITHUB_EVENT_NAME;
   const inputs = event.inputs ? object(event.inputs) : {};
@@ -61,22 +63,38 @@ function admit() {
       writeTask(cancel(task, actor, operators), previous?.sha);
       comment(issue, 'Factory: **cancelled**. No further candidate may be published.');
       // Cancel the active execution separately; state has already revoked its right to publish.
-      if (task.activeRun) api(repoPath(`actions/runs/${task.activeRun}/cancel`), 'POST');
+      if (task.activeRun) {
+        const active = object(api(repoPath(`actions/runs/${task.activeRun}`)));
+        if (active.status !== 'completed')
+          api(repoPath(`actions/runs/${task.activeRun}/cancel`), 'POST');
+      }
       return output('admitted', 'false');
     }
+    const recovery = /^\/factory retry (\d+)$/.exec(body);
     const decision = /^\/factory (approve|reject) ([a-f0-9-]{36})$/.exec(body);
-    if (!decision) return output('admitted', 'false');
-    task = decide(
-      task,
-      {
-        id: string(decision[2]),
-        approve: decision[1] === 'approve',
-        actor,
-        commentId: String(message.id),
-      },
-      operators,
-      config.limits.attempts,
-    );
+    if (recovery) {
+      const previousRun = string(recovery[1]);
+      const oldRun = object(api(repoPath(`actions/runs/${previousRun}`)));
+      if (oldRun.status !== 'completed') throw new Error('Wait until the previous run completes');
+      // A late publication failure may already have produced a branch/PR. Never silently retry it.
+      const branch = `factory/issue-${issue}/attempt-${task.attempts}-${previousRun}`;
+      const refs = api(repoPath(`git/matching-refs/heads/${branch}`));
+      if (!Array.isArray(refs) || refs.length)
+        throw new Error('Inspect the existing candidate before recovery');
+      task = recover(task, previousRun, actor, operators, config.limits.attempts);
+    } else if (decision) {
+      task = decide(
+        task,
+        {
+          id: string(decision[2]),
+          approve: decision[1] === 'approve',
+          actor,
+          commentId: String(message.id),
+        },
+        operators,
+        config.limits.attempts,
+      );
+    } else return output('admitted', 'false');
     if (task.status !== 'ready') {
       writeTask(task, previous?.sha);
       comment(issue, `Factory: **${task.status}**.`);
@@ -140,12 +158,9 @@ function finish(): void {
   const previous = readTask(issue);
   if (!previous) throw new Error('Missing durable state');
   const result = process.env.RESULT;
-  const detail =
-    result === 'needs-human'
-      ? string(
-          object(JSON.parse(readFileSync(join(temp, 'proposal/decision.json'), 'utf8'))).reason,
-        )
-      : (process.env.DETAIL ?? `Run ${run}`);
+  const detail = existsSync(join(temp, 'proposal/decision.json'))
+    ? string(object(JSON.parse(readFileSync(join(temp, 'proposal/decision.json'), 'utf8'))).reason)
+    : (process.env.DETAIL ?? `Run ${run}`);
   const task = finishAttempt(
     previous.task,
     run,

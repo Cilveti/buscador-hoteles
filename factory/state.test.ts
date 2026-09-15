@@ -1,6 +1,14 @@
 import { describe, expect, test } from 'bun:test';
 import { allowedPath, validateManifest } from './policy';
-import { cancel, createTask, decide, finishAttempt, startAttempt } from './state';
+import {
+  cancel,
+  createTask,
+  decide,
+  finishAttempt,
+  recover,
+  reservePublication,
+  startAttempt,
+} from './state';
 
 const initial = () =>
   createTask({
@@ -56,6 +64,26 @@ describe('bounded task lifecycle', () => {
   test('cancellation defeats an in-flight completion', () => {
     const task = cancel(startAttempt(initial(), '1', 3), 'owner', ['owner']);
     expect(() => finishAttempt(task, '1', { status: 'passed', detail: '' }, 3)).toThrow();
+  });
+  test('recovery requires the matching run and preserves budget and cancellation', () => {
+    const running = startAttempt(initial(), '1', 3);
+    const ready = recover(running, '1', 'owner', ['owner'], 3);
+    expect(startAttempt(ready, '2', 3).attempts).toBe(2);
+    expect(() => recover(running, '2', 'owner', ['owner'], 3)).toThrow();
+    expect(() => recover(running, '1', 'stranger', ['owner'], 3)).toThrow();
+    expect(() =>
+      recover(cancel(running, 'owner', ['owner']), '1', 'owner', ['owner'], 3),
+    ).toThrow();
+    expect(() => recover({ ...running, attempts: 3 }, '1', 'owner', ['owner'], 3)).toThrow();
+  });
+  test('publication reservation and cancellation cannot both win', () => {
+    const running = startAttempt(initial(), '1', 3);
+    const publishing = reservePublication(running, '1');
+    expect(() => cancel(publishing, 'owner', ['owner'])).toThrow();
+    expect(() => reservePublication(cancel(running, 'owner', ['owner']), '1')).toThrow();
+    expect(finishAttempt(publishing, '1', { status: 'passed', detail: 'draft' }, 3).status).toBe(
+      'review',
+    );
   });
 });
 

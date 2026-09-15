@@ -1,0 +1,31 @@
+import { defineConfig } from '@playwright/test';
+
+/** Real Next/Payload/PostgreSQL E2E, separate from the fast browser fixture suite. */
+export default defineConfig({
+  testDir: '../../tests/e2e',
+  fullyParallel: false,
+  workers: 1,
+  retries: 0,
+  timeout: 90_000,
+  expect: { timeout: 20_000 },
+  outputDir: '/evidence/e2e/artifacts',
+  reporter: [
+    ['list'],
+    ['json', { outputFile: '/evidence/e2e/results.json' }],
+    ['html', { outputFolder: '/evidence/e2e/report', open: 'never' }],
+  ],
+  use: {
+    baseURL: 'http://127.0.0.1:3101',
+    browserName: 'chromium',
+    headless: true,
+    trace: 'on',
+    screenshot: 'on',
+    serviceWorkers: 'block',
+  },
+  webServer: {
+    command: 'bun run dev',
+    url: 'http://127.0.0.1:3101/api/health',
+    reuseExistingServer: false,
+    timeout: 180_000,
+  },
+});

@@ -1,0 +1,33 @@
+name: Factory task
+description: A bounded task for the hotel software factory
+title: '[Factory] '
+labels: ['factory:basic']
+body:
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objective and scope
+      description: Describe the user-visible outcome and what is outside this task.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance examples
+      description: Include normal behavior, a boundary and an invalid or empty case.
+    validations:
+      required: true
+  - type: input
+    id: design
+    attributes:
+      label: Design snapshot
+      description: For visual tasks, enter the versioned snapshot ID from factory/designs.
+  - type: textarea
+    id: decisions
+    attributes:
+      label: Decisions requiring a human
+      description: Dependencies, product ambiguity or scope that needs explicit approval.
+  - type: markdown
+    attributes:
+      value: |
+        Creating the issue does not run a model. An authorized operator adds `factory:ready` after reviewing the task. Keep exactly one profile label. The specification is frozen at admission; use a new issue for changed requirements.

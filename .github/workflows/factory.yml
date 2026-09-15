@@ -1,0 +1,177 @@
+name: Hotel software factory
+run-name: Factory issue ${{ inputs.issue || github.event.issue.number }}
+on:
+  issues:
+    types: [labeled]
+  issue_comment:
+    types: [created]
+  workflow_dispatch:
+    inputs:
+      issue:
+        description: Existing factory task number
+        required: true
+        type: string
+      predecessor:
+        description: Previous run (automatic retry only)
+        required: false
+        type: string
+permissions: {}
+concurrency:
+  # Cancellation must reach the controller while the inference run is still active.
+  group: factory-${{ inputs.issue || github.event.issue.number }}-${{ startsWith(github.event.comment.body, '/factory cancel') && 'cancel' || 'work' }}
+  cancel-in-progress: false
+jobs:
+  admit:
+    if: github.event_name == 'workflow_dispatch' || github.event.label.name == 'factory:ready' || startsWith(github.event.comment.body, '/factory ')
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      contents: write
+      issues: write
+      actions: write
+    outputs:
+      admitted: ${{ steps.admit.outputs.admitted }}
+      issue: ${{ steps.admit.outputs.issue }}
+      base_sha: ${{ steps.admit.outputs.base_sha }}
+      model: ${{ steps.admit.outputs.model }}
+      reviewer: ${{ steps.admit.outputs.reviewer }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          bun-version: '1.4.2'
+      - name: Reserve one attempt or resolve a human decision
+        id: admit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bun factory/controller.ts admit
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: steps.admit.outputs.admitted == 'true'
+        with:
+          name: factory-task-${{ github.run_id }}
+          path: ${{ runner.temp }}/task.json
+          if-no-files-found: error
+          retention-days: 7
+  attempt:
+    needs: admit
+    if: needs.admit.outputs.admitted == 'true'
+    uses: ./.github/workflows/factory-attempt.yml
+    permissions:
+      contents: read
+      actions: read
+    with:
+      base_sha: ${{ needs.admit.outputs.base_sha }}
+      model: ${{ needs.admit.outputs.model }}
+      reviewer: ${{ needs.admit.outputs.reviewer }}
+    secrets:
+      OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+  publish:
+    needs: [admit, attempt]
+    if: needs.attempt.outputs.status == 'passed'
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    permissions:
+      contents: write
+      pull-requests: write
+      statuses: write
+    outputs:
+      pr: ${{ steps.publish.outputs.pr }}
+      pr_url: ${{ steps.publish.outputs.pr_url }}
+      head_sha: ${{ steps.publish.outputs.head_sha }}
+      branch: ${{ steps.publish.outputs.branch }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ needs.admit.outputs.base_sha }}
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          bun-version: '1.4.2'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: factory-task-${{ github.run_id }}
+          path: ${{ runner.temp }}/task
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: factory-proposal-${{ github.run_id }}
+          path: ${{ runner.temp }}/proposal
+      - name: Apply the original verified patch without executing it
+        env:
+          PATCH_SHA: ${{ needs.attempt.outputs.patch_sha }}
+        run: bun factory/worker.ts apply
+      - name: Publish a draft for SonarQube and human review
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PATCH_SHA: ${{ needs.attempt.outputs.patch_sha }}
+        run: bun factory/publish.ts
+  sonar:
+    needs: [admit, publish]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ needs.publish.outputs.head_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Require the SonarQube connection
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: test -n "$SONAR_TOKEN"
+      - uses: SonarSource/sonarqube-scan-action@fd88b7d7ccbaefd23d8f36f73b59db7a3d246602 # v6
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL || 'https://sonarcloud.io' }}
+        with:
+          args: >-
+            -Dproject.settings=factory/sonar-project.properties
+            -Dsonar.pullrequest.key=${{ needs.publish.outputs.pr }}
+            -Dsonar.pullrequest.branch=${{ needs.publish.outputs.branch }}
+            -Dsonar.pullrequest.base=main
+            -Dsonar.scm.revision=${{ needs.publish.outputs.head_sha }}
+            -Dsonar.qualitygate.wait=true
+  finish:
+    needs: [admit, attempt, publish, sonar]
+    if: always() && needs.admit.outputs.admitted == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      contents: write
+      issues: write
+      statuses: write
+      actions: write
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ needs.admit.outputs.base_sha }}
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          bun-version: '1.4.2'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        if: needs.attempt.outputs.status == 'needs-human'
+        with:
+          name: factory-proposal-${{ github.run_id }}
+          path: ${{ runner.temp }}/proposal
+      - name: Finish or dispatch the next bounded attempt
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE: ${{ needs.admit.outputs.issue }}
+          RESULT: ${{ needs.attempt.result != 'success' && 'failed' || needs.attempt.outputs.status != 'passed' && needs.attempt.outputs.status || needs.publish.result == 'success' && needs.sonar.result == 'success' && 'passed' || 'failed' }}
+          DETAIL: ${{ needs.publish.outputs.pr_url || 'Inspect the run for check and review evidence.' }}
+          PATCH_SHA: ${{ needs.attempt.outputs.patch_sha }}
+          PROPOSAL_ARTIFACT: factory-proposal-${{ github.run_id }}
+          FEEDBACK_ARTIFACT: ${{ needs.attempt.outputs.feedback_artifact }}
+        run: bun factory/controller.ts finish
+      - name: Record the complete quality gate on the published commit
+        if: needs.publish.outputs.head_sha != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ needs.publish.outputs.head_sha }}
+          QUALITY_RESULT: ${{ needs.sonar.result == 'success' && 'success' || 'failure' }}
+        run: bun factory/quality-status.ts

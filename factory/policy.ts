@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import type { Profile } from './state';
+import { hash, type Profile } from './state';
 
 export const git = (cwd: string, ...args: string[]) =>
   execFileSync('git', args, { cwd, encoding: 'utf8', maxBuffer: 4_000_000 }).trimEnd();
@@ -78,4 +78,13 @@ export function validateIndex(cwd: string, profile: Profile, maxBytes: number): 
   if (Buffer.byteLength(git(cwd, 'diff', '--cached', '--binary', '--full-index')) > maxBytes)
     throw new Error('Patch size limit exceeded');
   return paths;
+}
+
+/** Run outside the candidate containers: the verified checkout must still hold the original patch. */
+export function verifyUnchangedCheckout(cwd: string, expectedHash: string): void {
+  const patch = execFileSync('git', ['diff', '--cached', '--binary', '--full-index'], { cwd });
+  if (hash(patch) !== expectedHash) throw new Error('Candidate index changed during verification');
+  if (git(cwd, 'diff', '--name-only')) throw new Error('Candidate has unstaged mutations');
+  if (git(cwd, 'ls-files', '--others', '--exclude-standard'))
+    throw new Error('Candidate has unexpected untracked files');
 }

@@ -1,8 +1,10 @@
 import { afterEach, expect, test } from 'bun:test';
+import { execFileSync } from 'node:child_process';
 import { mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
-import { git, validateIndex } from './policy';
+import { git, validateIndex, verifyUnchangedCheckout } from './policy';
+import { hash } from './state';
 
 const roots: string[] = [];
 afterEach(() => {
@@ -50,4 +52,21 @@ test('full dependency authority does not grant permission to change package scri
   const root = checkout();
   put(root, 'package.json', JSON.stringify({ scripts: { test: 'true' }, dependencies: {} }));
   expect(() => validateIndex(root, 'full', 200_000)).toThrow('Protected manifest field');
+});
+
+test('verification rejects changed indexes, unstaged repairs and extra files', () => {
+  const root = checkout();
+  const source = 'apps/web/src/feature.ts';
+  put(root, source, 'export const count = 1;\n');
+  const expected = hash(
+    execFileSync('git', ['diff', '--cached', '--binary', '--full-index'], { cwd: root }),
+  );
+  expect(() => verifyUnchangedCheckout(root, expected)).not.toThrow();
+  writeFileSync(join(root, 'extra.txt'), 'unexpected');
+  expect(() => verifyUnchangedCheckout(root, expected)).toThrow('untracked');
+  rmSync(join(root, 'extra.txt'));
+  writeFileSync(join(root, source), 'export const count = 2;\n');
+  expect(() => verifyUnchangedCheckout(root, expected)).toThrow('unstaged');
+  git(root, 'add', '-A');
+  expect(() => verifyUnchangedCheckout(root, expected)).toThrow('index changed');
 });

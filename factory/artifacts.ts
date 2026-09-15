@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import { stripVTControlCharacters } from 'node:util';
 import { config } from './config';
 import { parseTask, string } from './github';
+import { verifyUnchangedCheckout } from './policy';
 import { hash } from './state';
 
 const temp = process.env.RUNNER_TEMP ?? '/tmp';
@@ -35,6 +36,7 @@ if (process.argv[2] === 'recover') {
   const patch = join(temp, 'proposal/agent.patch');
   if (hash(readFileSync(patch)) !== process.env.PATCH_SHA)
     throw new Error('Evidence patch mismatch');
+  verifyUnchangedCheckout(process.cwd(), string(process.env.PATCH_SHA));
   const directory = join(temp, 'evidence');
   mkdirSync(directory, { recursive: true });
   const logs = ['install', 'unit', 'e2e', 'build'].map((phase) => {

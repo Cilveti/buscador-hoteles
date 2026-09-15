@@ -1,6 +1,6 @@
 # Fábrica de software · instalación y operación
 
-**Estado: infraestructura publicada; baseline e integraciones en validación.** Consultar [evidencia](EVIDENCE.md).
+**Estado: infraestructura publicada; tres baselines GitHub verdes, integraciones externas pendientes.** Consultar [evidencia](EVIDENCE.md).
 
 La fábrica convierte una issue autorizada en una propuesta verificable. El resultado es una draft PR o un estado explicado. La integración del producto sigue siendo humana.
 
@@ -27,6 +27,12 @@ FACTORY_EVIDENCE_DIR=/ruta/absoluta/fuera-del-checkout bash factory/ci/run.sh
 Instala desde `bun.lock` sin lifecycle scripts. Cada fase se ejecuta en un contenedor nuevo sin red externa: unitarios/tipos/lint, E2E real con PostgreSQL efímero y build. No publica puertos al host ni reutiliza el volumen de la base de datos diaria. La imagen prepara Chromium y PostgreSQL; los primeros builds necesitan descargarla.
 
 La suite E2E usa los tests existentes de búsqueda, detalle y administración. Los tests de navegador con fixtures y el laboratorio de evaluación son mecanismos diferentes: no se atribuyen sus resultados a una ejecución de la app completa.
+
+## Qué demuestra la validación actual
+
+La suite levanta la aplicación con su servidor de desarrollo y base efímera; el build se comprueba en otro contenedor. No se ha ensayado aún una preview pública ni el servidor compilado en producción. Los casos existentes comprueban búsqueda, detalle y administración: una nueva funcionalidad necesita sus criterios específicos y la revisión de intención sigue siendo humana.
+
+La integración Sonar está preparada, pero todavía no conectada. No se está enviando cobertura LCOV; no presentar el gate como una garantía de cobertura hasta configurar y comprobar esa parte. El aislamiento de CI evita red externa y credenciales; no convierte los tests escritos por el candidato en una aceptación independiente de su propia autoría.
 
 ## Integraciones pendientes
 

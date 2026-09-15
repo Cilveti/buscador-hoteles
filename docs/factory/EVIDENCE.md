@@ -27,7 +27,7 @@
 
 ## Resolución de dependencias
 
-Prueba local real con Docker y registro npm: una copia desechable de los manifiestos añade `is-number@7.0.0`; el resolver conserva los manifiestos, ignora un postinstall que fallaría y mantiene estable el lock al repetir. No se ejecutó el modelo. El nuevo paso de baseline ejecuta también este ensayo en GitHub; su primera comprobación remota está pendiente.
+Prueba local real con Docker y registro npm: una copia desechable de los manifiestos añade `is-number@7.0.0`; el resolver conserva los manifiestos, ignora un postinstall que fallaría y mantiene estable el lock al repetir. No se ejecutó el modelo. La [baseline con resolver](https://github.com/Cilveti/buscador-hoteles/actions/runs/35032865550), commit `a2afa28`, terminó **verde**: resolver 11 s, job completo 313 s, con las comprobaciones de aplicación, navegador y build. No se ejecutó ningún modelo.
 
 ## Controles probados localmente
 

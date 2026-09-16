@@ -11,6 +11,10 @@ on:
         description: Existing factory task number
         required: true
         type: string
+      recover_run:
+        description: Run fallido que se recupera con esta versión del ejecutor (solo operadores)
+        required: false
+        type: string
       predecessor:
         description: Previous run (automatic retry only)
         required: false
@@ -33,6 +37,7 @@ jobs:
       admitted: ${{ steps.admit.outputs.admitted }}
       issue: ${{ steps.admit.outputs.issue }}
       base_sha: ${{ steps.admit.outputs.base_sha }}
+      worker_sha: ${{ steps.admit.outputs.worker_sha }}
       model: ${{ steps.admit.outputs.model }}
       reviewer: ${{ steps.admit.outputs.reviewer }}
     steps:
@@ -63,6 +68,7 @@ jobs:
       actions: read
     with:
       base_sha: ${{ needs.admit.outputs.base_sha }}
+      worker_sha: ${{ needs.admit.outputs.worker_sha }}
       model: ${{ needs.admit.outputs.model }}
       reviewer: ${{ needs.admit.outputs.reviewer }}
     secrets:

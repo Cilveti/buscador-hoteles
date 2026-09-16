@@ -54,12 +54,18 @@ function admit() {
       return output('admitted', 'false');
   }
   let task = previous?.task;
-  if (eventName === 'issue_comment') {
+  const manualRecovery =
+    eventName === 'workflow_dispatch' &&
+    typeof inputs.recover_run === 'string' &&
+    inputs.recover_run !== '';
+  if (eventName === 'issue_comment' || manualRecovery) {
     if (!task) return output('admitted', 'false');
-    const message = object(event.comment);
-    if (object(message.user).login !== actor || object(message.user).type !== 'User')
+    const message = eventName === 'issue_comment' ? object(event.comment) : null;
+    if (message && (object(message.user).login !== actor || object(message.user).type !== 'User'))
       return output('admitted', 'false');
-    const body = string(message.body).trim();
+    if (manualRecovery && (!operators.includes(actor) || !/^\d+$/.test(string(inputs.recover_run))))
+      throw new Error('Invalid operator recovery');
+    const body = message ? string(message.body).trim() : `/factory retry ${inputs.recover_run}`;
     if (body === '/factory cancel') {
       writeTask(cancel(task, actor, operators), previous?.sha);
       comment(
@@ -85,7 +91,14 @@ function admit() {
       const refs = api(repoPath(`git/matching-refs/heads/${branch}`));
       if (!Array.isArray(refs) || refs.length)
         throw new Error('Inspect the existing candidate before recovery');
-      task = recover(task, previousRun, actor, operators, config.limits.attempts);
+      task = recover(
+        task,
+        previousRun,
+        actor,
+        operators,
+        config.limits.attempts,
+        string(process.env.GITHUB_SHA),
+      );
     } else if (decision) {
       task = decide(
         task,
@@ -93,7 +106,7 @@ function admit() {
           id: string(decision[2]),
           approve: decision[1] === 'approve',
           actor,
-          commentId: String(message.id),
+          commentId: String(message?.id),
         },
         operators,
         config.limits.attempts,
@@ -154,6 +167,7 @@ function admit() {
   output('admitted', 'true');
   output('issue', issue);
   output('base_sha', task.baseSha);
+  output('worker_sha', task.workerSha ?? task.baseSha);
   output('attempt', task.attempts);
   output('profile', task.profile);
   output('model', config.worker.models[task.attempts - 1] ?? config.worker.models[2]);

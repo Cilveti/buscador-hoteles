@@ -81,7 +81,7 @@ export function pullRequestBody(input: {
     `<details>\n<summary>Informe completo del revisor automático</summary>\n\n${prose(review)}\n\nEl revisor inspecciona código y evidencia. Las pruebas las ejecuta CI; este informe no es una aprobación humana.\n\n</details>`,
     qualitySection('pending', runUrl),
     `## Qué necesita una persona\n\nComprobar que el cambio resuelve la intención de la tarea, revisar el diff y decidir si se integra. La PR queda en borrador; no se ha fusionado ni desplegado.`,
-    `<details>\n<summary>Archivos y trazabilidad técnica</summary>\n\n${paths.map((path) => `- \`${path}\``).join('\n')}\n\n- Intento: ${task.attempts}/${config.limits.attempts}.\n- Permisos: ${task.profile === 'basic' ? 'básicos (código y tests)' : 'completos para dependencias; controles protegidos'}.\n- Base: \`${task.baseSha}\`.\n- Especificación: \`${task.specificationSha}\`.\n- Patch verificado: \`${patchSha}\`.\n\n</details>`,
+    `<details>\n<summary>Archivos y trazabilidad técnica</summary>\n\n${paths.map((path) => `- \`${path}\``).join('\n')}\n\n- Intento: ${task.attempts}/${config.limits.attempts}.\n- Permisos: ${task.profile === 'basic' ? 'básicos (código y tests)' : 'completos para dependencias; controles protegidos'}.\n- Base: \`${task.baseSha}\`.\n- Ejecutor: \`${task.workerSha ?? task.baseSha}\`.\n- Especificación: \`${task.specificationSha}\`.\n- Patch verificado: \`${patchSha}\`.\n\n</details>`,
   ].join('\n\n');
 }
 

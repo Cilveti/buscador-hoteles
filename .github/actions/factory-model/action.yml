@@ -37,7 +37,7 @@ runs:
         test -n "$OPENCODE_API_KEY"
         mkdir -p "$XDG_CACHE_HOME" "$XDG_CONFIG_HOME" "$XDG_DATA_HOME"
         export OPENCODE_CONFIG_CONTENT="$(< "$RUNNER_TEMP/opencode-config.json")"
-        bun factory/model.ts
+        bun "$GITHUB_ACTION_PATH/../../../factory/model.ts"
         test -s "$RUNNER_TEMP/worker-result.json"
     - name: Preserve non-sensitive model diagnostics
       if: always()

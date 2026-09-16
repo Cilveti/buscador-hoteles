@@ -28,7 +28,7 @@ Las capturas `empty-state-1280.png` y `empty-state-360.png` quedan dentro de la 
 
 Un operador configurado puede ejecutar `factory.yml` manualmente, indicando una issue nueva y una rama del arnés previamente revisada. Esto permite validar una mejora antes de incorporarla a main. Debe existir exactamente un perfil de permisos y el autor debe estar autorizado. Se congelan especificación, base y diseño; los reintentos conservan la rama de ejecución y siguen limitados a tres.
 
-Durante ese ensayo, mantener estable la rama del arnés. La PR de producto partirá de esa base y dependerá de sus cambios hasta integrar el arnés. Identificar explícitamente esa dependencia en la PR; no atribuir al agente los cambios de infraestructura ni fusionar la propuesta mezclada por accidente.
+Durante ese ensayo, mantener estable la revisión del ejecutor. Una recuperación explícita puede registrar un `workerSha` nuevo para corregir el transporte: conserva `baseSha`, diseño, especificación, parche y contador. El ejecutor se carga en un checkout separado solo en los jobs del modelo; las comprobaciones y la publicación siguen usando la base de aplicación congelada. No es una actualización silenciosa de requisitos ni un reinicio de intentos. La PR de producto partirá de esa base y dependerá de sus cambios hasta integrar el arnés. Identificar explícitamente esa dependencia en la PR; no atribuir al agente los cambios de infraestructura ni fusionar la propuesta mezclada por accidente.
 
 ## Permisos y límites reales
 
@@ -43,3 +43,12 @@ Durante ese ensayo, mantener estable la rama del arnés. La PR de producto parti
 ## Reproducir en otra cuenta
 
 Seguir [INSTALL.md](INSTALL.md): adaptar repositorio, operadores y proyecto Sonar; configurar secretos con autorización; habilitar PR desde Actions; ejecutar setup y baseline; probar una issue. No copiar claves a Markdown ni convertir este repositorio privado en público para evitar configurar permisos.
+
+
+## Recuperar un fallo de transporte
+
+Si el modelo o su transporte falla antes de publicar, un operador puede ejecutar `factory.yml` desde la revisión corregida, con `issue` y `recover_run` (ID del run fallido). Se verifica que ha terminado y que no ha publicado rama; la recuperación queda auditada y consume el siguiente intento disponible. No puede usarse después de agotar los tres intentos.
+
+El worker usa `prompt_async` de OpenCode1.18.30 y consulta brevemente el último mensaje, con un único límite de diez minutos para la inferencia. El job tiene doce minutos para incluir instalación y cierre. Esto evita sostener una llamada HTTP síncrona larga, que falló por timeout a los seis minutos en la revisión de #8.
+
+La versión fijada tiene además un fallo al serializar el formato JSON Schema de ciertos mensajes de usuario. Consultar solo el último mensaje evita recuperar esos mensajes anteriores; si el primer mensaje todavía es ese mensaje de usuario, se tolera exclusivamente el error de codificación identificado hasta que llegue el del asistente. Otros errores HTTP fallan. Se esperan mensajes completados: un turno de herramientas intermedio no equivale a un veredicto. La salida final sigue validándose contra el contrato y el presupuesto no se amplía.

@@ -48,6 +48,8 @@ export function parseTask(value: unknown): Task {
     !/^[a-f0-9]{64}$/.test(string(item.specificationSha))
   )
     throw new Error('Invalid state hashes');
+  if (item.workerSha !== undefined && !/^[a-f0-9]{40}$/.test(string(item.workerSha)))
+    throw new Error('Invalid worker revision');
   number(item.issue);
   for (const key of ['title', 'body', 'author']) string(specification[key]);
   if (

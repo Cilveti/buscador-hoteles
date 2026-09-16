@@ -1,6 +1,6 @@
 ## Qué cambia y por qué
 
-<!-- Describe el problema y el comportamiento que tendrá quien use la aplicación. Enlaza la issue. -->
+<!-- Explica el problema, el comportamiento resultante y su utilidad; añade un ejemplo antes/después si ayuda. En infraestructura, explica qué cambia para quien desarrolla u opera el sistema. Enlaza la issue. No enumeres archivos ni pasos de implementación. Menciona un archivo solo si es imprescindible para explicar una incompatibilidad, migración o decisión concreta. -->
 
 ## Cómo se ha comprobado
 

@@ -12,11 +12,13 @@ La fábrica verifica el patch antes de publicarlo, ejecuta Sonar y registra `Fac
 
 ## Leer una propuesta del agente
 
-1. **Qué cambia:** resumen del implementador, identificado como tal.
+1. **Qué cambia:** problema resuelto, comportamiento resultante y utilidad. Un ejemplo antes/después cuando aporte claridad. Para infraestructura, el efecto sobre el trabajo del desarrollador.
 2. **Qué se ha comprobado:** resultados de los jobs, no afirmaciones del modelo.
-3. **Informe del revisor automático:** observaciones independientes sobre código y evidencia.
+3. **Revisión automática:** resultado de la comprobación independiente. El informe completo se consulta en la evidencia enlazada.
 4. **Calidad de código:** sección que Sonar actualiza al terminar. Si falla, queda bloqueada; no conserva un «pendiente» obsoleto.
-5. **Qué necesita una persona:** revisión del comportamiento y decisión de integrar. Los hashes y archivos están en un desplegable.
+5. **Qué necesita una persona:** revisión del comportamiento y decisión de integrar. La trazabilidad técnica se consulta en la evidencia enlazada.
+
+La descripción no enumera archivos, símbolos ni pasos de implementación. Solo menciona un archivo si es imprescindible para explicar una incompatibilidad, migración o decisión concreta. Los hashes y el informe técnico permanecen en la evidencia enlazada.
 
 El publicador comprueba que resumen y revisión pertenecen a la misma base y patch. La prosa del modelo no puede cambiar el quality gate ni introducir el marcador con el que se actualiza la sección. Al actualizarla se conservan las notas añadidas por una persona.
 

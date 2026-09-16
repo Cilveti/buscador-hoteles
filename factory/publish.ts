@@ -20,7 +20,7 @@ if (
   throw new Error('Publication authority revoked or stale');
 if (git(process.cwd(), 'rev-parse', 'HEAD') !== task.baseSha)
   throw new Error('Publication base mismatch');
-const paths = validateIndex(process.cwd(), task.profile, config.limits.patchBytes);
+validateIndex(process.cwd(), task.profile, config.limits.patchBytes);
 const patch = execFileSync('git', ['diff', '--cached', '--binary', '--full-index']);
 if (hash(patch) !== process.env.PATCH_SHA) throw new Error('Publication patch was not verified');
 const evidence = publicationEvidence(
@@ -55,10 +55,8 @@ const pr = object(
     draft: true,
     body: pullRequestBody({
       task,
-      patchSha: string(process.env.PATCH_SHA),
       runUrl,
-      paths,
-      ...evidence,
+      summary: evidence.summary,
     }),
   }),
 );

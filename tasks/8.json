@@ -9,8 +9,8 @@
   },
   "specificationSha": "a7c50c358ad0a39b1f5e4c0f418a0505f6581f2cf19866c83ae67b4183e2cb7b",
   "profile": "basic",
-  "status": "failed",
-  "attempts": 2,
+  "status": "running",
+  "attempts": 3,
   "history": [
     {
       "at": "2026-09-16T18:09:05.466Z",
@@ -41,13 +41,25 @@
       "event": "failed",
       "actor": "controller",
       "detail": "Consulta la fase que falló y su evidencia en la ejecución enlazada."
+    },
+    {
+      "at": "2026-09-16T18:48:03.357Z",
+      "event": "recovered",
+      "actor": "Cilveti",
+      "detail": "completed run=35133563930; worker=56b98fcf6a710ba58861a4dde30c10462b295d4a; base=244db9b292ec80dda227274660dc000a1ba5f0f9"
+    },
+    {
+      "at": "2026-09-16T18:48:03.357Z",
+      "event": "started",
+      "actor": "controller",
+      "detail": "attempt=3; run=35136632915"
     }
   ],
   "design": {
     "id": "hotel-empty-v1",
     "manifestSha": "9ce40c98884be5dedf04dc2ad0e9afc24d7cd92ed69f1effbd548f6d21c3249d"
   },
-  "activeRun": "35133563930",
+  "activeRun": "35136632915",
   "proposal": {
     "run": "35133563930",
     "artifact": "factory-proposal-35133563930",
@@ -56,5 +68,6 @@
   "feedback": {
     "run": "35133563930",
     "artifact": "factory-review-35133563930"
-  }
+  },
+  "workerSha": "56b98fcf6a710ba58861a4dde30c10462b295d4a"
 }

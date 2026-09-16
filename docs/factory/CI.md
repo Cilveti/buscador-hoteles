@@ -33,6 +33,7 @@ Durante ese ensayo, mantener estable la rama del arnés. La PR de producto parti
 ## Permisos y límites reales
 
 - El candidato se ejecuta en contenedores sin red y sin claves del modelo. El job de modelo, el verificador y el publicador son distintos.
+- El permiso completo no permite añadir, quitar, mover de sección ni cambiar la versión declarada de herramientas conocidas de verificación (TypeScript, Biome, Playwright y las demás protegidas en policy.ts). Sus actualizaciones se revisan como cambios del arnés. Esto no sustituye la revisión de la cadena de dependencias.
 - El verificador restaura la caché pero no intenta guardarla. `bun install --frozen-lockfile --ignore-scripts` sigue siendo obligatorio; caché no sustituye el lockfile.
 - Sonar es un análisis adicional, no una ejecución de la aplicación. No hay importación LCOV todavía.
 - El 16-09-2026, la API de GitHub devolvió 403 al consultar protección de main y rulesets, indicando que este repositorio privado requiere GitHub Pro para esa función. No se compró un plan ni se hizo público el repositorio.

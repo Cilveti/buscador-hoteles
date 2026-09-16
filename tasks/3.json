@@ -9,7 +9,7 @@
   },
   "specificationSha": "429332f7998821857e79a56812c2a7e1da8e77dc7f568cb34963a7b8a7a065c6",
   "profile": "basic",
-  "status": "running",
+  "status": "retry",
   "attempts": 1,
   "history": [
     {
@@ -23,11 +23,26 @@
       "event": "started",
       "actor": "controller",
       "detail": "attempt=1; run=35071200573"
+    },
+    {
+      "at": "2026-09-16T08:04:39.499Z",
+      "event": "retry",
+      "actor": "controller",
+      "detail": "Inspect the run for check and review evidence."
     }
   ],
   "design": {
     "id": "hotel-empty-v1",
     "manifestSha": "9ce40c98884be5dedf04dc2ad0e9afc24d7cd92ed69f1effbd548f6d21c3249d"
   },
-  "activeRun": "35071200573"
+  "activeRun": "35071200573",
+  "proposal": {
+    "run": "35071200573",
+    "artifact": "factory-proposal-35071200573",
+    "sha": "8a99912bf495f43f4c4e71e7a538904ad741cd5280129c31107a061fbd8b91e5"
+  },
+  "feedback": {
+    "run": "35071200573",
+    "artifact": "factory-checks-35071200573"
+  }
 }

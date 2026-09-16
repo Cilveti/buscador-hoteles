@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "issue": 5,
+  "baseSha": "dc78c7887e4b6f2f052a4d2b84872a5bbc4c7d8d",
+  "specification": {
+    "title": "Continuar ensayo autorizado de slugify sobre la base corregida",
+    "body": "## Objetivo del ensayo\n\nDemostrar el permiso de dependencias y la pausa/reanudación humana de la fábrica con una propuesta aislada que permanecerá en draft.\n\nEste ensayo corrige la ubicación del módulo del ensayo #1: pertenece al adaptador web, donde se admiten bibliotecas externas. No cambiar reglas de arquitectura.\n\n## Cambio solicitado\n\nAñadir `hotelSlug(name: string): string` en `apps/web/src/features/catalog/adapters/hotel-slug.ts`, utilizando explícitamente `slugify@1.6.6` como dependencia de `apps/web/package.json`. Para este ensayo la biblioteca forma parte del requisito: no sustituirla por una implementación propia. No conectar todavía la función a rutas, persistencia ni interfaces existentes.\n\nLa función debe producir un slug ASCII en minúsculas, separar palabras con un guion, eliminar puntuación y espacios de los extremos y transliterar tildes. Una cadena vacía o compuesta solo por espacios produce una cadena vacía. Ejemplos: `  Hotel Costa Azul  ` → `hotel-costa-azul`; `Montaña & Mar` → `montana-and-mar`; `Ático Norte` → `atico-norte`.\n\nAñadir pruebas colocadas junto al módulo para esos ejemplos, cadena vacía y espacios. Mantener todos los checks actuales.\n\n## Permisos y aceptación\n\nPerfil completo para el mismo cambio de dependencia autorizado por Cilveti en la issue #2, comentario https://github.com/Cilveti/buscador-hoteles/issues/2#issuecomment-5693799876. Esta tarea nueva parte de la infraestructura corregida; la #2 permanece cancelada y conserva sus dos intentos reservados. No reescribir el historial ni presentar la tarea nueva como un reinicio del contador de #2.\n\nSolo se autoriza el cambio descrito de slugify@1.6.6 y sus archivos de implementación/pruebas. Controles de arquitectura, lint, workflows y secretos permanecen protegidos.\n\nNo fusionar ni desplegar. Este es un ensayo de integración y autorización, no una nueva funcionalidad de producto aprobada.\n",
+    "author": "Cilveti"
+  },
+  "specificationSha": "c4e7d13641553bc2ad0b79dabcdabd3d05828a68db1a106ce02294dcb2ce89ae",
+  "profile": "full",
+  "status": "running",
+  "attempts": 1,
+  "history": [
+    {
+      "at": "2026-09-16T07:57:48.840Z",
+      "event": "admitted",
+      "actor": "Cilveti",
+      "detail": "profile=full; base=dc78c7887e4b6f2f052a4d2b84872a5bbc4c7d8d"
+    },
+    {
+      "at": "2026-09-16T07:57:48.840Z",
+      "event": "started",
+      "actor": "controller",
+      "detail": "attempt=1; run=35071205468"
+    }
+  ],
+  "activeRun": "35071205468"
+}

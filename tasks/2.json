@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "issue": 2,
+  "baseSha": "4cbef21258c77af34890fd457102bdaf8294138b",
+  "specification": {
+    "title": "Ensayo de fábrica: autorizar slugify en el adaptador web",
+    "body": "## Objetivo del ensayo\n\nDemostrar el permiso de dependencias y la pausa/reanudación humana de la fábrica con una propuesta aislada que permanecerá en draft.\n\nEste ensayo corrige la ubicación del módulo del ensayo #1: pertenece al adaptador web, donde se admiten bibliotecas externas. No cambiar reglas de arquitectura.\n\n## Cambio solicitado\n\nAñadir `hotelSlug(name: string): string` en `apps/web/src/features/catalog/adapters/hotel-slug.ts`, utilizando explícitamente `slugify@1.6.6` como dependencia de `apps/web/package.json`. Para este ensayo la biblioteca forma parte del requisito: no sustituirla por una implementación propia. No conectar todavía la función a rutas, persistencia ni interfaces existentes.\n\nLa función debe producir un slug ASCII en minúsculas, separar palabras con un guion, eliminar puntuación y espacios de los extremos y transliterar tildes. Una cadena vacía o compuesta solo por espacios produce una cadena vacía. Ejemplos: `  Hotel Costa Azul  ` → `hotel-costa-azul`; `Montaña & Mar` → `montana-and-mar`; `Ático Norte` → `atico-norte`.\n\nAñadir pruebas colocadas junto al módulo para esos ejemplos, cadena vacía y espacios. Mantener todos los checks actuales.\n\n## Permisos y aceptación\n\nLa tarea comienza en perfil básico. Si requiere cambiar el manifiesto, explicar el paquete, versión, finalidad y alternativa, y solicitar intervención humana mediante el contrato de la fábrica. No intentar eludir la restricción. La decisión humana podrá autorizar el perfil completo para esta tarea congelada.\n\nNo fusionar ni desplegar. Este es un ensayo de integración y autorización, no una nueva funcionalidad de producto aprobada.\n",
+    "author": "Cilveti"
+  },
+  "specificationSha": "13f12836aaf6e3ef96b867269ecae5f1fb7423612a66c9dddd9f30eadde95312",
+  "profile": "basic",
+  "status": "running",
+  "attempts": 1,
+  "history": [
+    {
+      "at": "2026-09-16T07:34:14.315Z",
+      "event": "admitted",
+      "actor": "Cilveti",
+      "detail": "profile=basic; base=4cbef21258c77af34890fd457102bdaf8294138b"
+    },
+    {
+      "at": "2026-09-16T07:34:14.316Z",
+      "event": "started",
+      "actor": "controller",
+      "detail": "attempt=1; run=35069186312"
+    }
+  ],
+  "activeRun": "35069186312"
+}

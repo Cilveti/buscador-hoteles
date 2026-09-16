@@ -88,6 +88,10 @@ function prepare(): void {
     ])
       edit[path] = 'allow';
     edit['**/package.json'] = 'deny';
+    edit['**/biome.json'] = 'deny';
+    edit['**/biome.jsonc'] = 'deny';
+    edit['**/tsconfig*.json'] = 'deny';
+    edit['**/eslint.config.*'] = 'deny';
     if (task.profile === 'full') {
       for (const path of [
         'package.json',

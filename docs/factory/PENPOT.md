@@ -22,3 +22,7 @@ Se ha conectado el MCP oficial, leído el archivo, creado dos tableros y nueve t
 La exportación fija los requisitos que recibió cada intento. El worker y el revisor pueden leer texto, tokens y SVG incluso sin visión. Las capturas son evidencia visual. Los checks funcionales no prueban por sí solos la fidelidad visual: requiere inspección o un oráculo visual específico.
 
 [Documentación oficial de Penpot MCP](https://help.penpot.app/mcp/).
+
+## Referencias exportadas y checks de código
+
+El SVG crudo de Penpot contiene estilos serializados que Biome interpreta como CSS/HTML de aplicación (por ejemplo, entidades XML y un estilo de impresión mal serializado). Se conserva como referencia de diseño, no se integra ni se ejecuta en la web. `factory/designs/biome.json` excluye **solo los SVG de esta carpeta de referencias** del linter; los JSON y todo el código mantienen sus checks. Los manifiestos validan integridad y el proceso de exportación valida XML e inspecciona las imágenes. Esa excepción no es editable por el candidato. Además, la política rechaza configuraciones Biome/TypeScript/ESLint anidadas en `src`, para que un candidato no reproduzca esa excepción dentro del producto.

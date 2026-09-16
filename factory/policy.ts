@@ -12,6 +12,13 @@ export function allowedPath(path: string, profile: Profile): boolean {
   if (path.split('/').some((part) => !part || part.startsWith('.'))) return false;
   if (path === 'bun.lock' || manifest.test(path)) return profile === 'full';
   if (path.endsWith('/package.json') || path.endsWith('/bun.lock')) return false;
+  // Nested configuration can change the checks even when the root config is protected.
+  if (
+    /(^|\/)(biome\.jsonc?|tsconfig(?:\.[a-zA-Z0-9_-]+)?\.json|eslint\.config\.[cm]?[jt]s)$/.test(
+      path,
+    )
+  )
+    return false;
   return /^(apps\/web\/src|packages\/(core|contracts|adapters)\/src)\/.+\.(ts|tsx|css|json)$/.test(
     path,
   );

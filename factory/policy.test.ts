@@ -70,3 +70,15 @@ test('verification rejects changed indexes, unstaged repairs and extra files', (
   git(root, 'add', '-A');
   expect(() => verifyUnchangedCheckout(root, expected)).toThrow('index changed');
 });
+
+test('nested check configuration cannot bypass root protection inside application source', () => {
+  for (const name of ['biome.json', 'tsconfig.json', 'tsconfig.build.json', 'eslint.config.ts']) {
+    const root = checkout();
+    put(root, `apps/web/src/${name}`, JSON.stringify({ linter: { enabled: false } }));
+    for (const profile of ['basic', 'full'] as const)
+      expect(() => validateIndex(root, profile, 200_000)).toThrow('Forbidden path');
+  }
+  const root = checkout();
+  put(root, 'apps/web/src/catalog-data.json', JSON.stringify({ label: 'Hoteles' }));
+  expect(validateIndex(root, 'basic', 200_000)).toEqual(['apps/web/src/catalog-data.json']);
+});

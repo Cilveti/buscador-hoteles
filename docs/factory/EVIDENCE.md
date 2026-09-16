@@ -52,3 +52,13 @@ El agente detectó además un error de la tarea de ensayo: situaba la biblioteca
 ## Clone limpio
 
 Clone nuevo desde GitHub en `/tmp/hoteles-factory-replay-20260916`, commit `4cbef21`: `bun test factory` pasa 15 tests / 51 aserciones sin copiar cambios locales; `bun factory/setup.ts` confirma identidad, PR habilitadas y secreto de modelo. El checkout queda limpio. Esta prueba valida arranque/contratos; no demuestra todavía instalar las integraciones en otra cuenta ni completa el E2E de producto.
+
+## Corrección de integración del diseño
+
+[Baseline 35068777827](https://github.com/Cilveti/buscador-hoteles/actions/runs/35068777827), sobre `3b378d3`, detecta errores de lint en los SVG crudos de Penpot; E2E y build pasan. Se separan las referencias SVG del código mediante una configuración limitada a `factory/designs/`. No se cambia el SVG congelado ni su hash ni se excluye código de aplicación.
+
+La revisión descubre además que la política admitía `apps/web/src/biome.json`: una configuración anidada podía desactivar lint. Corregido en la política externa y en los permisos de edición. Prueba con índices Git reales: Biome, tsconfig y ESLint anidados se rechazan en ambos perfiles, mientras los JSON de datos siguen admitidos. Suite local actual: **16 tests / 60 aserciones**, tipos y lint del arnés verdes.
+
+El ensayo #2 se cancela por el operador antes de una aprobación: su base congelada contiene el error de integración SVG. No reescribir esa base para hacer pasar el ensayo ni presentar la cancelación como decisión humana. Una nueva tarea debe partir de la baseline corregida.
+
+[Propuesta de mejora generada desde el historial real #1](https://github.com/Cilveti/buscador-hoteles/issues/4): permanece como propuesta sin ejecución automática; comparación con casos congelados y aprobación humana aún pendientes.

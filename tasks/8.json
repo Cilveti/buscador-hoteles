@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "issue": 8,
+  "baseSha": "244db9b292ec80dda227274660dc000a1ba5f0f9",
+  "specification": {
+    "title": "Ayudar a recuperar una búsqueda sin resultados con el diseño de Penpot",
+    "body": "## Objetivo\n\nPresentar el estado sin resultados de la búsqueda según la referencia de Penpot. La persona debe entender qué ha ocurrido y poder recuperar todos los hoteles con una acción clara.\n\n### Design snapshot\nhotel-empty-v1\n\n## Alcance y aceptación\n\n- Consultar los estados, tokens, estructura y SVG de `context/design/`. Solo cambiar el estado que aparece tras una respuesta correcta con `total === 0`.\n- Tarjeta blanca, borde sólido de 1 px, radio de 12 px, texto oscuro y botón verde azulado del diseño. Icono de búsqueda decorativo de la biblioteca existente, sobre su círculo; ocultarlo a lectores de pantalla.\n- Título «Todavía no hemos encontrado tu hotel». Ayuda «Prueba otro destino o amplía los filtros para descubrir más opciones.». Botón «Ver todos los hoteles», conservando el reset existente.\n- Utilizar una región con nombre accesible y un elemento HTML semántico adecuado. Funcionar a 360 px y en escritorio sin desbordamiento horizontal.\n- Mantener carga, error HTTP y reintento, página fuera de rango, resultados y controles actuales. No añadir dependencias.\n- La verificación independiente abrirá la aplicación y PostgreSQL reales, comprobará móvil/escritorio y recuperación; guardará capturas para revisión visual. No modificar controles ni tests externos.\n\n## Contexto del ensayo de integración\n\nEsta tarea valida la nueva versión de la fábrica de la PR #7 por petición de Iñigo de continuar hasta que el flujo funcione. El ensayo anterior #3 agotó su presupuesto y conserva ese resultado. Este es un nuevo ensayo autorizado, identificado y con un máximo propio de tres intentos; no se modifica ni reinicia su ledger.\n\nSe ejecutará manualmente desde la rama de #7, una vez verde la base. La propuesta depende de esa infraestructura y quedará en borrador, sin merge ni despliegue. No confundir los cambios del arnés que ya están en la base con los archivos modificados por el agente.\n",
+    "author": "Cilveti"
+  },
+  "specificationSha": "a7c50c358ad0a39b1f5e4c0f418a0505f6581f2cf19866c83ae67b4183e2cb7b",
+  "profile": "basic",
+  "status": "running",
+  "attempts": 1,
+  "history": [
+    {
+      "at": "2026-09-16T18:09:05.466Z",
+      "event": "admitted",
+      "actor": "Cilveti",
+      "detail": "profile=basic; base=244db9b292ec80dda227274660dc000a1ba5f0f9"
+    },
+    {
+      "at": "2026-09-16T18:09:05.467Z",
+      "event": "started",
+      "actor": "controller",
+      "detail": "attempt=1; run=35132573912"
+    }
+  ],
+  "design": {
+    "id": "hotel-empty-v1",
+    "manifestSha": "9ce40c98884be5dedf04dc2ad0e9afc24d7cd92ed69f1effbd548f6d21c3249d"
+  },
+  "activeRun": "35132573912"
+}

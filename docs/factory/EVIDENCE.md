@@ -20,7 +20,7 @@
 - [Baseline con caché](https://github.com/Cilveti/buscador-hoteles/actions/runs/35031262510), `509c349`: **verde**, 295 s totales. Instalación 8 s y restauración de caché ~10 s (243 MB). La primera instalación fría tardó 15 s; son dos observaciones, no un benchmark repetido ni una mejora neta de 7 s garantizada.
 - [Baseline PostgreSQL 17.11](https://github.com/Cilveti/buscador-hoteles/actions/runs/35031693837), `2b1749d`: **verde**, 289 s totales. Misma versión de servidor que compose local.
 - Etiquetas de configuración y rama `factory-state` creadas por el instalador.
-- PR desde Actions habilitadas y `OPENCODE_API_KEY` configurada tras autorización explícita. Conexión OpenCode comprobada con el ensayo real #1. Sonar seleccionado únicamente para este repo; instalación pendiente de la confirmación de identidad (sudo/passkey) de GitHub y configuración de proyecto/token.
+- PR desde Actions habilitadas y `OPENCODE_API_KEY` configurada tras autorización explícita. Conexión OpenCode comprobada con el ensayo real #1. Sonar conectado tras autenticación de Iñigo: organización `cilveti`, proyecto privado `Cilveti_buscador-hoteles`, Free ($0), sin autoimport de otros repositorios. `SONAR_TOKEN` guardado en GitHub y `setup --check-ready` verde. Automatic Analysis desactivado para usar nuestro workflow de CI.
 - Penpot: conexión MCP, lectura/escritura y exportación reales comprobadas. [Snapshot `hotel-empty-v1`](../../factory/designs/hotel-empty-v1/manifest.json), dos tableros y nueve tokens; PNG inspeccionados y SVG XML válido. [Reproducción](PENPOT.md).
 
 - [Baseline de integridad del candidato](https://github.com/Cilveti/buscador-hoteles/actions/runs/35032213155), `d0721fd`: **verde**, 293 s totales.
@@ -66,3 +66,9 @@ El ensayo #2 recibió una aprobación real de Cilveti ([comentario 5693799876](h
 ## Baseline corregida confirmada
 
 [Run 35069669688](https://github.com/Cilveti/buscador-hoteles/actions/runs/35069669688), commit `c874b6f`: **verde**. Contratos del arnés, resolución aislada de dependencias, lint/tipos/unitarios, E2E reales y build completados. Incluye la referencia Penpot y la protección frente a configuración anidada. [Medición](evidence/baseline-35069669688.json). Las tareas #3 y #5 siguen preparadas sin `factory:ready`, esperando la conexión Sonar.
+
+## Primer análisis Sonar
+
+[Run 35070892755](https://github.com/Cilveti/buscador-hoteles/actions/runs/35070892755), commit `dc78c78`: conexión y carga de análisis correctas, 57 archivos de fuente analizados. El scanner termina en fallo porque el gate inicial es **Not computed**, confirmado en la pantalla Summary; no es un rechazo por una condición de calidad evaluada. Sonar indica que el segundo análisis calculará el gate. Se repite sobre el mismo código, sin modificar reglas/umbrales. [Medición](evidence/sonar-main-35070892755.json). El panel muestra 0% de cobertura porque no se ha importado LCOV, no porque se haya medido una suite sin cobertura.
+
+[Segundo análisis main 35071072059](https://github.com/Cilveti/buscador-hoteles/actions/runs/35071072059), mismo commit `dc78c78`: **verde**, incluido quality gate Sonar way. Ninguna regla/umbral cambiado. [Medición](evidence/sonar-main-35071072059.json). Ensayos #3 (`35071200573`) y #5 (`35071205468`) activados después de este verde.

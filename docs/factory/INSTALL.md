@@ -54,9 +54,9 @@ Configurar desde una entrada segura, sin imprimir valores:
 
 La conexión Sonar debe admitir **análisis de PR privadas**. La documentación del 16-09-2026 incluye PR dirigidas a la rama principal en Free, hasta 50k líneas privadas y cinco miembros. Confirmar el plan efectivo de la organización.
 
-Tras importar el repo, desactivar Automatic Analysis en Sonar si se usa este scanner de CI, configurar organización/proyecto y `SONAR_TOKEN`, y ejecutar `Factory Sonar main` desde Actions. Las PR se comparan con el análisis de su rama destino: hace falta una referencia de `main` actualizada. El workflow vuelve a analizarla cuando cambia el producto. Un análisis fallido debe revisarse; no cambiar el gate para fingir éxito. La configuración inicial no importa cobertura LCOV: no presentar métricas de cobertura como comprobadas.
+Tras importar el repo, desactivar Automatic Analysis en Sonar si se usa este scanner de CI, configurar organización/proyecto y `SONAR_TOKEN`, y ejecutar `Factory Sonar main` desde Actions. Las PR se comparan con el análisis de su rama destino: hace falta una referencia de `main` actualizada. El workflow vuelve a analizarla cuando cambia el producto. Un análisis fallido debe revisarse; no cambiar el gate para fingir éxito. En un proyecto recién creado, el primer análisis puede quedar `Not computed` y el scanner con `qualitygate.wait` lo comunica como fallo. Confirmar ese estado en Sonar y ejecutar un segundo análisis sobre el mismo código; no desactivar el gate ni reintentar ciegamente otros fallos. La configuración inicial no importa cobertura LCOV: no presentar métricas de cobertura como comprobadas.
 
-Fuentes: [planes](https://docs.sonarsource.com/sonarqube-cloud/administering-sonarcloud/managing-subscription/subscription-plans), [comparación de PR](https://docs.sonarsource.com/sonarqube-cloud/analyzing-source-code/pull-request-analysis).
+Fuentes: [primer gate](https://docs.sonarsource.com/sonarqube-cloud/standards/quality-gates), [planes](https://docs.sonarsource.com/sonarqube-cloud/administering-sonarcloud/managing-subscription/subscription-plans), [comparación de PR](https://docs.sonarsource.com/sonarqube-cloud/analyzing-source-code/pull-request-analysis).
 
 Validar el plan real; no contratar ni activar pagos por inferencia sin autorización. Un fallo de conexión no se presenta como quality gate verde.
 

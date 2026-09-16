@@ -1,3 +1,8 @@
+# Crear el diseño de demo
+
+Pasar el siguiente cuerpo de función al tool `execute_code` del MCP oficial de Penpot. No es un script autónomo de Node. Verificar antes que el archivo activo sea el de la demo y esté vacío.
+
+```javascript
 // Execute with the official Penpot MCP only in a new, empty demo file.
 // Confirm the active file with a read-only call before running.
 if (!penpot.currentFile || !penpot.currentPage) throw new Error('Open a demo file');
@@ -25,3 +30,4 @@ const desktop=panel('Estado vacío / escritorio',0,800);
 const mobile=panel('Estado vacío / móvil',880,360);
 penpot.selection=[desktop,mobile];
 return {fileId:penpot.currentFile.id,pageId:penpot.currentPage.id,desktop:desktop.id,mobile:mobile.id,tokens:penpotUtils.tokenOverview()};
+```

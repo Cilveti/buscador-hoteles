@@ -20,8 +20,8 @@
 - [Baseline con caché](https://github.com/Cilveti/buscador-hoteles/actions/runs/35031262510), `509c349`: **verde**, 295 s totales. Instalación 8 s y restauración de caché ~10 s (243 MB). La primera instalación fría tardó 15 s; son dos observaciones, no un benchmark repetido ni una mejora neta de 7 s garantizada.
 - [Baseline PostgreSQL 17.11](https://github.com/Cilveti/buscador-hoteles/actions/runs/35031693837), `2b1749d`: **verde**, 289 s totales. Misma versión de servidor que compose local.
 - Etiquetas de configuración y rama `factory-state` creadas por el instalador.
-- Creación de PR desde Actions desactivada; conexión del modelo y Sonar pendientes de autorización/configuración.
-- Penpot: contrato de exportación y validación por hashes implementados; consulta/exportación real pendiente.
+- PR desde Actions habilitadas y `OPENCODE_API_KEY` configurada tras autorización explícita. Conexión OpenCode comprobada con el ensayo real #1. Sonar seleccionado únicamente para este repo; instalación pendiente de la confirmación de identidad (sudo/passkey) de GitHub y configuración de proyecto/token.
+- Penpot: conexión MCP, lectura/escritura y exportación reales comprobadas. [Snapshot `hotel-empty-v1`](../../factory/designs/hotel-empty-v1/manifest.json), dos tableros y nueve tokens; PNG inspeccionados y SVG XML válido. [Reproducción](PENPOT.md).
 
 - [Baseline de integridad del candidato](https://github.com/Cilveti/buscador-hoteles/actions/runs/35032213155), `d0721fd`: **verde**, 293 s totales.
 
@@ -39,4 +39,16 @@ Prueba local real con Docker y registro npm: una copia desechable de los manifie
 
 ## Pendiente para acreditar el objetivo
 
-Conexión real del modelo, Sonar y Penpot; tarea que termina en draft con todos los gates; corrección por feedback; pausa y reanudación humana; cancelación remota; ensayo limpio del instalador y comparación de una mejora del arnés.
+Sonar conectado y analizado; tarea que termina en draft con todos los gates; corrección por feedback; decisión y reanudación humanas; instalación completa en otro destino y comparación de una mejora del arnés. La pausa, cancelación por operador, Penpot y arranque desde clone limpio ya tienen evidencia; no equivalen al objetivo completo.
+
+## Primer ensayo con modelo y pausa · 16-09-2026
+
+[Issue #1](https://github.com/Cilveti/buscador-hoteles/issues/1) → [run 35068794419](https://github.com/Cilveti/buscador-hoteles/actions/runs/35068794419): run verde y estado **waiting-human**, intento 1/3 con `opencode-go/glm-5.3-flash`. Sin cambios de código, sin verificación de candidato y sin PR, porque el modelo pidió permiso antes de editar dependencias.
+
+El agente detectó además un error de la tarea de ensayo: situaba la biblioteca en el core, cuya regla externa prohíbe imports ajenos. Conceder permiso de dependencias no resuelve esa incompatibilidad. El operador automatizado canceló #1 mediante el comando de control; [run de cancelación 35069157210](https://github.com/Cilveti/buscador-hoteles/actions/runs/35069157210) verde. Esta cancelación ejercita el evento autenticado y estado remoto; **no se presenta como una decisión humana real**. El ensayo corregido usa el adaptador web en #2.
+
+[Medición del primer run](evidence/hitl-request-35068794419.json): 194 s de runners sumados; 5 minutos redondeados (admisión 9 s, generación 139 s, cierre 46 s). La espera humana sucede tras finalizar los jobs y no mantiene un runner ocupado. Tokens y factura desconocidos. La clave del modelo no aparece en el log completo descargado y contrastado sin imprimir su valor.
+
+## Clone limpio
+
+Clone nuevo desde GitHub en `/tmp/hoteles-factory-replay-20260916`, commit `4cbef21`: `bun test factory` pasa 15 tests / 51 aserciones sin copiar cambios locales; `bun factory/setup.ts` confirma identidad, PR habilitadas y secreto de modelo. El checkout queda limpio. Esta prueba valida arranque/contratos; no demuestra todavía instalar las integraciones en otra cuenta ni completa el E2E de producto.

@@ -9,7 +9,7 @@
   },
   "specificationSha": "c4e7d13641553bc2ad0b79dabcdabd3d05828a68db1a106ce02294dcb2ce89ae",
   "profile": "full",
-  "status": "publishing",
+  "status": "review",
   "attempts": 2,
   "history": [
     {
@@ -41,16 +41,22 @@
       "event": "publishing",
       "actor": "controller",
       "detail": "run=35071794022"
+    },
+    {
+      "at": "2026-09-16T08:16:43.189Z",
+      "event": "review",
+      "actor": "controller",
+      "detail": "https://github.com/Cilveti/buscador-hoteles/pull/6"
     }
   ],
   "activeRun": "35071794022",
   "proposal": {
-    "run": "35071205468",
-    "artifact": "factory-proposal-35071205468",
-    "sha": "2344a0f15f85f3dc15a066aac5e307b8db2af4bcfd499d38a4e5b1a8938a2e20"
+    "run": "35071794022",
+    "artifact": "factory-proposal-35071794022",
+    "sha": "90a640ef09d6e1a5ee1a3c8c537c1ec5b19ed644a65aa2fde3cd096575689b63"
   },
   "feedback": {
-    "run": "35071205468",
-    "artifact": "factory-checks-35071205468"
+    "run": "35071794022",
+    "artifact": "factory-review-35071794022"
   }
 }

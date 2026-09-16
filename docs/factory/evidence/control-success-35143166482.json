@@ -1,0 +1,57 @@
+{
+  "run": 35143166482,
+  "url": "https://github.com/Cilveti/buscador-hoteles/actions/runs/35143166482",
+  "commit": "baacb463ed86303a4c706e6bb2bd394b09247e5c",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "name": "Admitir tarea",
+      "seconds": 12,
+      "roundedMinutes": 1,
+      "conclusion": "success"
+    },
+    {
+      "name": "Desarrollar y verificar / Preparar el cambio",
+      "seconds": 61,
+      "roundedMinutes": 2,
+      "conclusion": "success"
+    },
+    {
+      "name": "Desarrollar y verificar / Probar la aplicación",
+      "seconds": 284,
+      "roundedMinutes": 5,
+      "conclusion": "success"
+    },
+    {
+      "name": "Desarrollar y verificar / Revisión independiente",
+      "seconds": 96,
+      "roundedMinutes": 2,
+      "conclusion": "success"
+    },
+    {
+      "name": "Crear propuesta",
+      "seconds": 21,
+      "roundedMinutes": 1,
+      "conclusion": "success"
+    },
+    {
+      "name": "Calidad · Sonar",
+      "seconds": 67,
+      "roundedMinutes": 2,
+      "conclusion": "success"
+    },
+    {
+      "name": "Resultado y siguiente paso",
+      "seconds": 12,
+      "roundedMinutes": 1,
+      "conclusion": "success"
+    }
+  ],
+  "runnerSeconds": 553,
+  "roundedMinutes": 14,
+  "assumedUsdPerLinuxMinute": null,
+  "estimatedRunnerUsdBeforeQuota": null,
+  "modelUsage": null,
+  "invoice": null,
+  "limitation": "Job timestamps estimate runner time, not the invoice. Price applies only to standard Linux runners. Included quota, retries and model billing require separate evidence. Unknown usage is not zero."
+}

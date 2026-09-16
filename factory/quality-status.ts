@@ -8,7 +8,7 @@ api(repoPath(`statuses/${sha}`), 'POST', {
   state,
   context: 'Factory / quality',
   description:
-    state === 'success' ? 'SonarQube quality gate passed' : 'SonarQube did not pass; inspect run',
+    state === 'success' ? 'Calidad de Sonar superada' : 'Sonar no ha pasado; revisa el análisis',
   target_url: `https://github.com/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`,
 });
 

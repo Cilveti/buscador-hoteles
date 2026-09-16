@@ -1,5 +1,16 @@
 # Operar la fábrica
 
+## Enviar una tarea
+
+1. Abrir una issue con el resultado esperado, ejemplos de aceptación y límites del cambio. Para cambios visuales, usar un snapshot de diseño identificado en la plantilla.
+2. Añadir **una sola** etiqueta de permisos: `factory:basic` para código/tests o `factory:full` si la tarea ya autoriza dependencias. Completo no permite modificar el sistema de comprobación.
+3. Añadir `factory:ready`. El controlador congela la especificación y reserva el primer intento antes de llamar al modelo.
+4. Seguir el enlace del comentario de estado a Actions. Si falla un check o el revisor pide cambios, el controlador puede devolver ese fallo al siguiente intento, hasta tres en total.
+5. Si aparece una petición humana, responder con el comando y UUID exactos que muestra el comentario. La espera no mantiene un runner ocupado. Para cambiar los requisitos del producto, detener la tarea y preparar una especificación nueva; editar una issue en marcha no cambia lo congelado.
+6. Cuando aparezca la PR en borrador, leer «Qué cambia», «Qué se ha comprobado» y «Calidad de código». Revisar el diff y la intención antes de decidir su integración.
+
+Las mejoras de la PR #7 deben estar incorporadas a la rama por defecto para que un evento de etiqueta use esa versión. Un ensayo manual desde la rama de infraestructura valida el cambio antes de adoptarlo; no actualiza main por sí solo.
+
 ## Estados
 
 `ready → running → retry | waiting-human | publishing | exhausted | failed`.

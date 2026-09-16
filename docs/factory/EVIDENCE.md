@@ -1,6 +1,6 @@
 # Evidencia y estado de implantación
 
-Última actualización: 16-09-2026. **Un recorrido completo ya pasó: issue #5 → corrección → checks → revisión independiente → Sonar → draft PR #6. El primer ensayo visual agotó sus tres intentos; la mejora del formato y de CI se valida en la PR #7 y un nuevo ensayo explícito #8.**
+Última actualización: 16-09-2026. **Un recorrido completo ya pasó: issue #5 → corrección → checks → revisión independiente → Sonar → draft PR #6. La mejora del formato y de CI se valida en la PR #7. El segundo ensayo visual #8 pasó las pruebas, pero se detuvo por fallos del revisor y de recuperación. La revisión aislada corregida ya pasa; el caso de control #9 completó el recorrido actualizado al primer intento y publicó la draft PR #10, con todos los gates verdes.**
 
 ## Baseline local
 
@@ -103,3 +103,25 @@ La [PR #7](https://github.com/Cilveti/buscador-hoteles/pull/7) incorpora CI por 
 [Issue #8](https://github.com/Cilveti/buscador-hoteles/issues/8) es un ensayo nuevo autorizado al pedir continuar hasta dejarlo funcionando; conserva intacto el presupuesto agotado de #3. Primer run35132573912: implementador con schema correcto; 12 pruebas de navegador (incluidas Penpot1280/360) y build pasan. Biome rechaza el formato de un test generado; el controlador devuelve patch y fallo al segundo intento35133563930. Las capturas reales de ambos tamaños se inspeccionaron. La rama de infraestructura es la base congelada del ensayo: su eventual PR depende de #7. Los enlaces de la issue conservan el resultado final, sin inferirlo del verde del controlador.
 
 La API de protección de ramas y rulesets devuelve403 solicitando Pro para este repo privado. No hay protección obligatoria de merge acreditada ni despliegue de producción. [Operación de CI](CI.md).
+
+
+## Corrección y validación del revisor
+
+El segundo intento visual [35133563930](https://github.com/Cilveti/buscador-hoteles/actions/runs/35133563930) pasó 67 tests / 313 aserciones, 12 E2E reales y build, con patch `a3d47bba725621297cd37b6a211c5014b017323e23a815d0bf76661089fe422c` sobre base `244db9b292ec80dda227274660dc000a1ba5f0f9`. La revisión síncrona falló por timeout (~363 s). El intento 3 falló antes de inferencia al descargar un informe inexistente: el output anunciaba un artefacto que nunca se subió. #8 conserva sus tres intentos y estado fallido; no tiene PR.
+
+Se corrigió la emisión de outputs de artefactos, el transporte a `prompt_async` y el contexto del revisor, que recibe ahora diff y lista de archivos. La revisión aislada con GLM 5.3 siguió agotando tiempo; un ensayo local mostró repetición de lecturas sobre el mismo conjunto de archivos. Se detuvo ese proceso y se añadió un corte al observar más de 80 llamadas a herramientas, además del deadline de diez minutos. El revisor por defecto usa GLM 5.3 Flash en sesión separada. El escalado del tercer implementador conserva GLM 5.3.
+
+[Diagnóstico en GitHub 35143114004](https://github.com/Cilveti/buscador-hoteles/actions/runs/35143114004), infraestructura `baacb463ed86303a4c706e6bb2bd394b09247e5c`: **verde**. Vuelve a revisar el patch exacto anterior y sus checks, sin generar otro cambio, publicar ni modificar el ledger de #8. Veredicto estructurado `pass`, sin hallazgos; job completo 143 s (3 minutos redondeados). [Medición](evidence/review-replay-35143114004.json). Esto acredita esa ejecución; no demuestra que Flash sea universalmente mejor que otro modelo revisando.
+
+El caso de control [#9](https://github.com/Cilveti/buscador-hoteles/issues/9) repite explícitamente el caso previamente exitoso #5 sobre la infraestructura nueva. Es una comprobación de integración, no una continuación de los ensayos visuales ni una autorización de fusionar otra copia de la funcionalidad.
+
+
+## Recorrido completo del controlador actualizado
+
+[Issue #9](https://github.com/Cilveti/buscador-hoteles/issues/9) → [run 35143166482](https://github.com/Cilveti/buscador-hoteles/actions/runs/35143166482) → [draft PR #10](https://github.com/Cilveti/buscador-hoteles/pull/10): **todas las fases verdes al primer intento**. 68 tests / 307 aserciones, 10 E2E sin fallos ni reintentos, lint/tipos, build, revisor separado y Sonar. Ledger final `review`, 1/3 intentos. Generación, verificación y publicación se realizaron en jobs separados.
+
+Base y ejecutor: `baacb463ed86303a4c706e6bb2bd394b09247e5c`. Commit publicado: `965f0847be0baca84c0be05de4479197688c3bc4`, hijo directo de esa base. Patch SHA256 `9b0f3b05fcd41593d55ffa85d577c096f499b911eef877c18e0d7bc416a8d47b`: coinciden propuesta, checks, review y diff Git obtenido del commit remoto. Cuatro rutas autorizadas: manifiesto web, módulo, test y lockfile. `Factory / acceptance` y `Factory / quality` verdes. La PR sigue en draft, sin merge ni despliegue; se identificó como caso de control dependiente de #7, no como funcionalidad adicional que fusionar.
+
+La descripción se generó automáticamente con resumen, comprobaciones, informe plegado y hashes en detalles. Sonar cambió automáticamente su sección de pendiente a superado. Se observó ese cambio antes de añadir una nota del operador identificando el ensayo. El log completo del run se contrastó con la clave conocida del modelo sin imprimirla; no aparece expuesta. [Medición del recorrido](evidence/control-success-35143166482.json).
+
+La [CI de PR #7 sobre la misma revisión](https://github.com/Cilveti/buscador-hoteles/actions/runs/35143119194) también pasó: 32 tests del arnés / 115 aserciones, 64 tests de aplicación / 302 aserciones, 10 E2E, build y Sonar. El job de aplicación duró 334 s y Sonar 58 s; [medición](evidence/ci-pr-35143119194.json). Tiempos observados, no promesa de duración ni factura. La mejora se activa para eventos normales cuando #7 se incorpore a main; ensayarla en su rama no equivale a integrarla.

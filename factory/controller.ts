@@ -13,6 +13,7 @@ import {
   string,
   writeTask,
 } from './github';
+import { prose, taskOutcome } from './presentation';
 import { cancel, createTask, decide, finishAttempt, hash, recover, startAttempt } from './state';
 
 const temp = process.env.RUNNER_TEMP ?? '/tmp';
@@ -61,7 +62,10 @@ function admit() {
     const body = string(message.body).trim();
     if (body === '/factory cancel') {
       writeTask(cancel(task, actor, operators), previous?.sha);
-      comment(issue, 'Factory: **cancelled**. No further candidate may be published.');
+      comment(
+        issue,
+        '## Tarea cancelada\n\nEl agente ya no puede publicar una propuesta para esta ejecución.',
+      );
       // Cancel the active execution separately; state has already revoked its right to publish.
       if (task.activeRun) {
         const active = object(api(repoPath(`actions/runs/${task.activeRun}`)));
@@ -97,11 +101,19 @@ function admit() {
     } else return output('admitted', 'false');
     if (task.status !== 'ready') {
       writeTask(task, previous?.sha);
-      comment(issue, `Factory: **${task.status}**.`);
+      comment(
+        issue,
+        taskOutcome(task, `https://github.com/${config.repository}/actions/runs/${run}`, ''),
+      );
       return output('admitted', 'false');
     }
   } else if (!task) {
-    if (eventName !== 'issues' || object(event.label).name !== 'factory:ready')
+    if (
+      !(
+        (eventName === 'issues' && object(event.label).name === 'factory:ready') ||
+        (eventName === 'workflow_dispatch' && operators.includes(actor))
+      )
+    )
       return output('admitted', 'false');
     const author = string(object(data.user).login);
     if (!operators.includes(author)) throw new Error('Task author not authorized');
@@ -148,7 +160,7 @@ function admit() {
   output('reviewer', config.worker.reviewer);
   comment(
     issue,
-    `Factory: **running**, attempt ${task.attempts}/${config.limits.attempts}, profile **${task.profile}**. [Run](https://github.com/${config.repository}/actions/runs/${run}).`,
+    `## Trabajo iniciado\n\nIntento **${task.attempts}/${config.limits.attempts}**, permisos **${task.profile === 'basic' ? 'básicos: código y tests' : 'dependencias autorizadas'}**. El agente prepara una propuesta; después CI levantará la aplicación y comprobará el resultado.\n\n[Seguir la ejecución](https://github.com/${config.repository}/actions/runs/${run}).`,
   );
 }
 
@@ -177,12 +189,24 @@ function finish(): void {
   if (task.decision) {
     comment(
       issue,
-      `Factory: **waiting-human**.\n\n${task.decision.reason}\n\nRequested permission: **full for this frozen task** (dependencies permitted; factory controls remain protected).\n\nSpecification: \`${task.specificationSha}\`. Attempts used: ${task.attempts}/${config.limits.attempts}.\n\nAn authorized human can reply:\n\n\`/factory approve ${task.decision.id}\`\n\nor\n\n\`/factory reject ${task.decision.id}\``,
+      `## Necesito tu decisión para continuar
+
+${prose(task.decision.reason)}
+
+Se solicita permiso para modificar dependencias **solo en esta tarea**. Los workflows, comprobaciones y secretos siguen protegidos. El runner ya ha terminado; la espera no consume minutos.
+
+Un operador autorizado puede responder con uno de estos comandos:
+
+\`/factory approve ${task.decision.id}\`
+
+\`/factory reject ${task.decision.id}\`
+
+Intentos usados: **${task.attempts}/${config.limits.attempts}**. Aprobar no reinicia ese contador.`,
     );
   } else {
     comment(
       issue,
-      `Factory: **${task.status}**. ${detail}\n\n[Evidence](https://github.com/${config.repository}/actions/runs/${run}).`,
+      taskOutcome(task, `https://github.com/${config.repository}/actions/runs/${run}`, detail),
     );
   }
   if (task.status === 'retry') dispatch(issue, run);

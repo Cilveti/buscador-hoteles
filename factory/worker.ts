@@ -132,8 +132,8 @@ function prepare(): void {
     }),
   );
   const contract = reviewer
-    ? 'Review the frozen proposal independently against the task and check evidence. Do not edit files. Report actionable defects with paths and explanations. Do not invent executed tests. Return ONLY JSON: {"status":"pass"|"changes-requested", "summary":"...", "findings":[{"path":"...","reason":"..."}]}.'
-    : 'Implement the task with focused code and useful colocated tests. No shell or publication tools: independent CI runs the app after your turn and returns feedback. Do not claim to have run tests. Return ONLY JSON: {"status":"implemented"|"needs-human"|"blocked", "summary":"..."}. Use needs-human ONLY when the basic profile blocks a necessary dependency change: explain the exact package, version, purpose and alternatives. This asks for the full dependency profile on this frozen task. For a missing product decision use blocked: the operator must clarify the specification in a new task. Never request permissions merely to bypass a failing check.';
+    ? 'Write the summary and findings in clear Spanish for a human reviewer. Review the frozen proposal independently against the task and check evidence. Do not edit files. Report actionable defects with paths and explanations. Do not invent executed tests. Return ONLY JSON: {"status":"pass"|"changes-requested", "summary":"...", "findings":[{"path":"...","reason":"..."}]}.'
+    : 'Write the summary in clear Spanish: explain the user-visible change and any limitation, without test claims. Implement the task with focused code and useful colocated tests. No shell or publication tools: independent CI runs the app after your turn and returns feedback. Do not claim to have run tests. Return ONLY JSON: {"status":"implemented"|"needs-human"|"blocked", "summary":"..."}. Use needs-human ONLY when the basic profile blocks a necessary dependency change: explain the exact package, version, purpose and alternatives. This asks for the full dependency profile on this frozen task. For a missing product decision use blocked: the operator must clarify the specification in a new task. Never request permissions merely to bypass a failing check.';
   writeFileSync(
     join(temp, 'worker-prompt.txt'),
     [
@@ -180,6 +180,15 @@ function serialize(): void {
     cwd: candidate,
   });
   writeFileSync(join(temp, 'agent.patch'), patch);
+  writeFileSync(
+    join(temp, 'proposal.json'),
+    JSON.stringify({
+      baseSha: task.baseSha,
+      specificationSha: task.specificationSha,
+      patchSha: hash(patch),
+      summary: result.summary,
+    }),
+  );
   output('patch_sha', hash(patch));
   output('status', 'generated');
 }

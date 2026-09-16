@@ -97,6 +97,10 @@ jobs:
         with:
           name: factory-proposal-${{ github.run_id }}
           path: ${{ runner.temp }}/proposal
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: factory-review-${{ github.run_id }}
+          path: ${{ runner.temp }}/review
       - name: Apply the original verified patch without executing it
         env:
           PATCH_SHA: ${{ needs.attempt.outputs.patch_sha }}
@@ -143,6 +147,7 @@ jobs:
     permissions:
       contents: write
       issues: write
+      pull-requests: write
       statuses: write
       actions: write
     steps:
@@ -163,7 +168,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           ISSUE: ${{ needs.admit.outputs.issue }}
           RESULT: ${{ needs.attempt.result != 'success' && 'failed' || needs.attempt.outputs.status != 'passed' && needs.attempt.outputs.status || needs.publish.result == 'success' && needs.sonar.result == 'success' && 'passed' || 'failed' }}
-          DETAIL: ${{ needs.publish.outputs.pr_url || 'Inspect the run for check and review evidence.' }}
+          DETAIL: ${{ needs.publish.outputs.pr_url || 'Consulta la fase que falló y su evidencia en la ejecución enlazada.' }}
           PATCH_SHA: ${{ needs.attempt.outputs.patch_sha }}
           PROPOSAL_ARTIFACT: factory-proposal-${{ github.run_id }}
           FEEDBACK_ARTIFACT: ${{ needs.attempt.outputs.feedback_artifact }}
@@ -173,5 +178,6 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           HEAD_SHA: ${{ needs.publish.outputs.head_sha }}
+          PR_NUMBER: ${{ needs.publish.outputs.pr }}
           QUALITY_RESULT: ${{ needs.sonar.result == 'success' && 'success' || 'failure' }}
         run: bun factory/quality-status.ts

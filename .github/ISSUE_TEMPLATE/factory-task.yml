@@ -1,33 +1,33 @@
-name: Factory task
-description: A bounded task for the hotel software factory
-title: '[Factory] '
+name: Tarea para el agente
+description: Un cambio concreto con criterios de aceptación y permisos definidos
+title: ''
 labels: ['factory:basic']
 body:
   - type: textarea
     id: objective
     attributes:
-      label: Objective and scope
-      description: Describe the user-visible outcome and what is outside this task.
+      label: Objetivo y alcance
+      description: Explica qué necesita la persona que usa la aplicación y hasta dónde debe llegar el cambio.
     validations:
       required: true
   - type: textarea
     id: acceptance
     attributes:
-      label: Acceptance examples
-      description: Include normal behavior, a boundary and an invalid or empty case.
+      label: Cómo sabremos que funciona
+      description: Incluye un caso normal, un límite relevante y un caso vacío o incorrecto.
     validations:
       required: true
   - type: input
     id: design
     attributes:
       label: Design snapshot
-      description: For visual tasks, enter the versioned snapshot ID from factory/designs.
+      description: Para cambios visuales, indica el identificador de la referencia aprobada en factory/designs.
   - type: textarea
     id: decisions
     attributes:
-      label: Decisions requiring a human
-      description: Dependencies, product ambiguity or scope that needs explicit approval.
+      label: Decisiones que requieren una persona
+      description: Dependencias nuevas, requisitos sin resolver o ampliaciones de alcance.
   - type: markdown
     attributes:
       value: |
-        Creating the issue does not run a model. An authorized operator adds `factory:ready` after reviewing the task. Keep exactly one profile label. The specification is frozen at admission; use a new issue for changed requirements.
+        Crear la issue no ejecuta el agente. Revisa el alcance y conserva una sola etiqueta de permisos: `factory:basic` o `factory:full`. Añade `factory:ready` para empezar. El agente trabajará con esta versión de los requisitos; si cambian, prepara una nueva tarea. La aprobación de una PR y su integración son decisiones humanas.

@@ -130,7 +130,7 @@ export function writeTask(task: Task, previousSha?: string): void {
 
 export function dispatch(issue: number, predecessor: string): void {
   api(repoPath('actions/workflows/factory.yml/dispatches'), 'POST', {
-    ref: config.baseBranch,
+    ref: process.env.GITHUB_REF_NAME ?? config.baseBranch,
     inputs: { issue: String(issue), predecessor },
   });
 }

@@ -65,6 +65,7 @@ jobs:
           name: factory-proposal-${{ github.run_id }}
           path: |
             ${{ runner.temp }}/agent.patch
+            ${{ runner.temp }}/proposal.json
             ${{ runner.temp }}/decision.json
           if-no-files-found: error
           retention-days: 7
@@ -99,7 +100,7 @@ jobs:
           PATCH_SHA: ${{ needs.generate.outputs.patch_sha }}
         run: bun factory/worker.ts apply
       - name: Restore downloads for the effective candidate lockfile
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: ${{ runner.temp }}/factory-bun-cache
           key: factory-bun-1.4.2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('bun.lock') }}

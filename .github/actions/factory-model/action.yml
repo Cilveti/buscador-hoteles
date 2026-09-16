@@ -37,8 +37,13 @@ runs:
         test -n "$OPENCODE_API_KEY"
         mkdir -p "$XDG_CACHE_HOME" "$XDG_CONFIG_HOME" "$XDG_DATA_HOME"
         export OPENCODE_CONFIG_CONTENT="$(< "$RUNNER_TEMP/opencode-config.json")"
-        cd "$RUNNER_TEMP/candidate"
-        opencode run --pure --model "$OPENCODE_MODEL" --agent build --format json \
-          "$(< "$RUNNER_TEMP/worker-prompt.txt")" \
-          > "$RUNNER_TEMP/worker-events.jsonl" 2> "$RUNNER_TEMP/worker-stderr.log"
-        test -s "$RUNNER_TEMP/worker-events.jsonl"
+        bun factory/model.ts
+        test -s "$RUNNER_TEMP/worker-result.json"
+    - name: Preserve non-sensitive model diagnostics
+      if: always()
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+      with:
+        name: factory-model-diagnostic-${{ github.run_id }}-${{ github.job }}
+        path: ${{ runner.temp }}/model-diagnostic.json
+        if-no-files-found: warn
+        retention-days: 7

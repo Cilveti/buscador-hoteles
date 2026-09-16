@@ -12,6 +12,7 @@ import { config } from './config';
 import { resolveDependencies } from './dependencies';
 import { readDesign } from './design';
 import { object, parseTask, string } from './github';
+import { validateResult } from './model-result';
 import { git, validateIndex } from './policy';
 import { hash } from './state';
 
@@ -114,6 +115,7 @@ function prepare(): void {
     task: 'deny',
     skill: 'deny',
     question: 'deny',
+    StructuredOutput: 'allow',
     external_directory: 'deny',
   };
   writeFileSync(
@@ -150,25 +152,10 @@ function prepare(): void {
 }
 
 function response(): Record<string, unknown> {
-  const events: Record<string, unknown>[] = readFileSync(join(temp, 'worker-events.jsonl'), 'utf8')
-    .split('\n')
-    .filter(Boolean)
-    .map((line) => object(JSON.parse(line)));
-  if (events.some((event) => event.type === 'error'))
-    throw new Error('Model run returned an error');
-  const texts = events
-    .filter((event) => event.type === 'text')
-    .map((event) => string(object(event.part).text));
-  const text = texts
-    .at(-1)
-    ?.trim()
-    .replace(/^```(?:json)?\s*/, '')
-    .replace(/\s*```$/, '');
-  if (!text) throw new Error('Missing model result');
-  const result = object(JSON.parse(text));
-  string(result.status);
-  string(result.summary);
-  return result;
+  return validateResult(
+    JSON.parse(readFileSync(join(temp, 'worker-result.json'), 'utf8')),
+    process.env.WORKER_ROLE === 'reviewer' ? 'reviewer' : 'implementer',
+  );
 }
 
 function serialize(): void {

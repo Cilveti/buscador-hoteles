@@ -54,6 +54,30 @@ test('full dependency authority does not grant permission to change package scri
   expect(() => validateIndex(root, 'full', 200_000)).toThrow('Protected manifest field');
 });
 
+test('full cannot downgrade, remove or move a checker dependency, but can add an application library', () => {
+  const variants = [
+    { devDependencies: { typescript: '5.0.0' } },
+    { devDependencies: {} },
+    { dependencies: { typescript: '6.0.3' }, devDependencies: {} },
+  ];
+  for (const variant of variants) {
+    const root = checkout();
+    put(root, 'package.json', JSON.stringify({ devDependencies: { typescript: '6.0.3' } }));
+    git(root, '-c', 'core.hooksPath=/dev/null', 'commit', '-qm', 'Trusted checker');
+    put(root, 'package.json', JSON.stringify(variant));
+    expect(() => validateIndex(root, 'full', 200_000)).toThrow('Protected verification dependency');
+    put(
+      root,
+      'package.json',
+      JSON.stringify({
+        devDependencies: { typescript: '6.0.3' },
+        dependencies: { slugify: '1.6.6' },
+      }),
+    );
+    expect(validateIndex(root, 'full', 200_000)).toEqual(['package.json']);
+  }
+});
+
 test('verification rejects changed indexes, unstaged repairs and extra files', () => {
   const root = checkout();
   const source = 'apps/web/src/feature.ts';

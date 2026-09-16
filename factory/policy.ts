@@ -7,6 +7,19 @@ export const git = (cwd: string, ...args: string[]) =>
 const manifest =
   /^(package\.json|apps\/web\/package\.json|packages\/(core|contracts|adapters)\/package\.json)$/;
 
+// Dependency permission must not change the direct declarations of known verification tools.
+const protectedDependencies = new Set([
+  '@biomejs/biome',
+  'typescript',
+  '@playwright/test',
+  'playwright',
+  'dependency-cruiser',
+  '@axe-core/playwright',
+  '@types/bun',
+  '@stryker-mutator/core',
+  'tsx',
+]);
+
 export function allowedPath(path: string, profile: Profile): boolean {
   if (!/^[a-zA-Z0-9_./()[\]-]+$/.test(path)) return false;
   if (path.split('/').some((part) => !part || part.startsWith('.'))) return false;
@@ -42,7 +55,12 @@ export function validateManifest(before: unknown, after: unknown): void {
       continue;
     }
     const previous = record(oldManifest[key] ?? {});
-    for (const [name, version] of Object.entries(record(newManifest[key] ?? {}))) {
+    const next = record(newManifest[key] ?? {});
+    for (const name of protectedDependencies) {
+      if (previous[name] !== next[name])
+        throw new Error(`Protected verification dependency: ${name}`);
+    }
+    for (const [name, version] of Object.entries(next)) {
       if (version === previous[name]) continue;
       if (!/^(@[a-z0-9-]+\/)?[a-z0-9][a-z0-9._-]*$/.test(name))
         throw new Error('Invalid dependency name');

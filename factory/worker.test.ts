@@ -39,16 +39,8 @@ test('worker serialization binds a real patch to a hash without executing candid
   writeFileSync(join(temp, 'task/task.json'), JSON.stringify(task));
   writeFileSync(join(candidate, 'apps/web/src/example.ts'), 'export const version = 2;\n');
   writeFileSync(
-    join(temp, 'worker-events.jsonl'),
-    JSON.stringify({
-      type: 'text',
-      part: {
-        text: JSON.stringify({
-          status: 'implemented',
-          summary: 'Test fixture response, not a model run',
-        }),
-      },
-    }),
+    join(temp, 'worker-result.json'),
+    JSON.stringify({ status: 'implemented', summary: 'Test fixture response, not a model run' }),
   );
   const output = join(temp, 'output');
   execFileSync('bun', ['factory/worker.ts', 'serialize'], {

@@ -1,6 +1,6 @@
 # Evidencia y estado de implantación
 
-Última actualización: 16-09-2026. **Un recorrido completo ya pasó: issue #5 → corrección → checks → revisión independiente → Sonar → draft PR #6. La tarea visual agotó sus tres intentos; se investiga una mejora del formato de salida.**
+Última actualización: 16-09-2026. **Un recorrido completo ya pasó: issue #5 → corrección → checks → revisión independiente → Sonar → draft PR #6. El primer ensayo visual agotó sus tres intentos; la mejora del formato y de CI se valida en la PR #7 y un nuevo ensayo explícito #8.**
 
 ## Baseline local
 
@@ -94,3 +94,12 @@ Tercer intento `35072051343` ejecuta realmente `opencode-go/glm-5.3` y también 
 Mediciones: [intento1](evidence/visual-retry-35071200573.json), [intento2](evidence/visual-format-failure-35071825830.json), [tercer modelo](evidence/visual-escalation-35072051343.json).
 
 En el primer intento full, el guardado de caché del candidato fue rechazado por falta de scope de escritura. La restauración y la instalación son mecanismos separados: no afirmar que los reintentos ya reutilizan un lockfile nuevo desde caché. La corrección de permisos de caché no debe ampliar la autoridad del código no confiable.
+
+
+## CI automática y nuevo ensayo visual
+
+La [PR #7](https://github.com/Cilveti/buscador-hoteles/pull/7) incorpora CI por PR y main, Sonar, respuestas estructuradas y publicación de resúmenes legibles. [CI 35132462005](https://github.com/Cilveti/buscador-hoteles/actions/runs/35132462005), revisión244db9b, pasó contratos, checks de aplicación, navegador, build y Sonar. Consultar sus checks para el resultado de revisiones posteriores.
+
+[Issue #8](https://github.com/Cilveti/buscador-hoteles/issues/8) es un ensayo nuevo autorizado al pedir continuar hasta dejarlo funcionando; conserva intacto el presupuesto agotado de #3. Primer run35132573912: implementador con schema correcto; 12 pruebas de navegador (incluidas Penpot1280/360) y build pasan. Biome rechaza el formato de un test generado; el controlador devuelve patch y fallo al segundo intento35133563930. Las capturas reales de ambos tamaños se inspeccionaron. La rama de infraestructura es la base congelada del ensayo: su eventual PR depende de #7. Los enlaces de la issue conservan el resultado final, sin inferirlo del verde del controlador.
+
+La API de protección de ramas y rulesets devuelve403 solicitando Pro para este repo privado. No hay protección obligatoria de merge acreditada ni despliegue de producción. [Operación de CI](CI.md).

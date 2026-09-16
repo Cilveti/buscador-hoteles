@@ -9,7 +9,7 @@
   },
   "specificationSha": "13f12836aaf6e3ef96b867269ecae5f1fb7423612a66c9dddd9f30eadde95312",
   "profile": "basic",
-  "status": "running",
+  "status": "waiting-human",
   "attempts": 1,
   "history": [
     {
@@ -23,7 +23,19 @@
       "event": "started",
       "actor": "controller",
       "detail": "attempt=1; run=35069186312"
+    },
+    {
+      "at": "2026-09-16T07:37:36.808Z",
+      "event": "waiting-human",
+      "actor": "controller",
+      "detail": "Módulo y pruebas creados en apps/web/src/features/catalog/adapters/ (hotel-slug.ts y hotel-slug.test.ts) pero el perfil básico deniega la edición de manifiestos: se necesita autorización humana para añadir la dependencia \"slugify\" versión exacta \"1.6.6\" a la sección \"dependencies\" de apps/web/package.json. Finalidad: transliterar tildes, eliminar puntuación y producir slugs ASCII en minúsculas para hotelSlug(name), requisito explícito del ensayo. Alternativa descartada por la tarea: implementación propia de slugify. Sin la dependencia, el import del módulo no resuelve y typecheck/tests fallan; el controlador debe resolver bun.lock tras autorizar el perfil completo."
     }
   ],
-  "activeRun": "35069186312"
+  "activeRun": "35069186312",
+  "decision": {
+    "id": "c2e8b670-2131-4035-a32d-efbab8cae38b",
+    "reason": "Módulo y pruebas creados en apps/web/src/features/catalog/adapters/ (hotel-slug.ts y hotel-slug.test.ts) pero el perfil básico deniega la edición de manifiestos: se necesita autorización humana para añadir la dependencia \"slugify\" versión exacta \"1.6.6\" a la sección \"dependencies\" de apps/web/package.json. Finalidad: transliterar tildes, eliminar puntuación y producir slugs ASCII en minúsculas para hotelSlug(name), requisito explícito del ensayo. Alternativa descartada por la tarea: implementación propia de slugify. Sin la dependencia, el import del módulo no resuelve y typecheck/tests fallan; el controlador debe resolver bun.lock tras autorizar el perfil completo.",
+    "requestedProfile": "full",
+    "specificationSha": "13f12836aaf6e3ef96b867269ecae5f1fb7423612a66c9dddd9f30eadde95312"
+  }
 }

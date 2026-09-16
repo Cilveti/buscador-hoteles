@@ -9,7 +9,7 @@
   },
   "specificationSha": "c4e7d13641553bc2ad0b79dabcdabd3d05828a68db1a106ce02294dcb2ce89ae",
   "profile": "full",
-  "status": "running",
+  "status": "retry",
   "attempts": 1,
   "history": [
     {
@@ -23,7 +23,22 @@
       "event": "started",
       "actor": "controller",
       "detail": "attempt=1; run=35071205468"
+    },
+    {
+      "at": "2026-09-16T08:04:17.386Z",
+      "event": "retry",
+      "actor": "controller",
+      "detail": "Inspect the run for check and review evidence."
     }
   ],
-  "activeRun": "35071205468"
+  "activeRun": "35071205468",
+  "proposal": {
+    "run": "35071205468",
+    "artifact": "factory-proposal-35071205468",
+    "sha": "2344a0f15f85f3dc15a066aac5e307b8db2af4bcfd499d38a4e5b1a8938a2e20"
+  },
+  "feedback": {
+    "run": "35071205468",
+    "artifact": "factory-checks-35071205468"
+  }
 }

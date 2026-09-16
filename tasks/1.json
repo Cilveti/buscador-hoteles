@@ -9,7 +9,7 @@
   },
   "specificationSha": "43f98240f53f1709e64f5b8fb77516c547e46f7746bb7337a6cdc080f7c918f4",
   "profile": "basic",
-  "status": "running",
+  "status": "waiting-human",
   "attempts": 1,
   "history": [
     {
@@ -23,7 +23,19 @@
       "event": "started",
       "actor": "controller",
       "detail": "attempt=1; run=35068794419"
+    },
+    {
+      "at": "2026-09-16T07:32:53.343Z",
+      "event": "waiting-human",
+      "actor": "controller",
+      "detail": "Se requiere autorización humana para un cambio de dependencia (perfil básico). Paquete: slugify, versión exacta 1.6.6, en la sección 'dependencies' de packages/core/package.json (no se toca bun.lock: lo resuelve el controlador). Finalidad: implementar hotelSlug(name: string) en packages/core/src/hotel-slug.ts, generando slugs ASCII en minúsculas, con guiones como separador, sin puntuación ni espacios extremos y transliterando tildes (  Hotel Costa Azul  →hotel-costa-azul; Montaña & Mar→montana-and-mar; Ático Norte→atico-norte; cadena vacía/solo espacios→''), con pruebas colocadas junto al módulo y sin conectarlo a rutas, persistencia ni interfaces. Alternativas: (1) implementación propia sin dependencias, excluida explícitamente por la tarea; (2) usar slugify, que implica dos decisiones humanas: autorizar la dependencia y resolver el conflicto con la regla protegida 'core-independiente' de .dependency-cruiser.cjs, que prohíbe a packages/core/src depender de código externo al core (un import de slugify en hotel-slug.ts rompería tests/architecture/dependencies.test.ts y 'bun run verify', y ese fichero de control está protegido y no es editable). No se han realizado cambios en el código ni en manifiestos pendiendo de la autorización del perfil completo para esta tarea congelada."
     }
   ],
-  "activeRun": "35068794419"
+  "activeRun": "35068794419",
+  "decision": {
+    "id": "7671a93e-767a-4239-81d8-64d418f53a98",
+    "reason": "Se requiere autorización humana para un cambio de dependencia (perfil básico). Paquete: slugify, versión exacta 1.6.6, en la sección 'dependencies' de packages/core/package.json (no se toca bun.lock: lo resuelve el controlador). Finalidad: implementar hotelSlug(name: string) en packages/core/src/hotel-slug.ts, generando slugs ASCII en minúsculas, con guiones como separador, sin puntuación ni espacios extremos y transliterando tildes (  Hotel Costa Azul  →hotel-costa-azul; Montaña & Mar→montana-and-mar; Ático Norte→atico-norte; cadena vacía/solo espacios→''), con pruebas colocadas junto al módulo y sin conectarlo a rutas, persistencia ni interfaces. Alternativas: (1) implementación propia sin dependencias, excluida explícitamente por la tarea; (2) usar slugify, que implica dos decisiones humanas: autorizar la dependencia y resolver el conflicto con la regla protegida 'core-independiente' de .dependency-cruiser.cjs, que prohíbe a packages/core/src depender de código externo al core (un import de slugify en hotel-slug.ts rompería tests/architecture/dependencies.test.ts y 'bun run verify', y ese fichero de control está protegido y no es editable). No se han realizado cambios en el código ni en manifiestos pendiendo de la autorización del perfil completo para esta tarea congelada.",
+    "requestedProfile": "full",
+    "specificationSha": "43f98240f53f1709e64f5b8fb77516c547e46f7746bb7337a6cdc080f7c918f4"
+  }
 }

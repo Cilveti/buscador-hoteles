@@ -1,6 +1,6 @@
 # Diseños reproducibles
 
-No hay todavía una exportación real de Penpot conectada. No usar los fixtures de tests como evidencia de integración.
+Exportación real disponible: [`hotel-empty-v1`](hotel-empty-v1/manifest.json), creada y leída mediante MCP oficial el 16-09-2026. Incluye escritorio/móvil en SVG y PNG, tokens y estructura extraídos y estados de aceptación. Propuesta para la demo; no implica aprobación de un rediseño de producto.
 
 Cada tarea visual selecciona un ID inmutable en el campo **Design snapshot** de la issue. El directorio `<id>/` contiene `manifest.json`, tokens, descripción de estados y recursos exportados. El controlador verifica los hashes antes de entregar el diseño al agente.
 

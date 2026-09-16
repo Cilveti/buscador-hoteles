@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "hotel-empty-v1",
+  "source": {
+    "fileUrl": "https://design.penpot.app/#/workspace?team-id=d8ac01df-6646-81d2-8008-a5887a33b3fe&file-id=d8ac01df-6646-81d2-8008-a5899521b02a&page-id=d8ac01df-6646-81d2-8008-a5899521b02b",
+    "revision": "hotel-empty-v1 · referencia fábrica",
+    "exportedAt": "2026-09-16T07:26:09.407Z"
+  },
+  "files": [
+    {
+      "path": "desktop.png",
+      "sha256": "fbed00e360bb9a9113cb397471f987795253d44df0d124dbbe6931ea2fef67da"
+    },
+    {
+      "path": "desktop.svg",
+      "sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7"
+    },
+    {
+      "path": "mobile.png",
+      "sha256": "21af8554b08f3b617ad170fc5010200087b2467e43ae5f2e31894cb64ffd5c77"
+    },
+    {
+      "path": "mobile.svg",
+      "sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7"
+    },
+    {
+      "path": "states.md",
+      "sha256": "93f889ec28515c5ceafcaa5ab65dc2947d3096f84142b686fd27681511c3e288"
+    },
+    {
+      "path": "structure.json",
+      "sha256": "ff168869936c835efd7908cd710196be47b95f8e5d4f42bf2f6303d52e57675e"
+    },
+    {
+      "path": "tokens.json",
+      "sha256": "42e189b126c5af611762446f44b8e5a9ca664b6e8bcd8a82473c8b2ce26beb33"
+    }
+  ]
+}

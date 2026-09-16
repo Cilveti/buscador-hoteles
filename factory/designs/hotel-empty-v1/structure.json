@@ -1,0 +1,359 @@
+{
+  "file": {
+    "id": "d8ac01df-6646-81d2-8008-a5899521b02a",
+    "name": "Buscador de hoteles · Demo fábrica",
+    "revision": 0
+  },
+  "page": {
+    "id": "d8ac01df-6646-81d2-8008-a5899521b02b",
+    "name": "Sin resultados · especificación v1"
+  },
+  "shapes": [
+    {
+      "id": "00000000-0000-0000-0000-000000000000",
+      "name": "Root Frame",
+      "type": "board",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 0.01,
+        "height": 0.01
+      },
+      "fills": [
+        {
+          "fillColor": "#FFFFFF",
+          "fillOpacity": 1,
+          "fillColorGradient": null,
+          "fillColorRefFile": null,
+          "fillColorRefId": null,
+          "fillImage": null
+        }
+      ],
+      "borderRadius": 0
+    },
+    {
+      "id": "f5515d1a-6dc1-80c0-8008-a58ae04a2d63",
+      "name": "Estado vacío / escritorio",
+      "type": "board",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 800,
+        "height": 340
+      },
+      "fills": [
+        {
+          "fillColor": "#ffffff",
+          "fillOpacity": 1,
+          "fillColorGradient": null,
+          "fillColorRefFile": null,
+          "fillColorRefId": null,
+          "fillImage": null
+        }
+      ],
+      "borderRadius": 12
+    },
+    {
+      "id": "f5515d1a-6dc1-80c0-8008-a58ae0553ce9",
+      "name": "Icono / fondo",
+      "type": "rectangle",
+      "bounds": {
+        "x": 372,
+        "y": 32,
+        "width": 56,
+        "height": 56
+      },
+      "fills": [
+        {
+          "fillColor": "#e8f3f5",
+          "fillOpacity": 1,
+          "fillColorGradient": null,
+          "fillColorRefFile": null,
+          "fillColorRefId": null,
+          "fillImage": null
+        }
+      ],
+      "borderRadius": 28
+    },
+    {
+      "id": "f5515d1a-6dc1-80c0-8008-a58ae057b354",
+      "name": "Icono / búsqueda",
+      "type": "text",
+      "bounds": {
+        "x": 376,
+        "y": 36,
+        "width": 48,
+        "height": 48
+      },
+      "fills": [
+        {
+          "fillColor": "#176a79",
+          "fillOpacity": 1,
+          "fillColorGradient": null,
+          "fillColorRefFile": null,
+          "fillColorRefId": null,
+          "fillImage": null
+        }
+      ],
+      "characters": "⌕",
+      "fontSize": "36",
+      "borderRadius": null
+    },
+    {
+      "id": "f5515d1a-6dc1-80c0-8008-a58ae05b9503",
+      "name": "Título",
+      "type": "text",
+      "bounds": {
+        "x": 24,
+        "y": 108,
+        "width": 752,
+        "height": 56
+      },
+      "fills": [
+        {
+          "fillColor": "#172f35",
+          "fillOpacity": 1,
+          "fillColorGradient": null,
+          "fillColorRefFile": null,
+          "fillColorRefId": null,
+          "fillImage": null
+        }
+      ],
+      "characters": "Todavía no hemos encontrado tu hotel",
+      "fontSize": "24",
+      "borderRadius": null
+    },
+    {
+      "id": "f5515d1a-6dc1-80c0-8008-a58ae05fe529",
+      "name": "Ayuda",
+      "type": "text",
+      "bounds": {
+        "x": 32,
+        "y": 178,
+        "width": 736,
+        "height": 52
+      },
+      "fills": [
+        {
+          "fillColor": "#52666b",
+          "fillOpacity": 1,
+          "fillColorGradient": null,
+          "fillColorRefFile": null,
+          "fillColorRefId": null,
+          "fillImage": null
+        }
+      ],
+      "characters": "Prueba otro destino o amplía los filtros para descubrir más opciones.",
+      "fontSize": "14",
+      "borderRadius": null
+    },
+    {
+      "id": "f5515d1a-6dc1-80c0-8008-a58ae064b386",
+      "name": "Acción / fondo",
+      "type": "rectangle",
+      "bounds": {
+        "x": 296,
+        "y": 260,
+        "width": 208,
+        "height": 44
+      },
+      "fills": [
+        {
+          "fillColor": "#176a79",
+          "fillOpacity": 1,
+          "fillColorGradient": null,
+          "fillColorRefFile": null,
+          "fillColorRefId": null,
+          "fillImage": null
+        }
+      ],
+      "borderRadius": 8
+    },
+    {
+      "id": "f5515d1a-6dc1-80c0-8008-a58ae066684a",
+      "name": "Acción / etiqueta",
+      "type": "text",
+      "bounds": {
+        "x": 296,
+        "y": 272,
+        "width": 208,
+        "height": 24
+      },
+      "fills": [
+        {
+          "fillColor": "#ffffff",
+          "fillOpacity": 1,
+          "fillColorGradient": null,
+          "fillColorRefFile": null,
+          "fillColorRefId": null,
+          "fillImage": null
+        }
+      ],
+      "characters": "Ver todos los hoteles",
+      "fontSize": "14",
+      "borderRadius": null
+    },
+    {
+      "id": "f5515d1a-6dc1-80c0-8008-a58ae0695565",
+      "name": "Estado vacío / móvil",
+      "type": "board",
+      "bounds": {
+        "x": 880,
+        "y": 0,
+        "width": 360,
+        "height": 340
+      },
+      "fills": [
+        {
+          "fillColor": "#ffffff",
+          "fillOpacity": 1,
+          "fillColorGradient": null,
+          "fillColorRefFile": null,
+          "fillColorRefId": null,
+          "fillImage": null
+        }
+      ],
+      "borderRadius": 12
+    },
+    {
+      "id": "f5515d1a-6dc1-80c0-8008-a58ae06b0379",
+      "name": "Icono / fondo",
+      "type": "rectangle",
+      "bounds": {
+        "x": 1032,
+        "y": 32,
+        "width": 56,
+        "height": 56
+      },
+      "fills": [
+        {
+          "fillColor": "#e8f3f5",
+          "fillOpacity": 1,
+          "fillColorGradient": null,
+          "fillColorRefFile": null,
+          "fillColorRefId": null,
+          "fillImage": null
+        }
+      ],
+      "borderRadius": 28
+    },
+    {
+      "id": "f5515d1a-6dc1-80c0-8008-a58ae06ce0c9",
+      "name": "Icono / búsqueda",
+      "type": "text",
+      "bounds": {
+        "x": 1036,
+        "y": 36,
+        "width": 48,
+        "height": 48
+      },
+      "fills": [
+        {
+          "fillColor": "#176a79",
+          "fillOpacity": 1,
+          "fillColorGradient": null,
+          "fillColorRefFile": null,
+          "fillColorRefId": null,
+          "fillImage": null
+        }
+      ],
+      "characters": "⌕",
+      "fontSize": "36",
+      "borderRadius": null
+    },
+    {
+      "id": "f5515d1a-6dc1-80c0-8008-a58ae07027eb",
+      "name": "Título",
+      "type": "text",
+      "bounds": {
+        "x": 904,
+        "y": 108,
+        "width": 312,
+        "height": 56
+      },
+      "fills": [
+        {
+          "fillColor": "#172f35",
+          "fillOpacity": 1,
+          "fillColorGradient": null,
+          "fillColorRefFile": null,
+          "fillColorRefId": null,
+          "fillImage": null
+        }
+      ],
+      "characters": "Todavía no hemos encontrado tu hotel",
+      "fontSize": "20",
+      "borderRadius": null
+    },
+    {
+      "id": "f5515d1a-6dc1-80c0-8008-a58ae072cfb6",
+      "name": "Ayuda",
+      "type": "text",
+      "bounds": {
+        "x": 912,
+        "y": 178,
+        "width": 296,
+        "height": 52
+      },
+      "fills": [
+        {
+          "fillColor": "#52666b",
+          "fillOpacity": 1,
+          "fillColorGradient": null,
+          "fillColorRefFile": null,
+          "fillColorRefId": null,
+          "fillImage": null
+        }
+      ],
+      "characters": "Prueba otro destino o amplía los filtros para descubrir más opciones.",
+      "fontSize": "14",
+      "borderRadius": null
+    },
+    {
+      "id": "f5515d1a-6dc1-80c0-8008-a58ae075aa17",
+      "name": "Acción / fondo",
+      "type": "rectangle",
+      "bounds": {
+        "x": 956,
+        "y": 260,
+        "width": 208,
+        "height": 44
+      },
+      "fills": [
+        {
+          "fillColor": "#176a79",
+          "fillOpacity": 1,
+          "fillColorGradient": null,
+          "fillColorRefFile": null,
+          "fillColorRefId": null,
+          "fillImage": null
+        }
+      ],
+      "borderRadius": 8
+    },
+    {
+      "id": "f5515d1a-6dc1-80c0-8008-a58ae077424f",
+      "name": "Acción / etiqueta",
+      "type": "text",
+      "bounds": {
+        "x": 956,
+        "y": 272,
+        "width": 208,
+        "height": 24
+      },
+      "fills": [
+        {
+          "fillColor": "#ffffff",
+          "fillOpacity": 1,
+          "fillColorGradient": null,
+          "fillColorRefFile": null,
+          "fillColorRefId": null,
+          "fillImage": null
+        }
+      ],
+      "characters": "Ver todos los hoteles",
+      "fontSize": "14",
+      "borderRadius": null
+    }
+  ]
+}

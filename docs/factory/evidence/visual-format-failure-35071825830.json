@@ -1,0 +1,33 @@
+{
+  "run": 35071825830,
+  "url": "https://github.com/Cilveti/buscador-hoteles/actions/runs/35071825830",
+  "commit": "770874ff0747cf4c0d3e80699a9054120de7f202",
+  "conclusion": "failure",
+  "jobs": [
+    {
+      "name": "admit",
+      "seconds": 11,
+      "roundedMinutes": 1,
+      "conclusion": "success"
+    },
+    {
+      "name": "attempt / generate",
+      "seconds": 93,
+      "roundedMinutes": 2,
+      "conclusion": "failure"
+    },
+    {
+      "name": "finish",
+      "seconds": 10,
+      "roundedMinutes": 1,
+      "conclusion": "success"
+    }
+  ],
+  "runnerSeconds": 114,
+  "roundedMinutes": 4,
+  "assumedUsdPerLinuxMinute": null,
+  "estimatedRunnerUsdBeforeQuota": null,
+  "modelUsage": null,
+  "invoice": null,
+  "limitation": "Job timestamps estimate runner time, not the invoice. Price applies only to standard Linux runners. Included quota, retries and model billing require separate evidence. Unknown usage is not zero."
+}

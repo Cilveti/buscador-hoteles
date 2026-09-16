@@ -1,0 +1,57 @@
+{
+  "run": 35071794022,
+  "url": "https://github.com/Cilveti/buscador-hoteles/actions/runs/35071794022",
+  "commit": "770874ff0747cf4c0d3e80699a9054120de7f202",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "name": "admit",
+      "seconds": 12,
+      "roundedMinutes": 1,
+      "conclusion": "success"
+    },
+    {
+      "name": "attempt / generate",
+      "seconds": 68,
+      "roundedMinutes": 2,
+      "conclusion": "success"
+    },
+    {
+      "name": "attempt / verify",
+      "seconds": 310,
+      "roundedMinutes": 6,
+      "conclusion": "success"
+    },
+    {
+      "name": "attempt / review",
+      "seconds": 232,
+      "roundedMinutes": 4,
+      "conclusion": "success"
+    },
+    {
+      "name": "publish",
+      "seconds": 17,
+      "roundedMinutes": 1,
+      "conclusion": "success"
+    },
+    {
+      "name": "sonar",
+      "seconds": 67,
+      "roundedMinutes": 2,
+      "conclusion": "success"
+    },
+    {
+      "name": "finish",
+      "seconds": 19,
+      "roundedMinutes": 1,
+      "conclusion": "success"
+    }
+  ],
+  "runnerSeconds": 725,
+  "roundedMinutes": 17,
+  "assumedUsdPerLinuxMinute": null,
+  "estimatedRunnerUsdBeforeQuota": null,
+  "modelUsage": null,
+  "invoice": null,
+  "limitation": "Job timestamps estimate runner time, not the invoice. Price applies only to standard Linux runners. Included quota, retries and model billing require separate evidence. Unknown usage is not zero."
+}

@@ -1,6 +1,6 @@
 # Evidencia y estado de implantación
 
-Última actualización: 16-09-2026. **La fábrica completa aún no ha superado el ensayo con modelos e integraciones externas.**
+Última actualización: 16-09-2026. **Un recorrido completo ya pasó: issue #5 → corrección → checks → revisión independiente → Sonar → draft PR #6. La tarea visual agotó sus tres intentos; se investiga una mejora del formato de salida.**
 
 ## Baseline local
 
@@ -39,7 +39,7 @@ Prueba local real con Docker y registro npm: una copia desechable de los manifie
 
 ## Pendiente para acreditar el objetivo
 
-Sonar conectado y analizado; tarea que termina en draft con todos los gates; corrección por feedback; decisión y reanudación humanas; instalación completa en otro destino y comparación de una mejora del arnés. La pausa, cancelación por operador, Penpot y arranque desde clone limpio ya tienen evidencia; no equivalen al objetivo completo.
+Completar una propuesta visual que consume Penpot y comparar/adoptar una mejora del arnés. Ya hay evidencia de Sonar, draft con gates verdes, corrección, pausa/aprobación/reanudación humana, recuperación, escalado y cancelación. El clone limpio y los runners nuevos prueban reproducción del código y checks; todavía no se ha realizado una instalación completa en otra cuenta.
 
 ## Primer ensayo con modelo y pausa · 16-09-2026
 
@@ -72,3 +72,25 @@ El ensayo #2 recibió una aprobación real de Cilveti ([comentario 5693799876](h
 [Run 35070892755](https://github.com/Cilveti/buscador-hoteles/actions/runs/35070892755), commit `dc78c78`: conexión y carga de análisis correctas, 57 archivos de fuente analizados. El scanner termina en fallo porque el gate inicial es **Not computed**, confirmado en la pantalla Summary; no es un rechazo por una condición de calidad evaluada. Sonar indica que el segundo análisis calculará el gate. Se repite sobre el mismo código, sin modificar reglas/umbrales. [Medición](evidence/sonar-main-35070892755.json). El panel muestra 0% de cobertura porque no se ha importado LCOV, no porque se haya medido una suite sin cobertura.
 
 [Segundo análisis main 35071072059](https://github.com/Cilveti/buscador-hoteles/actions/runs/35071072059), mismo commit `dc78c78`: **verde**, incluido quality gate Sonar way. Ninguna regla/umbral cambiado. [Medición](evidence/sonar-main-35071072059.json). Ensayos #3 (`35071200573`) y #5 (`35071205468`) activados después de este verde.
+
+## Primer recorrido completo con dependencia y corrección
+
+[Issue #5](https://github.com/Cilveti/buscador-hoteles/issues/5) → [intento1 35071205468](https://github.com/Cilveti/buscador-hoteles/actions/runs/35071205468) → [intento2 35071794022](https://github.com/Cilveti/buscador-hoteles/actions/runs/35071794022) → **[draft PR #6](https://github.com/Cilveti/buscador-hoteles/pull/6)**.
+
+El primer intento falló en el test de `Montaña & Mar`: produjo `montana-y-mar`, se esperaba `montana-and-mar`. E2E y build pasaron; el controlador devolvió el fallo concreto y el parche al segundo intento con el mismo modelo flash. En el segundo se corrige la implementación manteniendo el ejemplo exigido y sus tests.
+
+Resultado final: 69 unitarios, 10 E2E reales, build, revisor independiente `opencode-go/glm-5.3` sin hallazgos y quality gate Sonar **verdes**. La app y la base de datos se levantaron en CI. El revisor inspeccionó el código y la evidencia; no ejecutó otra app ni sustituye la revisión humana.
+
+Commit publicado `3c3b60273710a89e1585cf91ffe3de3369ff05da`, padre exacto `dc78c7887e4b6f2f052a4d2b84872a5bbc4c7d8d`. SHA256 del diff completo `90a640ef09d6e1a5ee1a3c8c537c1ec5b19ed644a65aa2fde3cd096575689b63`: coinciden artefacto original, informe del revisor y diff obtenido de GitHub. Cuatro rutas: manifiesto web, módulo, test y lock. PR en draft y sin merge; `Factory / acceptance`, `Factory / quality` y `SonarCloud Code Analysis` en verde. El operador trasladó el informe automatizado a la descripción para hacerlo visible y actualizó el aviso Sonar; esa edición no es una aprobación humana.
+
+Mediciones: [intento1](evidence/full-retry-35071205468.json), [intento2](evidence/full-success-35071794022.json).
+
+## Ensayo visual, recuperación y límite real
+
+#3 intento1 `35071200573`: consume el snapshot congelado y propone un cambio en el componente. E2E/build pasan, pero Biome exige `section` en lugar de `div role=region`. El controlador inicia automáticamente el segundo intento `35071825830`; falla porque la respuesta final no es JSON. El operador solicita recuperación autenticada mediante `/factory retry 35071825830`; no se presenta como una decisión humana del producto.
+
+Tercer intento `35072051343` ejecuta realmente `opencode-go/glm-5.3` y también falla al parsear la respuesta. Tres intentos consumidos, sin publicación; no se reinicia el ledger ni se atribuye éxito visual al mero escalado. Esto justifica investigar salida estructurada mediante JSON Schema. No se conserva el texto completo de las respuestas de esos runners y no se inventa su contenido.
+
+Mediciones: [intento1](evidence/visual-retry-35071200573.json), [intento2](evidence/visual-format-failure-35071825830.json), [tercer modelo](evidence/visual-escalation-35072051343.json).
+
+En el primer intento full, el guardado de caché del candidato fue rechazado por falta de scope de escritura. La restauración y la instalación son mecanismos separados: no afirmar que los reintentos ya reutilizan un lockfile nuevo desde caché. La corrección de permisos de caché no debe ampliar la autoridad del código no confiable.

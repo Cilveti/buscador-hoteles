@@ -13,6 +13,8 @@
 - `failed` es infraestructura/publicación/integración, respuesta inválida o requisito sin resolver; no se disfraza de defecto de producto.
 - `rejected` y `cancelled` son finales. Una respuesta tardía del modelo no debe reabrirlos.
 
+**Un run de Actions verde no equivale a una tarea aceptada**: también puede haber terminado correctamente en `retry` o `waiting-human`. Para aceptar el candidato, comprobar estado `review`, draft PR y ambos gates.
+
 La fuente de estado está en `factory-state:tasks/<issue>.json`, escrita por el controlador. Las etiquetas sirven para admisión y visibilidad, no como contador de gasto. Solo los operadores configurados pueden iniciar o decidir. El presupuesto de intentos es por issue; abrir otra issue sigue siendo una nueva autorización y puede consumir. No es un límite monetario de cuenta.
 
 ## Decisiones humanas
@@ -34,7 +36,7 @@ La versión inicial de este protocolo resuelve solicitudes de permiso de depende
 ## Fallos y recuperación
 
 - No usar re-run como forma de reiniciar intentos: conserva SHA y contexto de GitHub, y el ledger rechaza duplicados.
-- Si falla la infraestructura, revisar el estado y comentar `/factory retry ID-DEL-RUN-ANTERIOR`. Solo un operador puede hacerlo, con el run terminado y sin rama de candidato publicada. Conserva especificación, base y presupuesto; si ya se usaron tres intentos, se rechaza. Está validado por tests locales, todavía pendiente del ensayo remoto. No borrar el ledger para fingir una primera ejecución.
+- Si falla la infraestructura, revisar el estado y comentar `/factory retry ID-DEL-RUN-ANTERIOR`. Solo un operador puede hacerlo, con el run terminado y sin rama de candidato publicada. Conserva especificación, base y presupuesto; si ya se usaron tres intentos, se rechaza. Validado por tests y recuperación real de #3, run `35072051343`, que conserva la base y consume el tercer intento. No borrar el ledger para fingir una primera ejecución.
 - Los artefactos se conservan siete días. Una reanudación que necesita un artefacto expirado debe detenerse, no continuar sin el parche o feedback.
 - Un fallo después de publicar puede dejar una draft PR. Comprobar sus gates antes de crear otra tarea.
 - El análisis Sonar se ejecuta después de abrir la draft para poder asociarlo a la PR. La mera existencia de esa PR no demuestra que Sonar haya pasado.

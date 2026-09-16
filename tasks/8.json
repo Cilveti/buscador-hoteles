@@ -9,7 +9,7 @@
   },
   "specificationSha": "a7c50c358ad0a39b1f5e4c0f418a0505f6581f2cf19866c83ae67b4183e2cb7b",
   "profile": "basic",
-  "status": "running",
+  "status": "failed",
   "attempts": 3,
   "history": [
     {
@@ -53,6 +53,12 @@
       "event": "started",
       "actor": "controller",
       "detail": "attempt=3; run=35136632915"
+    },
+    {
+      "at": "2026-09-16T18:48:35.889Z",
+      "event": "failed",
+      "actor": "controller",
+      "detail": "Consulta la fase que falló y su evidencia en la ejecución enlazada."
     }
   ],
   "design": {

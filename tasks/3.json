@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "issue": 3,
+  "baseSha": "dc78c7887e4b6f2f052a4d2b84872a5bbc4c7d8d",
+  "specification": {
+    "title": "Demo Penpot: adaptar el estado sin resultados al diseño congelado",
+    "body": "## Objetivo\n\nAdaptar únicamente el estado sin resultados del catálogo al diseño Penpot congelado. Preparar una draft PR revisable para la demo, sin merge ni despliegue.\n\n### Design snapshot\nhotel-empty-v1\n\n## Alcance y aceptación\n\n- Consultar `context/design/states.md`, tokens, estructura y SVG del snapshot. Aplicar su tarjeta blanca con borde sólido de 1 px, radio 12 px, tipografía oscura, círculo de búsqueda y botón verde azulado.\n- Mostrar este estado únicamente cuando una búsqueda termina correctamente con `total === 0`. Mantener el título «Todavía no hemos encontrado tu hotel», el texto de ayuda y el botón «Ver todos los hoteles» con su `reset` actual.\n- Conservar estados de carga, error HTTP con reintento y página fuera de rango, filtros, ordenación y resultados.\n- El icono es decorativo, usando la biblioteca existente; no añadir dependencias. Dar nombre accesible a la región de estado. Funcionar a 360 px sin desbordamiento horizontal y en escritorio, adaptándose al contenedor.\n- Mantener todos los checks existentes. Añadir solo tests útiles si el cambio introduce lógica nueva; no modificar los tests externos ni los archivos de control para conseguir un verde.\n\nLa verificación independiente debe abrir la app con sus datos ficticios, buscar un término inexistente, comprobar el estado y recuperar resultados con el botón. Las capturas y trazas permiten revisar fidelidad visual; no afirmar que el diseño es correcto solo porque pasen tests funcionales.\n",
+    "author": "Cilveti"
+  },
+  "specificationSha": "429332f7998821857e79a56812c2a7e1da8e77dc7f568cb34963a7b8a7a065c6",
+  "profile": "basic",
+  "status": "running",
+  "attempts": 1,
+  "history": [
+    {
+      "at": "2026-09-16T07:57:49.990Z",
+      "event": "admitted",
+      "actor": "Cilveti",
+      "detail": "profile=basic; base=dc78c7887e4b6f2f052a4d2b84872a5bbc4c7d8d"
+    },
+    {
+      "at": "2026-09-16T07:57:49.990Z",
+      "event": "started",
+      "actor": "controller",
+      "detail": "attempt=1; run=35071200573"
+    }
+  ],
+  "design": {
+    "id": "hotel-empty-v1",
+    "manifestSha": "9ce40c98884be5dedf04dc2ad0e9afc24d7cd92ed69f1effbd548f6d21c3249d"
+  },
+  "activeRun": "35071200573"
+}

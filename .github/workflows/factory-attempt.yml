@@ -33,8 +33,8 @@ jobs:
       contents: read
       actions: read
     outputs:
-      status: ${{ steps.serialize.outputs.status }}
-      patch_sha: ${{ steps.serialize.outputs.patch_sha }}
+      status: ${{ steps.proposal.outcome == 'success' && steps.serialize.outputs.status || '' }}
+      patch_sha: ${{ steps.proposal.outcome == 'success' && steps.serialize.outputs.patch_sha || '' }}
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
@@ -69,6 +69,7 @@ jobs:
         id: serialize
         run: bun factory/worker.ts serialize
       - name: Save original proposal or decision request
+        id: proposal
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: factory-proposal-${{ github.run_id }}
@@ -87,7 +88,7 @@ jobs:
       contents: read
     outputs:
       status: ${{ steps.report.outputs.status }}
-      feedback_artifact: factory-checks-${{ github.run_id }}
+      feedback_artifact: ${{ steps.evidence.outcome == 'success' && steps.report.outputs.status != '' && format('factory-checks-{0}', github.run_id) || '' }}
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
@@ -129,6 +130,7 @@ jobs:
           PATCH_SHA: ${{ needs.generate.outputs.patch_sha }}
         run: bun factory/artifacts.ts report
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        id: evidence
         if: always()
         with:
           name: factory-checks-${{ github.run_id }}
@@ -144,7 +146,7 @@ jobs:
       contents: read
     outputs:
       status: ${{ steps.review.outputs.status }}
-      feedback_artifact: factory-review-${{ github.run_id }}
+      feedback_artifact: ${{ steps.evidence.outcome == 'success' && steps.review.outputs.status != '' && format('factory-review-{0}', github.run_id) || '' }}
     env:
       WORKER_ROLE: reviewer
       PATCH_SHA: ${{ needs.generate.outputs.patch_sha }}
@@ -184,6 +186,7 @@ jobs:
         id: review
         run: bun factory/worker.ts review
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        id: evidence
         with:
           name: factory-review-${{ github.run_id }}
           path: ${{ runner.temp }}/feedback.json

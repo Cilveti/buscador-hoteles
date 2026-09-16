@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "issue": 1,
+  "baseSha": "3b378d303852f20a90768972f9c46e7e66b465b1",
+  "specification": {
+    "title": "Ensayo de fábrica: dependencia con autorización humana",
+    "body": "## Objetivo del ensayo\n\nDemostrar el permiso de dependencias y la pausa/reanudación humana de la fábrica con una propuesta aislada que permanecerá en draft.\n\n## Cambio solicitado\n\nAñadir `hotelSlug(name: string): string` en `packages/core/src/hotel-slug.ts`, utilizando explícitamente `slugify@1.6.6` como dependencia de `packages/core/package.json`. Para este ensayo la biblioteca forma parte del requisito: no sustituirla por una implementación propia. No conectar todavía la función a rutas, persistencia ni interfaces existentes.\n\nLa función debe producir un slug ASCII en minúsculas, separar palabras con un guion, eliminar puntuación y espacios de los extremos y transliterar tildes. Una cadena vacía o compuesta solo por espacios produce una cadena vacía. Ejemplos: `  Hotel Costa Azul  ` → `hotel-costa-azul`; `Montaña & Mar` → `montana-and-mar`; `Ático Norte` → `atico-norte`.\n\nAñadir pruebas colocadas junto al módulo para esos ejemplos, cadena vacía y espacios. Mantener todos los checks actuales.\n\n## Permisos y aceptación\n\nLa tarea comienza en perfil básico. Si requiere cambiar el manifiesto, explicar el paquete, versión, finalidad y alternativa, y solicitar intervención humana mediante el contrato de la fábrica. No intentar eludir la restricción. La decisión humana podrá autorizar el perfil completo para esta tarea congelada.\n\nNo fusionar ni desplegar. Este es un ensayo de integración y autorización, no una nueva funcionalidad de producto aprobada.\n",
+    "author": "Cilveti"
+  },
+  "specificationSha": "43f98240f53f1709e64f5b8fb77516c547e46f7746bb7337a6cdc080f7c918f4",
+  "profile": "basic",
+  "status": "running",
+  "attempts": 1,
+  "history": [
+    {
+      "at": "2026-09-16T07:29:42.449Z",
+      "event": "admitted",
+      "actor": "Cilveti",
+      "detail": "profile=basic; base=3b378d303852f20a90768972f9c46e7e66b465b1"
+    },
+    {
+      "at": "2026-09-16T07:29:42.449Z",
+      "event": "started",
+      "actor": "controller",
+      "detail": "attempt=1; run=35068794419"
+    }
+  ],
+  "activeRun": "35068794419"
+}

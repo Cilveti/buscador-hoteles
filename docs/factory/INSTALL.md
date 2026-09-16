@@ -52,7 +52,13 @@ Configurar desde una entrada segura, sin imprimir valores:
 | `SONAR_TOKEN` | Secret | Análisis Sonar, en otro job |
 | `SONAR_HOST_URL` | Variable opcional | Por defecto `https://sonarcloud.io` |
 
-La conexión Sonar debe admitir **análisis de PR privadas**. Validar el plan real; no contratar ni activar pagos por inferencia sin autorización. Un fallo de conexión no se presenta como quality gate verde.
+La conexión Sonar debe admitir **análisis de PR privadas**. La documentación del 16-09-2026 incluye PR dirigidas a la rama principal en Free, hasta 50k líneas privadas y cinco miembros. Confirmar el plan efectivo de la organización.
+
+Tras importar el repo, desactivar Automatic Analysis en Sonar si se usa este scanner de CI, configurar organización/proyecto y `SONAR_TOKEN`, y ejecutar `Factory Sonar main` desde Actions. Las PR se comparan con el análisis de su rama destino: hace falta una referencia de `main` actualizada. El workflow vuelve a analizarla cuando cambia el producto. Un análisis fallido debe revisarse; no cambiar el gate para fingir éxito. La configuración inicial no importa cobertura LCOV: no presentar métricas de cobertura como comprobadas.
+
+Fuentes: [planes](https://docs.sonarsource.com/sonarqube-cloud/administering-sonarcloud/managing-subscription/subscription-plans), [comparación de PR](https://docs.sonarsource.com/sonarqube-cloud/analyzing-source-code/pull-request-analysis).
+
+Validar el plan real; no contratar ni activar pagos por inferencia sin autorización. Un fallo de conexión no se presenta como quality gate verde.
 
 Si el plan del repositorio admite protección de ramas, exigir `Factory / acceptance`, `Factory / quality` y revisión humana. Sin esa protección, el workflow evita hacer merge pero un usuario con escritura puede saltarse el proceso: no prometer una prohibición impuesta por GitHub.
 
@@ -60,7 +66,7 @@ Antes de etiquetar una tarea, ejecutar `bun factory/setup.ts --check-ready`. Fal
 
 ## 5. Preparar Penpot
 
-Seguir `factory/designs/README.md`. Probar la consulta real de archivo/componentes y conservar una exportación identificada. CI consume el snapshot, no el ordenador del diseñador. No introducir la clave MCP en el repositorio.
+Seguir [Penpot paso a paso](PENPOT.md) y `factory/designs/README.md`. Probar la consulta real de archivo/componentes y conservar una exportación identificada. CI consume el snapshot, no el ordenador del diseñador. No introducir la clave MCP en el repositorio.
 
 ## 6. Ensayar y guardar evidencia
 

@@ -9,7 +9,7 @@
   },
   "specificationSha": "c4e7d13641553bc2ad0b79dabcdabd3d05828a68db1a106ce02294dcb2ce89ae",
   "profile": "full",
-  "status": "running",
+  "status": "publishing",
   "attempts": 2,
   "history": [
     {
@@ -35,6 +35,12 @@
       "event": "started",
       "actor": "controller",
       "detail": "attempt=2; run=35071794022"
+    },
+    {
+      "at": "2026-09-16T08:15:08.262Z",
+      "event": "publishing",
+      "actor": "controller",
+      "detail": "run=35071794022"
     }
   ],
   "activeRun": "35071794022",

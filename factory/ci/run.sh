@@ -31,7 +31,7 @@ for phase in ${FACTORY_PHASES:-unit e2e build}; do
   mkdir -p "$evidence/$phase"
   if docker run --rm --network none --cap-drop ALL --cap-add CHOWN --cap-add DAC_OVERRIDE \
       --cap-add FOWNER --cap-add SETUID --cap-add SETGID --security-opt no-new-privileges \
-      --pids-limit 1024 --shm-size=1g -e "FACTORY_PHASE=$phase" \
+      --pids-limit 1024 --shm-size=1g -e "FACTORY_DESIGN_ID=${FACTORY_DESIGN_ID:-}" -e "FACTORY_PHASE=$phase" \
       -v "$snapshot:/source:ro" -v "$root/factory/ci:/checks:ro" \
       -v "$evidence/$phase:/evidence" "$image" bash /checks/inside.sh \
       > "$evidence/$phase.log" 2>&1; then

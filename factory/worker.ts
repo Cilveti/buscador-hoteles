@@ -239,4 +239,5 @@ else if (command === 'apply') {
   if (git(root, 'rev-parse', 'HEAD') !== task.baseSha)
     throw new Error('Wrong verification checkout');
   apply(root, join(temp, 'proposal/agent.patch'), string(process.env.PATCH_SHA));
+  output('design_id', task.design?.id ?? '');
 } else throw new Error('Unknown worker command');

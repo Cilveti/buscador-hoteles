@@ -1,4 +1,4 @@
-name: Factory attempt
+name: Fábrica · desarrollo y verificación
 on:
   workflow_call:
     inputs:
@@ -27,6 +27,7 @@ on:
 permissions: {}
 jobs:
   generate:
+    name: Preparar el cambio
     runs-on: ubuntu-latest
     timeout-minutes: 12
     permissions:
@@ -53,22 +54,22 @@ jobs:
         with:
           name: factory-task-${{ github.run_id }}
           path: ${{ runner.temp }}/task
-      - name: Recover the prior immutable proposal and feedback
+      - name: Recuperar el cambio y los fallos del intento anterior
         env:
           GH_TOKEN: ${{ github.token }}
         run: bun factory/artifacts.ts recover
-      - name: Prepare an independent Git snapshot and constrained prompt
+      - name: Preparar el contexto y los permisos del agente
         run: bun factory/worker.ts prepare
       - uses: ./.factory-worker/.github/actions/factory-model
         with:
           model: ${{ inputs.model }}
           api-key: ${{ secrets.OPENCODE_API_KEY }}
-      - name: Resolve authorized dependency changes without scripts or credentials
+      - name: Instalar las dependencias autorizadas en aislamiento
         run: bun factory/worker.ts resolve-dependencies
-      - name: Validate and freeze the final original proposal
+      - name: Comprobar y guardar el cambio propuesto
         id: serialize
         run: bun factory/worker.ts serialize
-      - name: Save original proposal or decision request
+      - name: Guardar la propuesta o la petición de ayuda
         id: proposal
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
@@ -80,6 +81,7 @@ jobs:
           if-no-files-found: error
           retention-days: 7
   verify:
+    name: Probar la aplicación
     needs: generate
     if: needs.generate.outputs.status == 'generated'
     runs-on: ubuntu-latest
@@ -105,17 +107,17 @@ jobs:
         with:
           name: factory-proposal-${{ github.run_id }}
           path: ${{ runner.temp }}/proposal
-      - name: Apply and validate the original patch
+      - name: Validar el cambio antes de ejecutarlo
         id: apply
         env:
           PATCH_SHA: ${{ needs.generate.outputs.patch_sha }}
         run: bun factory/worker.ts apply
-      - name: Restore downloads for the effective candidate lockfile
+      - name: Restaurar la caché de dependencias del candidato
         uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: ${{ runner.temp }}/factory-bun-cache
           key: factory-bun-1.4.2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('bun.lock') }}
-      - name: Execute isolated checks, real application and browser
+      - name: Probar la aplicación real y su build
         id: checks
         continue-on-error: true
         env:
@@ -123,7 +125,7 @@ jobs:
           FACTORY_EVIDENCE_DIR: ${{ runner.temp }}/evidence
           FACTORY_BUN_CACHE: ${{ runner.temp }}/factory-bun-cache
         run: bash factory/ci/run.sh
-      - name: Record evidence against the exact proposal
+      - name: Registrar las pruebas de este cambio
         id: report
         env:
           CHECK_RESULT: ${{ steps.checks.outcome }}
@@ -138,6 +140,7 @@ jobs:
           if-no-files-found: error
           retention-days: 7
   review:
+    name: Revisión independiente
     needs: [generate, verify]
     if: needs.verify.outputs.status == 'passed'
     runs-on: ubuntu-latest
@@ -176,13 +179,13 @@ jobs:
         with:
           name: factory-checks-${{ github.run_id }}
           path: ${{ runner.temp }}/checks
-      - name: Prepare independent review
+      - name: Preparar la revisión independiente
         run: bun factory/worker.ts prepare
       - uses: ./.factory-worker/.github/actions/factory-model
         with:
           model: ${{ inputs.reviewer }}
           api-key: ${{ secrets.OPENCODE_API_KEY }}
-      - name: Validate the structured review
+      - name: Validar el informe del revisor
         id: review
         run: bun factory/worker.ts review
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

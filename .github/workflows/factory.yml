@@ -1,5 +1,5 @@
-name: Hotel software factory
-run-name: Factory issue ${{ inputs.issue || github.event.issue.number }}
+name: Fábrica · de tarea a propuesta
+run-name: Tarea ${{ inputs.issue || github.event.issue.number }}
 on:
   issues:
     types: [labeled]
@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       issue:
-        description: Existing factory task number
+        description: Número de la tarea existente
         required: true
         type: string
       recover_run:
@@ -16,7 +16,7 @@ on:
         required: false
         type: string
       predecessor:
-        description: Previous run (automatic retry only)
+        description: Ejecución anterior (solo reintento automático)
         required: false
         type: string
 permissions: {}
@@ -26,6 +26,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   admit:
+    name: Admitir tarea
     if: github.event_name == 'workflow_dispatch' || github.event.label.name == 'factory:ready' || startsWith(github.event.comment.body, '/factory ')
     runs-on: ubuntu-latest
     timeout-minutes: 3
@@ -47,7 +48,7 @@ jobs:
       - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
         with:
           bun-version: '1.4.2'
-      - name: Reserve one attempt or resolve a human decision
+      - name: Validar la tarea y reservar un intento
         id: admit
         env:
           GH_TOKEN: ${{ github.token }}
@@ -60,6 +61,7 @@ jobs:
           if-no-files-found: error
           retention-days: 7
   attempt:
+    name: Desarrollar y verificar
     needs: admit
     if: needs.admit.outputs.admitted == 'true'
     uses: ./.github/workflows/factory-attempt.yml
@@ -74,6 +76,7 @@ jobs:
     secrets:
       OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
   publish:
+    name: Crear propuesta
     needs: [admit, attempt]
     if: needs.attempt.outputs.status == 'passed'
     runs-on: ubuntu-latest
@@ -107,17 +110,18 @@ jobs:
         with:
           name: factory-review-${{ github.run_id }}
           path: ${{ runner.temp }}/review
-      - name: Apply the original verified patch without executing it
+      - name: Preparar el cambio que ha pasado las pruebas
         env:
           PATCH_SHA: ${{ needs.attempt.outputs.patch_sha }}
         run: bun factory/worker.ts apply
-      - name: Publish a draft for SonarQube and human review
+      - name: Abrir la propuesta en borrador
         id: publish
         env:
           GH_TOKEN: ${{ github.token }}
           PATCH_SHA: ${{ needs.attempt.outputs.patch_sha }}
         run: bun factory/publish.ts
   sonar:
+    name: Calidad · Sonar
     needs: [admit, publish]
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -129,7 +133,7 @@ jobs:
           ref: ${{ needs.publish.outputs.head_sha }}
           fetch-depth: 0
           persist-credentials: false
-      - name: Require the SonarQube connection
+      - name: Comprobar la conexión con Sonar
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: test -n "$SONAR_TOKEN"
@@ -146,6 +150,7 @@ jobs:
             -Dsonar.scm.revision=${{ needs.publish.outputs.head_sha }}
             -Dsonar.qualitygate.wait=true
   finish:
+    name: Resultado y siguiente paso
     needs: [admit, attempt, publish, sonar]
     if: always() && needs.admit.outputs.admitted == 'true'
     runs-on: ubuntu-latest
@@ -169,7 +174,7 @@ jobs:
         with:
           name: factory-proposal-${{ github.run_id }}
           path: ${{ runner.temp }}/proposal
-      - name: Finish or dispatch the next bounded attempt
+      - name: Registrar el resultado y decidir el siguiente paso
         env:
           GH_TOKEN: ${{ github.token }}
           ISSUE: ${{ needs.admit.outputs.issue }}
@@ -179,7 +184,7 @@ jobs:
           PROPOSAL_ARTIFACT: factory-proposal-${{ github.run_id }}
           FEEDBACK_ARTIFACT: ${{ needs.attempt.outputs.feedback_artifact }}
         run: bun factory/controller.ts finish
-      - name: Record the complete quality gate on the published commit
+      - name: Actualizar el resultado de calidad de la propuesta
         if: needs.publish.outputs.head_sha != ''
         env:
           GH_TOKEN: ${{ github.token }}

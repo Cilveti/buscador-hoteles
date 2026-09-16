@@ -49,7 +49,7 @@ Seguir [INSTALL.md](INSTALL.md): adaptar repositorio, operadores y proyecto Sona
 
 Si el modelo o su transporte falla antes de publicar, un operador puede ejecutar `factory.yml` desde la revisión corregida, con `issue` y `recover_run` (ID del run fallido). Se verifica que ha terminado y que no ha publicado rama; la recuperación queda auditada y consume el siguiente intento disponible. No puede usarse después de agotar los tres intentos.
 
-El worker usa `prompt_async` de OpenCode1.18.30 y consulta brevemente el último mensaje, con un único límite de diez minutos para la inferencia. El job tiene doce minutos para incluir instalación y cierre. Esto evita sostener una llamada HTTP síncrona larga, que falló por timeout a los seis minutos en la revisión de #8.
+El worker usa `prompt_async` de OpenCode 1.18.30 y consulta brevemente el último mensaje, con un único límite de diez minutos para la inferencia. El job tiene doce minutos para incluir instalación y cierre. Esto evita sostener una llamada HTTP síncrona larga, que falló por timeout a los seis minutos en la revisión de #8.
 
 La versión fijada tiene además un fallo al serializar el formato JSON Schema de ciertos mensajes de usuario. Consultar solo el último mensaje evita recuperar esos mensajes anteriores; si el primer mensaje todavía es ese mensaje de usuario, se tolera exclusivamente el error de codificación identificado hasta que llegue el del asistente. Otros errores HTTP fallan. Se esperan mensajes completados: un turno de herramientas intermedio no equivale a un veredicto. La salida final sigue validándose contra el contrato y el presupuesto no se amplía.
 
@@ -58,4 +58,12 @@ La versión fijada tiene además un fallo al serializar el formato JSON Schema d
 
 En `CI · aplicación y fábrica`, usar la ejecución manual con `review_run` para indicar un run terminado de la fábrica cuyo patch haya pasado la verificación independiente. Esta opción vuelve a revisar ese snapshot y guarda el veredicto; no genera código, no publica una PR ni cambia el ledger. Solo pueden ejecutarla los operadores configurados. Comprueba identidad de base, especificación y hash del patch antes de llamar al modelo. Consume una llamada de revisión y respeta el límite de tiempo del worker.
 
-La incidencia real de #8 mostró que un nombre estático de artefacto podía apuntar a un informe nunca creado después de un timeout. Los outputs de la fábrica ahora solo anuncian artefactos cuando el paso que los publica ha terminado correctamente. El intento3 de #8 falló al recuperar aquel informe inexistente, antes de llamar al modelo; su contador y su estado fallido se conservan. Los diagnósticos del revisor son pruebas del arnés, no una continuación oculta de esa tarea.
+La incidencia real de #8 mostró que un nombre estático de artefacto podía apuntar a un informe nunca creado después de un timeout. Los outputs de la fábrica ahora solo anuncian artefactos cuando el paso que los publica ha terminado correctamente. El intento 3 de #8 falló al recuperar aquel informe inexistente, antes de llamar al modelo; su contador y su estado fallido se conservan. Los diagnósticos del revisor son pruebas del arnés, no una continuación oculta de esa tarea.
+
+El revisor recibe también `context/review/patch.diff` y la lista de archivos modificados, ambos construidos por el controlador a partir del patch verificado. Empieza por los cambios y consulta su contexto inmediato; no tiene que reconstruir el diff ni revisar toda la aplicación.
+
+### Presupuesto del revisor
+
+El revisor usa una sesión independiente de GLM 5.3 Flash. En el ensayo visual, GLM 5.3 repitió lecturas de los mismos archivos hasta agotar el tiempo; no se adoptó esa configuración como revisor por defecto. Flash cerró la revisión estructurada del mismo patch verificado. Esto prueba que el recorrido funciona en ese caso, no que un modelo sea universalmente mejor revisando.
+
+Además de diez minutos, el controlador corta una sesión si observa más de 80 llamadas a herramientas. El diagnóstico guarda estados y contadores, nunca argumentos, código devuelto por herramientas ni razonamiento del modelo. El tercer intento de implementación conserva GLM 5.3 y el mismo corte: escalar no amplía los permisos ni garantiza el éxito.

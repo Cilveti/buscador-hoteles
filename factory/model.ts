@@ -113,7 +113,9 @@ try {
     format: { type: 'json_schema', schema: resultSchema(role), retryCount: 0 },
   });
   stage = 'waiting';
-  const info = await waitForModelResult(request, sessionId, deadline);
+  const info = await waitForModelResult(request, sessionId, deadline, 2000, (progress) => {
+    writeFileSync(join(temp, 'model-progress.json'), JSON.stringify(progress), { mode: 0o600 });
+  });
   stage = 'validation';
   writeFileSync(
     join(temp, 'model-diagnostic.json'),

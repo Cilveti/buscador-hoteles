@@ -63,8 +63,8 @@ const pr = object(
   }),
 );
 for (const [context, state, description] of [
-  ['Factory / acceptance', 'success', 'Isolated unit, E2E, build and model review passed'],
-  ['Factory / quality', 'pending', 'Waiting for SonarQube'],
+  ['Factory / acceptance', 'success', 'Tests, navegador, build y revisión superados'],
+  ['Factory / quality', 'pending', 'Pendiente del análisis de Sonar'],
 ] as const)
   api(repoPath(`statuses/${sha}`), 'POST', { context, state, description, target_url: runUrl });
 appendFileSync(

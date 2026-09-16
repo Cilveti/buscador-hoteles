@@ -1,4 +1,4 @@
-name: Pinned OpenCode worker
+name: Agente OpenCode
 description: Run the model in a separate candidate snapshot, without application dependencies or publishing credentials
 inputs:
   model:
@@ -14,13 +14,13 @@ runs:
       with:
         node-version: '22'
         package-manager-cache: false
-    - name: Install and verify the worker before exposing its credential
+    - name: Preparar y verificar OpenCode
       shell: bash
       run: |
         test "$(npm view opencode-ai@1.18.30 dist.integrity)" = 'sha512-oLcOLQE4XzDKy6T5L5d1RdVJvXHXwVlD4hRF5V317JbUQorrl2EyDdGZk5kbgv675J9FXp8usg92MZbEWhh6gQ=='
         npm install --global opencode-ai@1.18.30
         test "$(opencode --version)" = '1.18.30'
-    - name: Run inference without a shell tool
+    - name: Ejecutar el agente con permisos limitados
       shell: bash
       env:
         OPENCODE_API_KEY: ${{ inputs.api-key }}
@@ -39,11 +39,13 @@ runs:
         export OPENCODE_CONFIG_CONTENT="$(< "$RUNNER_TEMP/opencode-config.json")"
         bun "$GITHUB_ACTION_PATH/../../../factory/model.ts"
         test -s "$RUNNER_TEMP/worker-result.json"
-    - name: Preserve non-sensitive model diagnostics
+    - name: Guardar el diagnóstico del agente
       if: always()
       uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
       with:
         name: factory-model-diagnostic-${{ github.run_id }}-${{ github.job }}
-        path: ${{ runner.temp }}/model-diagnostic.json
+        path: |
+          ${{ runner.temp }}/model-diagnostic.json
+          ${{ runner.temp }}/model-progress.json
         if-no-files-found: warn
         retention-days: 7

@@ -36,4 +36,5 @@ if (process.argv[2] === 'admit') {
     throw new Error('Replay requires independently passed checks for this exact task and patch');
   output('base_sha', task.baseSha);
   output('patch_sha', patchSha);
+  output('reviewer', config.worker.reviewer);
 } else throw new Error('Unknown replay command');

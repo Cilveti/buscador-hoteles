@@ -48,3 +48,62 @@ test('async review preserves model errors and terminates a permanently busy sess
     waitForModelResult(async () => [], 'ses1', AbortSignal.timeout(20), 1),
   ).rejects.toThrow();
 });
+
+test('progress exposes only tool states, never model prose, inputs or tool output', async () => {
+  const samples: unknown[] = [];
+  await waitForModelResult(
+    async () => [
+      {
+        info: {
+          role: 'assistant',
+          time: { created: 1, completed: 2 },
+          structured: { status: 'pass' },
+        },
+        parts: [
+          { type: 'reasoning', text: 'private reasoning' },
+          {
+            type: 'tool',
+            tool: 'read',
+            state: { status: 'completed', input: { path: 'private' }, output: 'private source' },
+          },
+        ],
+      },
+    ],
+    'ses1',
+    AbortSignal.timeout(1000),
+    1,
+    (sample) => samples.push(sample),
+  );
+  expect(samples).toEqual([
+    {
+      polls: 1,
+      toolCalls: 0,
+      assistantMessages: 1,
+      completed: true,
+      structured: true,
+      tools: [{ name: 'read', status: 'completed' }],
+    },
+  ]);
+});
+
+test('a runaway tool stream is stopped before consuming the entire time budget', async () => {
+  let reads = 0;
+  await expect(
+    waitForModelResult(
+      async () => [
+        {
+          info: { role: 'assistant', time: { created: 1 } },
+          parts: [
+            { id: `tool-${++reads}`, type: 'tool', tool: 'read', state: { status: 'completed' } },
+          ],
+        },
+      ],
+      'ses1',
+      AbortSignal.timeout(2000),
+      1,
+      undefined,
+      2,
+    ),
+  ).rejects.toThrow('Model tool-call limit exceeded');
+  expect(reads).toBe(3);
+});

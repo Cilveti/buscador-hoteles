@@ -9,8 +9,8 @@
   },
   "specificationSha": "429332f7998821857e79a56812c2a7e1da8e77dc7f568cb34963a7b8a7a065c6",
   "profile": "basic",
-  "status": "failed",
-  "attempts": 2,
+  "status": "running",
+  "attempts": 3,
   "history": [
     {
       "at": "2026-09-16T07:57:49.990Z",
@@ -41,13 +41,25 @@
       "event": "failed",
       "actor": "controller",
       "detail": "Inspect the run for check and review evidence."
+    },
+    {
+      "at": "2026-09-16T08:07:22.552Z",
+      "event": "recovered",
+      "actor": "Cilveti",
+      "detail": "completed run=35071825830"
+    },
+    {
+      "at": "2026-09-16T08:07:22.552Z",
+      "event": "started",
+      "actor": "controller",
+      "detail": "attempt=3; run=35072051343"
     }
   ],
   "design": {
     "id": "hotel-empty-v1",
     "manifestSha": "9ce40c98884be5dedf04dc2ad0e9afc24d7cd92ed69f1effbd548f6d21c3249d"
   },
-  "activeRun": "35071825830",
+  "activeRun": "35072051343",
   "proposal": {
     "run": "35071200573",
     "artifact": "factory-proposal-35071200573",

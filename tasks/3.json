@@ -9,7 +9,7 @@
   },
   "specificationSha": "429332f7998821857e79a56812c2a7e1da8e77dc7f568cb34963a7b8a7a065c6",
   "profile": "basic",
-  "status": "running",
+  "status": "failed",
   "attempts": 3,
   "history": [
     {
@@ -53,6 +53,12 @@
       "event": "started",
       "actor": "controller",
       "detail": "attempt=3; run=35072051343"
+    },
+    {
+      "at": "2026-09-16T08:08:32.553Z",
+      "event": "failed",
+      "actor": "controller",
+      "detail": "Inspect the run for check and review evidence."
     }
   ],
   "design": {

@@ -80,7 +80,7 @@ export function pullRequestBody(input: {
     `## Qué se ha comprobado\n\n- Lint, tipos y tests de comportamiento: superados.\n- Aplicación real y base de datos temporal: pruebas de navegador superadas.\n- Build de producción: superado.\n- Revisión independiente del código y de la evidencia: sin defectos que bloqueen esta propuesta.\n\n[Consultar logs, capturas y trazas](${runUrl}) (artefactos disponibles durante siete días).`,
     `<details>\n<summary>Informe completo del revisor automático</summary>\n\n${prose(review)}\n\nEl revisor inspecciona código y evidencia. Las pruebas las ejecuta CI; este informe no es una aprobación humana.\n\n</details>`,
     qualitySection('pending', runUrl),
-    `## Qué necesita una persona\n\nComprobar que el cambio resuelve la intención de la tarea, revisar el diff y decidir si se integra. La PR queda en borrador; no se ha fusionado ni desplegado.`,
+    `## Qué necesita una persona\n\nComprobar que el cambio resuelve la intención de la tarea y revisar el diff. Si GitHub muestra **Approve workflows to run**, autorizar esa CI adicional y esperar sus resultados antes de decidir si se integra. Aprobar una ejecución no aprueba el código. La PR queda en borrador; no se ha fusionado ni desplegado.`,
     `<details>\n<summary>Archivos y trazabilidad técnica</summary>\n\n${paths.map((path) => `- \`${path}\``).join('\n')}\n\n- Intento: ${task.attempts}/${config.limits.attempts}.\n- Permisos: ${task.profile === 'basic' ? 'básicos (código y tests)' : 'completos para dependencias; controles protegidos'}.\n- Base: \`${task.baseSha}\`.\n- Ejecutor: \`${task.workerSha ?? task.baseSha}\`.\n- Especificación: \`${task.specificationSha}\`.\n- Patch verificado: \`${patchSha}\`.\n\n</details>`,
   ].join('\n\n');
 }

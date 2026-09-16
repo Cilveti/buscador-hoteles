@@ -60,7 +60,7 @@ Fuentes: [primer gate](https://docs.sonarsource.com/sonarqube-cloud/standards/qu
 
 Validar el plan real; no contratar ni activar pagos por inferencia sin autorización. Un fallo de conexión no se presenta como quality gate verde.
 
-Si el plan admite protección de ramas, configurar revisión humana y comprobaciones obligatorias después de verificar sus nombres en ambas clases de PR. Las PR de la fábrica emiten `Factory / acceptance` y `Factory / quality`; las PR humanas emiten `Tests, navegador y build` y `Calidad · Sonar`. No exigir indiscriminadamente las cuatro: cada recorrido debe producir primero una señal común o usar una integración que dispare la misma CI. En este repositorio privado, la API devuelve 403 por el plan actual y no se ha activado protección. El workflow evita hacer merge, pero un usuario con escritura puede saltarse el proceso.
+Si el plan admite protección de ramas, exigir revisión humana y los checks normales `Tests, navegador y build` y `Calidad · Sonar`, comprobando antes sus nombres efectivos. Las PR creadas con `GITHUB_TOKEN` dejan esa CI pendiente de **Approve workflows to run**; aprobar la ejecución sobre el cambio revisado permite producir los mismos checks que en una PR humana. Los estados `Factory / acceptance` y `Factory / quality` acreditan además la verificación previa de la fábrica. En este repositorio privado, la API devuelve 403 por el plan actual y no se ha activado protección. El workflow evita hacer merge, pero un usuario con escritura puede saltarse el proceso. Ver [comportamiento de CI](CI.md).
 
 Antes de etiquetar una tarea, ejecutar `bun factory/setup.ts --check-ready`. Falla si faltan los dos secretos o el permiso de PR. No invoca el modelo y no prueba por sí solo la validez de la cuenta Sonar.
 

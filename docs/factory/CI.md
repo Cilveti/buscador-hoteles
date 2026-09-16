@@ -6,7 +6,9 @@
 
 Las PR del mismo repositorio ejecutan también Sonar después de los checks. Las PR de forks no reciben el secreto Sonar. Hay CI en los pushes a main y ejecución manual para diagnosticar una revisión concreta.
 
-La PR creada por `GITHUB_TOKEN` no dispara por sí sola otro workflow. Por eso la fábrica ya verifica su patch antes de publicarlo, analiza Sonar después y registra `Factory / acceptance` y `Factory / quality` en el commit exacto. Una actualización posterior por una persona dispara la CI normal. No deducir aceptación de que exista una PR o de que un run que gestiona reintentos esté verde.
+Al crear una PR con `GITHUB_TOKEN`, GitHub genera las ejecuciones `pull_request` en estado **aprobación requerida**. Un usuario con escritura puede pulsar **Approve workflows to run** en la PR. Es el comportamiento vigente desde junio de 2026 ([documentación oficial](https://docs.github.com/en/actions/concepts/security/github_token), [anuncio](https://github.blog/changelog/2026-06-11-bot-created-pull-requests-can-run-workflows-if-approved/)). No hace falta introducir otro token para ese paso.
+
+La fábrica verifica el patch antes de publicarlo, ejecuta Sonar y registra `Factory / acceptance` y `Factory / quality` sobre el commit exacto. Después de aprobar la CI adicional, esta comprueba también el resultado de combinar la PR con main y genera los checks normales. Una aprobación del workflow autoriza esa ejecución; no es una aprobación del código ni un merge. No deducir aceptación de que exista una PR o de que un run que gestiona reintentos esté verde.
 
 ## Leer una propuesta del agente
 

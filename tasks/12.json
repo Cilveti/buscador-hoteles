@@ -9,7 +9,7 @@
   },
   "specificationSha": "a9981e9341b82a9799b9a8629524b6119f9981edfbea114ee5c60ba3278f7649",
   "profile": "basic",
-  "status": "running",
+  "status": "waiting-human",
   "attempts": 1,
   "history": [
     {
@@ -23,7 +23,19 @@
       "event": "started",
       "actor": "controller",
       "detail": "attempt=1; run=35205061474"
+    },
+    {
+      "at": "2026-09-17T09:27:55.806Z",
+      "event": "waiting-human",
+      "actor": "controller",
+      "detail": "El perfil básico bloquea el cambio necesario: hay que autorizar la dependencia `slugify` en versión exacta `1.6.6` en las dependencias de `apps/web/package.json`; su finalidad es transliterar tildes y símbolos para generar slugs ASCII del catálogo de hoteles, y la alternativa (implementación propia) está expresamente prohibida por la tarea. El helper `hotelSlug` y sus pruebas ya están escritos usando esa biblioteca, así que en cuanto el operador apruebe la dependencia (y el controlador resuelva el lockfile) la propuesta queda completa y verificable."
     }
   ],
-  "activeRun": "35205061474"
+  "activeRun": "35205061474",
+  "decision": {
+    "id": "2d230867-6d89-46d9-9fcd-7f3dc54927f6",
+    "reason": "El perfil básico bloquea el cambio necesario: hay que autorizar la dependencia `slugify` en versión exacta `1.6.6` en las dependencias de `apps/web/package.json`; su finalidad es transliterar tildes y símbolos para generar slugs ASCII del catálogo de hoteles, y la alternativa (implementación propia) está expresamente prohibida por la tarea. El helper `hotelSlug` y sus pruebas ya están escritos usando esa biblioteca, así que en cuanto el operador apruebe la dependencia (y el controlador resuelva el lockfile) la propuesta queda completa y verificable.",
+    "requestedProfile": "full",
+    "specificationSha": "a9981e9341b82a9799b9a8629524b6119f9981edfbea114ee5c60ba3278f7649"
+  }
 }

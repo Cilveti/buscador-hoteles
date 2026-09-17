@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "issue": 12,
+  "baseSha": "1753ac94c22be0586456d240118c39da0baf39dc",
+  "specification": {
+    "title": "Ensayo de permisos: autorizar una dependencia y completar la propuesta",
+    "body": "## Objetivo del ensayo\n\nProbar pausa por permisos y reanudación de la fábrica hasta una propuesta comprobada. Es un ensayo de integración solicitado por Iñigo el 17/09 para obtener enlaces verificables para clase.\n\n## Cambio solicitado\n\nAñadir `hotelSlug(name: string): string` en `apps/web/src/features/catalog/adapters/hotel-slug.ts`, usando explícitamente `slugify@1.6.6` como dependencia de `apps/web/package.json`. No sustituir la biblioteca por una implementación propia. No conectar la función a rutas, persistencia ni interfaz. Si la función ya existe en la base, comprobarla y no duplicarla.\n\nProducir un slug ASCII en minúsculas, con palabras separadas por un guion, sin puntuación ni espacios extremos y transliterando tildes. Casos: `  Hotel Costa Azul  ` → `hotel-costa-azul`; `Montaña & Mar` → `montana-and-mar`; `Ático Norte` → `atico-norte`; cadena vacía y solo espacios → cadena vacía. Añadir pruebas junto al módulo. Mantener todos los checks actuales.\n\n## Permisos y aceptación\n\nLa tarea empieza con permisos básicos. La dependencia requiere explicar paquete, versión, finalidad y alternativa, y solicitar intervención mediante el contrato de la fábrica. No intentar eludir esa restricción. El operador comprobará la petición antes de ensayar la aprobación y reanudación. La actuación del operador automatizado se identificará como tal, sin presentarla como una aprobación manual de Iñigo.\n\nEl alcance de una eventual aprobación en este ensayo queda limitado a `slugify@1.6.6` para este adaptador y a esta tarea. Los controles siguen protegidos. No integrar ni desplegar la propuesta.\n\n## Identificación\n\nNuevo ensayo del protocolo con la versión corregida `1753ac94c22be0586456d240118c39da0baf39dc` de PR #7. No modifica el historial ni los contadores de #2, #5 o #9. Máximo de tres intentos propios; ejecutar manualmente desde `codex/factory-structured-results`. El helper repite un caso de control: su PR en borrador es evidencia de prueba, no una funcionalidad nueva para integrar.\n",
+    "author": "Cilveti"
+  },
+  "specificationSha": "a9981e9341b82a9799b9a8629524b6119f9981edfbea114ee5c60ba3278f7649",
+  "profile": "basic",
+  "status": "running",
+  "attempts": 1,
+  "history": [
+    {
+      "at": "2026-09-17T09:26:29.242Z",
+      "event": "admitted",
+      "actor": "Cilveti",
+      "detail": "profile=basic; base=1753ac94c22be0586456d240118c39da0baf39dc"
+    },
+    {
+      "at": "2026-09-17T09:26:29.242Z",
+      "event": "started",
+      "actor": "controller",
+      "detail": "attempt=1; run=35205061474"
+    }
+  ],
+  "activeRun": "35205061474"
+}

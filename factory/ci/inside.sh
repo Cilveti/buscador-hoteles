@@ -8,6 +8,7 @@ case "${FACTORY_PHASE:?}" in
   unit)
     bun run lint
     bun run typecheck
+    bun node_modules/typescript/bin/tsc --noEmit -p factory/tsconfig.json
     bun run test
     ;;
   e2e)

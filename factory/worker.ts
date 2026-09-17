@@ -12,6 +12,7 @@ import { config } from './config';
 import { resolveDependencies } from './dependencies';
 import { readDesign } from './design';
 import { object, parseTask, string } from './github';
+import { validateResult } from './model-result';
 import { git, validateIndex } from './policy';
 import { hash } from './state';
 
@@ -76,7 +77,19 @@ function prepare(): void {
     ? readFileSync(previousReport, 'utf8')
     : 'No previous attempt';
   const reviewer = process.env.WORKER_ROLE === 'reviewer';
-  if (reviewer) apply(candidate, join(temp, 'proposal/agent.patch'), string(process.env.PATCH_SHA));
+  if (reviewer) {
+    const patch = join(temp, 'proposal/agent.patch');
+    apply(candidate, patch, string(process.env.PATCH_SHA));
+    const directory = join(candidate, 'context/review');
+    mkdirSync(directory, { recursive: true });
+    cpSync(patch, join(directory, 'patch.diff'));
+    writeFileSync(
+      join(directory, 'changed-files.json'),
+      JSON.stringify(
+        git(candidate, 'diff', '--cached', '--name-only', '-z').split('\0').filter(Boolean),
+      ),
+    );
+  }
   const evidence = reviewer ? readFileSync(join(temp, 'checks/feedback.json'), 'utf8') : feedback;
   const edit: Record<string, string> = { '*': 'deny' };
   if (!reviewer) {
@@ -114,6 +127,7 @@ function prepare(): void {
     task: 'deny',
     skill: 'deny',
     question: 'deny',
+    StructuredOutput: 'allow',
     external_directory: 'deny',
   };
   writeFileSync(
@@ -130,8 +144,8 @@ function prepare(): void {
     }),
   );
   const contract = reviewer
-    ? 'Review the frozen proposal independently against the task and check evidence. Do not edit files. Report actionable defects with paths and explanations. Do not invent executed tests. Return ONLY JSON: {"status":"pass"|"changes-requested", "summary":"...", "findings":[{"path":"...","reason":"..."}]}.'
-    : 'Implement the task with focused code and useful colocated tests. No shell or publication tools: independent CI runs the app after your turn and returns feedback. Do not claim to have run tests. Return ONLY JSON: {"status":"implemented"|"needs-human"|"blocked", "summary":"..."}. Use needs-human ONLY when the basic profile blocks a necessary dependency change: explain the exact package, version, purpose and alternatives. This asks for the full dependency profile on this frozen task. For a missing product decision use blocked: the operator must clarify the specification in a new task. Never request permissions merely to bypass a failing check.';
+    ? 'Write in clear Spanish. The summary must explain whether the requested behavior and acceptance criteria are satisfied, with relevant limitations. Do not list files, paths, symbols or implementation steps in the summary. Mention a file only when essential to explain an actionable defect or a decision the reader must make. Findings must retain precise paths so defects can be located. Start with context/review/patch.diff and changed-files.json: these contain the exact original proposal. Review the changed code independently against the task and check evidence. Inspect direct callers or dependencies only when needed to assess a concrete risk; do not audit unrelated application code. Do not edit files. Report actionable defects with paths and explanations. Do not invent executed tests. Return ONLY JSON: {"status":"pass"|"changes-requested", "summary":"...", "findings":[{"path":"...","reason":"..."}]}.'
+    : 'Write a functional PR summary in clear Spanish, at most two short sentences: explain the problem, the resulting behavior and its benefit, with a before/after example when useful. For infrastructure changes, explain what changes for developers operating the system. State relevant limitations honestly. Do not mention filenames, paths, code symbols, CSS values or a list of implementation steps. Mention a file only exceptionally, when essential to explain a compatibility change, a required migration or a decision for the reader. Do not invent user-visible behavior for a helper that is not connected to the product, and do not claim tests you did not run. Implement the task with focused code and useful colocated tests. No shell or publication tools: independent CI runs the app after your turn and returns feedback. Do not claim to have run tests. Return ONLY JSON: {"status":"implemented"|"needs-human"|"blocked", "summary":"..."}. Use needs-human ONLY when the basic profile blocks a necessary dependency change: explain the exact package, version, purpose and alternatives. This asks for the full dependency profile on this frozen task. For a missing product decision use blocked: the operator must clarify the specification in a new task. Never request permissions merely to bypass a failing check.';
   writeFileSync(
     join(temp, 'worker-prompt.txt'),
     [
@@ -150,25 +164,10 @@ function prepare(): void {
 }
 
 function response(): Record<string, unknown> {
-  const events: Record<string, unknown>[] = readFileSync(join(temp, 'worker-events.jsonl'), 'utf8')
-    .split('\n')
-    .filter(Boolean)
-    .map((line) => object(JSON.parse(line)));
-  if (events.some((event) => event.type === 'error'))
-    throw new Error('Model run returned an error');
-  const texts = events
-    .filter((event) => event.type === 'text')
-    .map((event) => string(object(event.part).text));
-  const text = texts
-    .at(-1)
-    ?.trim()
-    .replace(/^```(?:json)?\s*/, '')
-    .replace(/\s*```$/, '');
-  if (!text) throw new Error('Missing model result');
-  const result = object(JSON.parse(text));
-  string(result.status);
-  string(result.summary);
-  return result;
+  return validateResult(
+    JSON.parse(readFileSync(join(temp, 'worker-result.json'), 'utf8')),
+    process.env.WORKER_ROLE === 'reviewer' ? 'reviewer' : 'implementer',
+  );
 }
 
 function serialize(): void {
@@ -193,6 +192,15 @@ function serialize(): void {
     cwd: candidate,
   });
   writeFileSync(join(temp, 'agent.patch'), patch);
+  writeFileSync(
+    join(temp, 'proposal.json'),
+    JSON.stringify({
+      baseSha: task.baseSha,
+      specificationSha: task.specificationSha,
+      patchSha: hash(patch),
+      summary: result.summary,
+    }),
+  );
   output('patch_sha', hash(patch));
   output('status', 'generated');
 }
@@ -243,4 +251,5 @@ else if (command === 'apply') {
   if (git(root, 'rev-parse', 'HEAD') !== task.baseSha)
     throw new Error('Wrong verification checkout');
   apply(root, join(temp, 'proposal/agent.patch'), string(process.env.PATCH_SHA));
+  output('design_id', task.design?.id ?? '');
 } else throw new Error('Unknown worker command');

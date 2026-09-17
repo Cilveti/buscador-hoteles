@@ -1,6 +1,6 @@
 # Fábrica de software · instalación y operación
 
-**Estado: infraestructura publicada; cinco baselines GitHub verdes, integraciones externas pendientes.** Consultar [evidencia](EVIDENCE.md).
+**Estado: recorrido actualizado issue → draft PR con checks, revisión y Sonar comprobado en #9 → #10. Las mejoras de CI y presentación se entregan en la PR #7, pendiente de integración.** Consultar [evidencia y revisiones comprobadas](EVIDENCE.md).
 
 La fábrica convierte una issue autorizada en una propuesta verificable. El resultado es una draft PR o un estado explicado. La integración del producto sigue siendo humana.
 
@@ -32,14 +32,16 @@ La suite E2E usa los tests existentes de búsqueda, detalle y administración. L
 
 La suite levanta la aplicación con su servidor de desarrollo y base efímera; el build se comprueba en otro contenedor. No se ha ensayado aún una preview pública ni el servidor compilado en producción. Los casos existentes comprueban búsqueda, detalle y administración: una nueva funcionalidad necesita sus criterios específicos y la revisión de intención sigue siendo humana.
 
-La integración Sonar está preparada, pero todavía no conectada. No se está enviando cobertura LCOV; no presentar el gate como una garantía de cobertura hasta configurar y comprobar esa parte. El aislamiento de CI evita red externa y credenciales; no convierte los tests escritos por el candidato en una aceptación independiente de su propia autoría.
+Sonar está conectado y ha aprobado análisis de main y PR. No se está enviando cobertura LCOV; no presentar el gate como una garantía de cobertura hasta configurar y comprobar esa parte. El aislamiento de CI evita red externa y credenciales; no convierte los tests escritos por el candidato en una aceptación independiente de su propia autoría.
 
-## Integraciones pendientes
+## Integraciones configuradas en este repositorio
 
-- Credencial de modelo: `OPENCODE_API_KEY` (por configurar en este repo).
-- Creación de PR desde Actions: desactivada en la auditoría inicial; requiere habilitación del propietario.
-- SonarQube: conexión, proyecto y comprobación de plan pendientes; no se declara gate verde por ausencia de integración.
-- Penpot: archivo y exportación versionada pendientes. MCP remoto requiere plugin conectado a un archivo abierto.
+- OpenCode Go: clave disponible solo durante la inferencia; implementador y revisor en sesiones y jobs separados.
+- GitHub Actions: creación de draft PR habilitada. La PR explica cambio, pruebas, revisor y decisión humana; los detalles técnicos quedan plegados.
+- SonarQube Cloud: proyecto privado en Free, análisis desde CI, sin Automatic Analysis duplicado.
+- Penpot: snapshot `hotel-empty-v1` con dos tamaños, tokens y hashes; pruebas reales de navegador del candidato visual superadas.
+
+Para otra cuenta hay que configurar sus propias credenciales y permisos siguiendo [INSTALL.md](INSTALL.md). La instalación completa en una segunda cuenta no se ha ensayado. El plan actual de GitHub no permite acreditar protección obligatoria de la rama privada; [límites y operación de CI](CI.md).
 
 ## Continuidad
 

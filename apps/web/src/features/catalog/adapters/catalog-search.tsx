@@ -1,5 +1,5 @@
 'use client';
-import { ArrowLeft, ArrowRight, Compass, Search, SlidersHorizontal, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Search, SlidersHorizontal, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -16,6 +16,7 @@ import {
 import { Skeleton } from '@/components/ui/skeleton';
 import { hotelHref } from '../application/hotel-navigation';
 import { initialQuery } from '../application/query';
+import { CatalogEmptyState } from './catalog-empty-state';
 import { CatalogFilters } from './catalog-filters';
 import { CatalogFooter, CatalogHeader } from './catalog-shell';
 import { HotelCard } from './hotel-card';
@@ -226,16 +227,7 @@ export function CatalogSearch() {
                 <Button onClick={retry}>Reintentar</Button>
               </div>
             ) : state.data.total === 0 ? (
-              <div className="flex min-h-80 flex-col items-center justify-center rounded-lg border border-dashed bg-white p-8 text-center">
-                <span className="mb-5 rounded-full bg-secondary p-4">
-                  <Compass className="size-7 text-[#398d9d]" />
-                </span>
-                <h3 className="text-xl font-medium">Todavía no hemos encontrado tu hotel</h3>
-                <p className="mb-6 mt-3 max-w-sm text-sm leading-6 text-muted-foreground">
-                  Prueba otro destino o amplía los filtros para descubrir más opciones.
-                </p>
-                <Button onClick={reset}>Ver todos los hoteles</Button>
-              </div>
+              <CatalogEmptyState onReset={reset} />
             ) : state.data.hotels.length === 0 ? (
               <div className="rounded-lg border bg-white p-10 text-center">
                 <h3 className="text-lg font-medium">Esta página ya no tiene resultados</h3>

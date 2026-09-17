@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "issue": 11,
+  "baseSha": "1753ac94c22be0586456d240118c39da0baf39dc",
+  "specification": {
+    "title": "Ensayo visual: recuperar una búsqueda sin resultados",
+    "body": "## Objetivo\n\nPresentar el estado sin resultados de la búsqueda según la referencia de Penpot. La persona debe entender qué ha ocurrido y poder recuperar todos los hoteles con una acción clara.\n\n### Design snapshot\nhotel-empty-v1\n\n## Alcance y aceptación\n\n- Consultar los estados, tokens, estructura y SVG de `context/design/`. Solo cambiar el estado que aparece tras una respuesta correcta con `total === 0`.\n- Tarjeta blanca, borde sólido de 1 px, radio de 12 px, texto oscuro y botón verde azulado del diseño. Icono de búsqueda decorativo de la biblioteca existente, sobre su círculo; ocultarlo a lectores de pantalla.\n- Título «Todavía no hemos encontrado tu hotel». Ayuda «Prueba otro destino o amplía los filtros para descubrir más opciones.». Botón «Ver todos los hoteles», conservando el reset existente.\n- Usar una región con nombre accesible y un elemento HTML semántico adecuado. Funcionar a 360 px y en escritorio sin desbordamiento horizontal.\n- Conservar carga, error HTTP y reintento, página fuera de rango, resultados y controles. No añadir dependencias.\n- La comprobación independiente arranca aplicación y PostgreSQL, verifica móvil/escritorio y recuperación, y guarda capturas. No modificar controles ni tests externos.\n\n## Identificación del ensayo\n\nIñigo encarga el 17/09 ejecutar las pruebas necesarias y entregar enlaces verificables para enseñar en clase. Este ensayo de regresión utiliza la versión corregida de infraestructura `1753ac94c22be0586456d240118c39da0baf39dc` de la PR #7. Repite el escenario visual de #8 después de corregir revisión y transporte. #8 conserva su estado agotado y su historial; no se borra ni reinicia su presupuesto. Esta tarea tiene su propio máximo de tres intentos y no autoriza intentos adicionales si los agota.\n\nEjecución manual desde `codex/factory-structured-results`, antes de adoptar la infraestructura en main. Resultado esperado: draft PR, pruebas y revisión verificables. No integrar ni desplegar el cambio. El material docente distinguirá la evidencia nueva del ensayo anterior.\n",
+    "author": "Cilveti"
+  },
+  "specificationSha": "bf32f9647381a94548faf6b00cf0deb03c5f49696f0a7ce96be3d41d523c6a53",
+  "profile": "basic",
+  "status": "running",
+  "attempts": 1,
+  "history": [
+    {
+      "at": "2026-09-17T09:25:50.371Z",
+      "event": "admitted",
+      "actor": "Cilveti",
+      "detail": "profile=basic; base=1753ac94c22be0586456d240118c39da0baf39dc"
+    },
+    {
+      "at": "2026-09-17T09:25:50.372Z",
+      "event": "started",
+      "actor": "controller",
+      "detail": "attempt=1; run=35205058203"
+    }
+  ],
+  "design": {
+    "id": "hotel-empty-v1",
+    "manifestSha": "9ce40c98884be5dedf04dc2ad0e9afc24d7cd92ed69f1effbd548f6d21c3249d"
+  },
+  "activeRun": "35205058203"
+}

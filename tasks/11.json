@@ -9,7 +9,7 @@
   },
   "specificationSha": "bf32f9647381a94548faf6b00cf0deb03c5f49696f0a7ce96be3d41d523c6a53",
   "profile": "basic",
-  "status": "running",
+  "status": "retry",
   "attempts": 1,
   "history": [
     {
@@ -23,11 +23,26 @@
       "event": "started",
       "actor": "controller",
       "detail": "attempt=1; run=35205058203"
+    },
+    {
+      "at": "2026-09-17T09:41:57.814Z",
+      "event": "retry",
+      "actor": "controller",
+      "detail": "Consulta la fase que falló y su evidencia en la ejecución enlazada."
     }
   ],
   "design": {
     "id": "hotel-empty-v1",
     "manifestSha": "9ce40c98884be5dedf04dc2ad0e9afc24d7cd92ed69f1effbd548f6d21c3249d"
   },
-  "activeRun": "35205058203"
+  "activeRun": "35205058203",
+  "proposal": {
+    "run": "35205058203",
+    "artifact": "factory-proposal-35205058203",
+    "sha": "f6e2de6cc723d95a79ecc9e94b565a2ef3686c0d1aacca60b063ab43aa3c9774"
+  },
+  "feedback": {
+    "run": "35205058203",
+    "artifact": "factory-checks-35205058203"
+  }
 }

@@ -10,7 +10,7 @@ export const config = {
     integrity:
       'sha512-oLcOLQE4XzDKy6T5L5d1RdVJvXHXwVlD4hRF5V317JbUQorrl2EyDdGZk5kbgv675J9FXp8usg92MZbEWhh6gQ==',
     models: ['opencode-go/glm-5.3-flash', 'opencode-go/glm-5.3-flash', 'opencode-go/glm-5.3'],
-    reviewer: 'opencode-go/glm-5.3',
+    reviewer: 'opencode-go/glm-5.3-flash',
   },
   limits: { attempts: 3, patchBytes: 200_000, modelMinutes: 10, verificationMinutes: 25 },
   sonar: { mode: 'required', projectKey: 'Cilveti_buscador-hoteles', organization: 'cilveti' },

@@ -1,4 +1,4 @@
-name: Factory Sonar main
+name: Calidad · Sonar de main
 on:
   workflow_dispatch:
   push:
@@ -21,7 +21,7 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - name: Require the configured Sonar project
+      - name: Comprobar el proyecto de Sonar
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: test -n "$SONAR_TOKEN"

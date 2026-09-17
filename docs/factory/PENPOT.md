@@ -4,7 +4,7 @@
 
 [Archivo de la demo](https://design.penpot.app/#/workspace?team-id=d8ac01df-6646-81d2-8008-a5887a33b3fe&file-id=d8ac01df-6646-81d2-8008-a5899521b02a&page-id=d8ac01df-6646-81d2-8008-a5899521b02b). Página «Sin resultados · especificación v1», versión guardada «hotel-empty-v1 · referencia fábrica».
 
-Se ha conectado el MCP oficial, leído el archivo, creado dos tableros y nueve tokens y exportado SVG/PNG, tokens y geometría. Las dos imágenes se han inspeccionado visualmente: escritorio y móvil sin texto cortado. El manifiesto y todos sus hashes pasan `readDesign`. La integración de estas entradas con un candidato real está pendiente de E2E.
+Se ha conectado el MCP oficial, leído el archivo, creado dos tableros y nueve tokens y exportado SVG/PNG, tokens y geometría. Las dos imágenes se han inspeccionado visualmente: escritorio y móvil sin texto cortado. El manifiesto y todos sus hashes pasan `readDesign`. La tarea #8 consumió este snapshot: su segundo patch pasó lint/tipos, 67 tests, build y 12 pruebas reales de navegador, incluidas escritorio y móvil con recuperación de resultados. La revisión aislada corregida también pasó. #8 no publicó PR porque agotó intentos por fallos de infraestructura posteriores; ver [evidencia](EVIDENCE.md).
 
 ## Repetir con cualquier agente compatible con MCP
 

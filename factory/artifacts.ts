@@ -69,6 +69,6 @@ if (process.argv[2] === 'recover') {
   if (process.env.GITHUB_STEP_SUMMARY)
     appendFileSync(
       process.env.GITHUB_STEP_SUMMARY,
-      `## Verification\n\n${passed ? 'Passed' : 'Failed'} for patch \`${process.env.PATCH_SHA}\`.\n\nSeparate containers: unit checks, real application E2E, build.\n`,
+      `## Comprobación de la propuesta\n\n${passed ? 'Superada' : 'Fallida'} para el patch \`${process.env.PATCH_SHA}\`.\n\nLint, tipos y tests, navegador con la aplicación real y build se ejecutan en contenedores separados. Consulta los artefactos para ver los fallos, capturas y trazas.\n`,
     );
 } else throw new Error('Unknown artifact command');

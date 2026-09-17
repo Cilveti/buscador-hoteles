@@ -22,6 +22,25 @@ const initial = () =>
   });
 
 describe('bounded task lifecycle', () => {
+  test('operator recovery can fix the worker without changing the application base or resetting attempts', () => {
+    const failed = finishAttempt(
+      startAttempt(initial(), '1', 3),
+      '1',
+      { status: 'failed', detail: 'Transport timeout' },
+      3,
+    );
+    const resumed = recover(failed, '1', 'owner', ['owner'], 3, 'b'.repeat(40));
+    expect(resumed.workerSha).toBe('b'.repeat(40));
+    expect(resumed.baseSha).toBe(failed.baseSha);
+    expect(resumed.specificationSha).toBe(failed.specificationSha);
+    expect(resumed.attempts).toBe(1);
+    expect(startAttempt(resumed, '2', 3).attempts).toBe(2);
+    expect(() => recover(failed, '1', 'outsider', ['owner'], 3, 'b'.repeat(40))).toThrow();
+    expect(() =>
+      recover({ ...failed, attempts: 3 }, '1', 'owner', ['owner'], 3, 'b'.repeat(40)),
+    ).toThrow('budget');
+    expect(() => recover(failed, '1', 'owner', ['owner'], 3, 'main')).toThrow('revision');
+  });
   test('a failed check consumes an attempt; the third stops the loop', () => {
     let task = initial();
     for (let n = 1; n <= 3; n++) {

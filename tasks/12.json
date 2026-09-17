@@ -9,8 +9,8 @@
   },
   "specificationSha": "a9981e9341b82a9799b9a8629524b6119f9981edfbea114ee5c60ba3278f7649",
   "profile": "full",
-  "status": "failed",
-  "attempts": 2,
+  "status": "running",
+  "attempts": 3,
   "history": [
     {
       "at": "2026-09-17T09:26:29.242Z",
@@ -47,9 +47,21 @@
       "event": "failed",
       "actor": "controller",
       "detail": "Inspect the run for check and review evidence."
+    },
+    {
+      "at": "2026-09-17T09:43:23.051Z",
+      "event": "recovered",
+      "actor": "Cilveti",
+      "detail": "completed run=35205353275; worker=1753ac94c22be0586456d240118c39da0baf39dc; base=1753ac94c22be0586456d240118c39da0baf39dc"
+    },
+    {
+      "at": "2026-09-17T09:43:23.052Z",
+      "event": "started",
+      "actor": "controller",
+      "detail": "attempt=3; run=35206644248"
     }
   ],
-  "activeRun": "35205353275",
+  "activeRun": "35206644248",
   "proposal": {
     "run": "35205353275",
     "artifact": "factory-proposal-35205353275",
@@ -58,5 +70,6 @@
   "feedback": {
     "run": "35205353275",
     "artifact": "factory-review-35205353275"
-  }
+  },
+  "workerSha": "1753ac94c22be0586456d240118c39da0baf39dc"
 }

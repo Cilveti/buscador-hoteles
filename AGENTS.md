@@ -2,7 +2,7 @@
 
 Repositorio vigente: `https://github.com/Cilveti/buscador-hoteles`, cuenta de trabajo `Cilveti` (`inigo.cilveti@biko2.com`).
 
-Proyecto independiente para enseñar desarrollo y verificación determinista. Mantener catálogo, filtros, fichas y administración de hoteles/usuarios. No incorporar modelos, embeddings, búsqueda semántica, herramientas MCP ni evaluaciones de agentes.
+Proyecto independiente para enseñar desarrollo y verificación determinista. Mantener catálogo, filtros, fichas y administración de hoteles/usuarios. No incorporar modelos, embeddings, búsqueda semántica, herramientas MCP en el producto. El laboratorio local de evaluación de arneses está autorizado y vive en `evals/coding/` y `scripts/coding-eval/`, separado del buscador.
 
 ## Trabajo
 
@@ -17,3 +17,9 @@ Proyecto independiente para enseñar desarrollo y verificación determinista. Ma
 ## Datos
 
 El catálogo, sus cinco marcas, sus valoraciones y sus ilustraciones son ficticios. Mantener esa indicación en la interfaz y no incorporar capturas ni datos de cadenas reales.
+
+## Laboratorio de arneses
+
+Petición de Iñigo del 15 de septiembre: continuar aquí todo el laboratorio, con skills en inglés y castellano y selección de idioma por evaluación. Leer `.agents/skills/evaluar-agentes-codigo/SKILL.md`. Las aceptaciones privadas y el dossier del juez deben permanecer fuera del checkout y del historial visible para el candidato. Conservar la procedencia de resultados anteriores sin importar el producto antiguo.
+
+La skill `.agents/skills/abordar-tarea/SKILL.md` es el proceso base para las tareas de desarrollo evaluadas (decisión explícita del 16 de septiembre). Inyectar su contenido íntegro mediante `processSkill`, con `promptText: null` cuando no haya una edición deliberada; no sustituirla por un resumen o un prompt vagamente inspirado en ella. Verificar la fuente y el texto congelado antes de ejecutar. Cualquier variante sin esta skill debe ser un experimento explícito, identificado como tal, y no el control por defecto.

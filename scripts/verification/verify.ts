@@ -1,6 +1,6 @@
 import { spawn } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
-import { closeSync, mkdirSync, openSync, writeFileSync } from 'node:fs';
+import { closeSync, mkdirSync, openSync, writeFileSync, writeSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { parseArgs } from 'node:util';
 
@@ -80,8 +80,11 @@ async function runCheck(
         env: { ...process.env, FORCE_COLOR: '0', ...options.env },
         shell: false,
         detached: process.platform !== 'win32',
-        stdio: ['ignore', stdout, stderr],
+        // Pipes keep private controller file descriptors out of the candidate sandbox.
+        stdio: ['ignore', 'pipe', 'pipe'],
       });
+      child.stdout?.on('data', (chunk: Buffer) => writeSync(stdout, chunk));
+      child.stderr?.on('data', (chunk: Buffer) => writeSync(stderr, chunk));
       const timer = setTimeout(() => {
         timedOut = true;
         killProcessGroup(child);

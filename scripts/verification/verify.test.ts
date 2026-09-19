@@ -90,3 +90,25 @@ test('rejects unsafe check ids before opening log files', async () => {
     runVerification({ ...fixture(), checks: [{ id: '../escape', command: ['bun'] }] }),
   ).rejects.toThrow('Check ids');
 });
+
+test('checks receive pipes instead of descriptors to private evidence files', async () => {
+  const options = fixture();
+  const result = await runVerification({
+    ...options,
+    checks: [
+      {
+        id: 'stdio',
+        command: [
+          'node',
+          '-e',
+          'const fs = require("node:fs"); console.log(JSON.stringify([...[1, 2].map(fd => { const s = fs.fstatSync(fd); return s.isFIFO() || s.isSocket(); })]));',
+        ],
+      },
+    ],
+  });
+  expect(result.passed).toBe(true);
+  expect(JSON.parse(readFileSync(join(options.output, 'stdio.stdout.log'), 'utf8'))).toEqual([
+    true,
+    true,
+  ]);
+});

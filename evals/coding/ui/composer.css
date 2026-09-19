@@ -1,0 +1,331 @@
+.recipe-composer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 900px;
+}
+.recipe-topbar {
+  display: grid;
+  grid-template-columns: 220px 220px 1fr;
+  gap: 16px;
+  align-items: end;
+  background: #f8faf9;
+  position: sticky;
+  top: 0;
+  z-index: 12;
+  padding: 12px 0;
+}
+.recipe-topbar > .actions {
+  justify-content: flex-end;
+}
+.recipe-topbar button[type="submit"] {
+  min-width: 174px;
+}
+.compact-settings {
+  display: grid;
+  grid-template-columns: 138px 105px minmax(180px, 1fr) 95px 70px 90px minmax(210px, 1.2fr);
+  gap: 14px;
+  border: 1px solid #dce3df;
+  padding: 18px;
+  border-radius: 8px;
+  background: white;
+  align-items: end;
+}
+.source-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+.source-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: #fff;
+  border: 1px solid #dce3df;
+  border-radius: 8px;
+  padding: 20px;
+  min-width: 0;
+}
+.source-editor h2 {
+  font-size: 16px;
+}
+.source-editor .section-heading > .actions {
+  margin-left: auto;
+  gap: 4px;
+}
+.source-editor textarea,
+.source-sheet textarea {
+  resize: vertical;
+  width: 100%;
+  min-height: 285px;
+  border: 1px solid #dce3df;
+  border-radius: 6px;
+  padding: 15px;
+  font-family: ui-monospace, monospace;
+  font-size: 13px;
+  line-height: 1.65;
+  color: #263b2e;
+  background: #fbfcfb;
+  tab-size: 2;
+}
+.source-editor textarea:focus,
+.source-sheet textarea:focus {
+  outline: 2px solid #2c8661;
+  outline-offset: 2px;
+}
+.editor-meta {
+  display: flex;
+  gap: 15px;
+  justify-content: space-between;
+  color: #69786e;
+  font-size: 12px;
+}
+.editor-meta > span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 70%;
+}
+.edited {
+  background: #fff2d9;
+  color: #83601b;
+  border-radius: 4px;
+  padding: 3px 7px;
+  font-size: 12px;
+}
+.source-error {
+  color: #91381e;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.source-sheet[data-slot="sheet-content"] {
+  width: 80vw;
+  max-width: 1100px;
+  padding: 30px;
+}
+.source-sheet textarea {
+  height: calc(100vh - 120px);
+  resize: none;
+  margin-top: 15px;
+}
+.harness-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 0.9fr;
+  gap: 18px;
+  align-items: stretch;
+}
+.harness-card {
+  background: white;
+  border: 1px solid #dce3df;
+  border-radius: 8px;
+  padding: 18px;
+  min-width: 0;
+}
+.harness-card > .skills-picker {
+  border: 0;
+  padding: 0;
+}
+.harness-card .skill-options {
+  grid-template-columns: 1fr;
+  max-height: 215px;
+}
+.harness-card .toggle {
+  border-top: 1px solid #e4eae6;
+  padding-top: 15px;
+  margin-top: 15px;
+  font-size: 13px;
+}
+.harness-card .chips {
+  min-height: 29px;
+}
+.injection-label {
+  font-size: 13px;
+  color: #52665a;
+  padding-top: 15px;
+  margin-top: 15px;
+  border-top: 1px solid #e4eae6;
+}
+.check-settings > .actions {
+  margin: 15px 0;
+}
+.check-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  border-top: 1px solid #e7ece8;
+  padding: 11px 0;
+}
+.check-option > label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.check-option details {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  max-width: 52%;
+  text-align: right;
+}
+.check-option summary {
+  font-weight: 400;
+  font-size: 12px;
+  color: #66776c;
+  margin: 2px 0;
+}
+.check-option code {
+  display: block;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  margin: 5px 0;
+}
+.evaluation-settings {
+  background: white;
+  border: 1px solid #dce3df;
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.evaluation-grid {
+  display: grid;
+  grid-template-columns: minmax(250px, 1fr) minmax(250px, 1fr) 220px;
+  gap: 18px;
+  align-items: end;
+}
+.judge-model {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding-bottom: 8px;
+}
+.judge-model > span {
+  font-size: 13px;
+  color: #53665a;
+}
+.judge-model > strong {
+  font-weight: 500;
+  font-size: 13px;
+}
+.compact-advanced {
+  background: white;
+  border: 1px solid #dce3df;
+  border-radius: 8px;
+  padding: 18px;
+}
+.compact-advanced .form-grid {
+  max-width: 850px;
+}
+.skill-library[data-slot="sheet-content"] {
+  width: min(1180px, 92vw);
+  max-width: 1180px;
+  padding: 28px;
+}
+.library-grid {
+  display: grid;
+  grid-template-columns: 265px minmax(0, 1fr);
+  gap: 25px;
+  min-height: 0;
+  height: 100%;
+}
+.library-grid > aside {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-right: 1px solid #e0e7e2;
+  padding-right: 18px;
+  overflow: auto;
+}
+.library-grid > aside > input {
+  margin-bottom: 10px;
+}
+.library-grid > aside > button {
+  text-align: left;
+  padding: 10px 8px;
+  border-radius: 5px;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.library-grid > aside > button.selected {
+  background: #e8f2eb;
+  color: #175e3d;
+}
+.library-grid > section {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-height: 0;
+}
+.library-grid pre {
+  flex: 1;
+  max-height: none;
+  margin: 0;
+  overflow: auto;
+}
+.library-grid h2 {
+  font-size: 17px;
+}
+.library-grid .actions {
+  gap: 7px;
+}
+.library-grid .actions button {
+  font-size: 13px;
+}
+@media (max-width: 1300px) {
+  .compact-settings {
+    grid-template-columns: 130px 100px minmax(160px, 1fr) 90px 65px 85px;
+    gap: 10px;
+    padding: 14px;
+  }
+  .compact-settings > :last-child {
+    grid-column: span 3;
+  }
+  .recipe-topbar {
+    grid-template-columns: 175px 185px 1fr;
+    gap: 12px;
+  }
+  .recipe-topbar button {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .source-editor {
+    padding: 16px;
+  }
+  .source-editor .section-heading {
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .harness-grid {
+    grid-template-columns: 1fr 1fr 0.85fr;
+  }
+  .harness-card {
+    padding: 14px;
+  }
+}
+
+.composer-fields {
+  display: contents;
+}
+.is-readonly :disabled,
+.source-sheet textarea:disabled {
+  opacity: 1;
+  cursor: default;
+  -webkit-text-fill-color: currentColor;
+}
+.is-readonly input:disabled,
+.is-readonly select:disabled {
+  background-color: #f4f6f5;
+}
+
+.configuration-origin {
+  margin-bottom: 18px;
+  color: #53665a;
+  font-family: ui-monospace, monospace;
+  font-size: 13px;
+}

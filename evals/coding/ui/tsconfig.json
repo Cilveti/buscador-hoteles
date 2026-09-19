@@ -1,0 +1,5 @@
+{
+  "extends": "../browser/tsconfig.json",
+  "include": ["./**/*.ts", "./**/*.tsx", "../../../scripts/coding-eval-ui/**/*.ts"],
+  "exclude": ["node_modules"]
+}

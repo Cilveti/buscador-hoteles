@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "currency": "USD",
+  "models": {
+    "gpt-5.6-luna": {
+      "inputPerMillion": 0.2,
+      "cachedInputPerMillion": 0.02,
+      "cacheWritePerMillion": 0.25,
+      "outputPerMillion": 1.2,
+      "longContextThresholdTokens": 272000,
+      "source": {
+        "kind": "official",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.6-luna",
+        "verifiedOn": "2026-09-15"
+      }
+    },
+    "gpt-6-astra": {
+      "inputPerMillion": 10,
+      "cachedInputPerMillion": 1,
+      "cacheWritePerMillion": 12.5,
+      "outputPerMillion": 50,
+      "longContextThresholdTokens": 272000,
+      "source": {
+        "kind": "official",
+        "url": "https://developers.openai.com/api/docs/models/gpt-6-astra",
+        "verifiedOn": "2026-09-15"
+      }
+    },
+    "gpt-5.6-sol": {
+      "inputPerMillion": 4,
+      "cachedInputPerMillion": 0.4,
+      "cacheWritePerMillion": 5,
+      "outputPerMillion": 20,
+      "longContextThresholdTokens": 272000,
+      "source": {
+        "kind": "official",
+        "url": "https://developers.openai.com/api/docs/models/gpt-5.6-sol",
+        "verifiedOn": "2026-09-16"
+      }
+    }
+  }
+}

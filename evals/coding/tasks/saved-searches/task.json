@@ -1,0 +1,7 @@
+{
+  "id": "saved-searches",
+  "title": "Búsquedas guardadas en este navegador",
+  "description": "Guardar, renombrar, eliminar y recuperar búsquedas completas, con persistencia local robusta y navegación coherente.",
+  "browser": true,
+  "expectedSkills": ["hoteles-hexagonal", "hoteles-testing"]
+}

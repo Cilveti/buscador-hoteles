@@ -12,7 +12,7 @@ Proyecto docente independiente con un catálogo de **60 hoteles ficticios**, bú
 - Administración de hoteles y usuarios. Las correcciones editoriales aparecen en las siguientes consultas.
 - Biome, TypeScript, tests unitarios/integración, dependency-cruiser, Playwright, accesibilidad con axe y mutation testing con Stryker.
 
-El producto no necesita claves de modelos ni servicios de IA. No incluye búsqueda semántica, agentes, prompts ni evaluaciones de modelos. Los ejemplos de estancias en `packages/adapters/src/synthetic-stays` son datos sintéticos para enseñar tests; no son disponibilidad ni precios reales.
+El producto no necesita claves de modelos ni servicios de IA. No incluye búsqueda semántica. El laboratorio de evaluación de agentes es una herramienta local de desarrollo separada del producto: `bun run eval:coding:ui`, puerto 3415. Los ejemplos de estancias en `packages/adapters/src/synthetic-stays` son datos sintéticos para enseñar tests; no son disponibilidad ni precios reales.
 
 ## Arranque
 

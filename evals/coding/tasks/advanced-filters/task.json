@@ -1,0 +1,7 @@
+{
+  "id": "advanced-filters",
+  "title": "Filtros avanzados del buscador convencional",
+  "description": "Exponer en la UI los filtros de catálogo ya soportados por backend, con enlaces compartibles, eliminación individual y restauración de estado.",
+  "browser": true,
+  "expectedSkills": ["hoteles-domain-modeling", "hoteles-hexagonal", "hoteles-testing"]
+}

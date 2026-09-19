@@ -6,10 +6,12 @@
       "name": "aurora-agentic-lab",
       "devDependencies": {
         "@axe-core/playwright": "4.13.0",
+        "@biomejs/biome": "2.5.13",
+        "@clack/prompts": "^1.8.1",
         "@hoteles/adapters": "workspace:*",
         "@hoteles/contracts": "workspace:*",
         "@hoteles/core": "workspace:*",
-        "@biomejs/biome": "2.5.13",
+        "@openai/codex-sdk": "0.154.0",
         "@playwright/test": "1.63.0",
         "@stryker-mutator/core": "10.0.0",
         "@tailwindcss/postcss": "4.3.3",
@@ -24,9 +26,9 @@
     "apps/web": {
       "name": "@hoteles/web",
       "dependencies": {
+        "@fontsource/poppins": "5.3.0",
         "@hoteles/contracts": "workspace:*",
         "@hoteles/core": "workspace:*",
-        "@fontsource/poppins": "5.3.0",
         "@payloadcms/db-postgres": "3.89.0",
         "@payloadcms/next": "3.89.0",
         "@payloadcms/ui": "3.89.0",
@@ -154,14 +156,6 @@
 
     "@babel/types": ["@babel/types@8.0.4", "", { "dependencies": { "@babel/helper-string-parser": "^8.0.0", "@babel/helper-validator-identifier": "^8.0.4" } }, "sha512-eY+Yn3dCqTGmyiq2QRU66lA5FL8lqqqvecHt0fF3uHONIa7ToYsaCiWV8lOKqAs0Rb2SjixiKFROngnulPtt2g=="],
 
-    "@hoteles/adapters": ["@hoteles/adapters@workspace:packages/adapters"],
-
-    "@hoteles/contracts": ["@hoteles/contracts@workspace:packages/contracts"],
-
-    "@hoteles/core": ["@hoteles/core@workspace:packages/core"],
-
-    "@hoteles/web": ["@hoteles/web@workspace:apps/web"],
-
     "@biomejs/biome": ["@biomejs/biome@2.5.13", "", { "optionalDependencies": { "@biomejs/cli-darwin-arm64": "2.5.13", "@biomejs/cli-darwin-x64": "2.5.13", "@biomejs/cli-linux-arm64": "2.5.13", "@biomejs/cli-linux-arm64-musl": "2.5.13", "@biomejs/cli-linux-x64": "2.5.13", "@biomejs/cli-linux-x64-musl": "2.5.13", "@biomejs/cli-win32-arm64": "2.5.13", "@biomejs/cli-win32-x64": "2.5.13" }, "bin": { "biome": "bin/biome" } }, "sha512-+SEC/mFk1a+5mvUANZgbZTaiZXs1nj4iMhL/PHiqDT5TPUEPFIlliEtkKKZB4N862yylHC3UI+/Sj2I0HJEqhA=="],
 
     "@biomejs/cli-darwin-arm64": ["@biomejs/cli-darwin-arm64@2.5.13", "", { "os": "darwin", "cpu": "arm64" }, "sha512-nYSuDJ6zgVqZUkAkJkvhXxsF2PYIrUk/g638K4voCXz7foI9f7b6C2/7+oAihsHQlivZNMUrm/y8ywlcHQtZOw=="],
@@ -181,6 +175,10 @@
     "@biomejs/cli-win32-x64": ["@biomejs/cli-win32-x64@2.5.13", "", { "os": "win32", "cpu": "x64" }, "sha512-VOofU/nW761XWzUeUNE8zzYNyPrxuMuNFMizL0qz7J75yeV8N7WFheUlk1/K6dOkaFpH9wJ+lDKlwjAbw0346w=="],
 
     "@borewit/text-codec": ["@borewit/text-codec@0.2.2", "", {}, "sha512-DDaRehssg1aNrH4+2hnj1B7vnUGEjU6OIlyRdkMd0aUdIUvKXrJfXsy8LVtXAy7DRvYVluWbMspsRhz2lcW0mQ=="],
+
+    "@clack/core": ["@clack/core@1.5.1", "", { "dependencies": { "fast-wrap-ansi": "^0.2.0", "sisteransi": "^1.0.5" } }, "sha512-iHTrHA8MtVuLl2TfZySmcKv1qO2PoyC9Z7pfSDozEuV5vtY3/wcOPKJXlqJ5Oq2Cx5DDGQGAMVx6HZfRRoVEbQ=="],
+
+    "@clack/prompts": ["@clack/prompts@1.8.1", "", { "dependencies": { "@clack/core": "1.5.1", "fast-string-width": "^3.0.2", "fast-wrap-ansi": "^0.2.0", "sisteransi": "^1.0.5" } }, "sha512-dlT1m5e/0yUL0kRNcQn7yGLVThkgbB0Ga/1AmfDDC/8ik6AIiSf2QLQO2zPYvefsHP0aFgxO93cVLCCfDp7kzQ=="],
 
     "@date-fns/tz": ["@date-fns/tz@1.2.0", "", {}, "sha512-LBrd7MiJZ9McsOgxqWX7AaxrDjcFVjWH/tIKJd7pnR7McaslGYOP1QmmiBXdJH/H/yLCT+rcQ7FaPBUxRGUtrg=="],
 
@@ -293,6 +291,14 @@
     "@floating-ui/utils": ["@floating-ui/utils@0.2.12", "", {}, "sha512-HpCo8tmWzLVad5s2d19EhAz5zqrrQ6s69qd6moPMQvkOuSwDT1YgRfWSVuc4ennqrgv3OHppiOGMQ7oC13yIww=="],
 
     "@fontsource/poppins": ["@fontsource/poppins@5.3.0", "", {}, "sha512-cms1nM7U6SN8epIV1WMVOV8VsA645aSm3wHfzIQnkk188U341ThbJGSl2Sv54V29gnDbT2arMPfLzvVIIVCceQ=="],
+
+    "@hoteles/adapters": ["@hoteles/adapters@workspace:packages/adapters"],
+
+    "@hoteles/contracts": ["@hoteles/contracts@workspace:packages/contracts"],
+
+    "@hoteles/core": ["@hoteles/core@workspace:packages/core"],
+
+    "@hoteles/web": ["@hoteles/web@workspace:apps/web"],
 
     "@img/colour": ["@img/colour@1.1.0", "", {}, "sha512-Td76q7j57o/tLVdgS746cYARfSyxk8iEfRxewL9h4OMzYhbW4TAcppl0mT4eyqXddh6L/jwoM75mo7ixa/pCeQ=="],
 
@@ -413,6 +419,22 @@
     "@next/swc-win32-arm64-msvc": ["@next/swc-win32-arm64-msvc@16.3.4", "", { "os": "win32", "cpu": "arm64" }, "sha512-0jcXW7Xs/uzICrmgV3MhDYDeRy++1CqnpDIerlPIqYO4bhzB4WNbX/aRnQclustsAyTkFKB0z6rbcjmNg5tR8A=="],
 
     "@next/swc-win32-x64-msvc": ["@next/swc-win32-x64-msvc@16.3.4", "", { "os": "win32", "cpu": "x64" }, "sha512-vvBzwu1pYQCp92maZCFCIw/XgOTMR5tur9GjakwIo2cmwRTMKajRZZDS9+e4KsUZWKu1E007WUeAFXRRjZeuzw=="],
+
+    "@openai/codex": ["@openai/codex@0.154.0", "", { "optionalDependencies": { "@openai/codex-darwin-arm64": "npm:@openai/codex@0.154.0-darwin-arm64", "@openai/codex-darwin-x64": "npm:@openai/codex@0.154.0-darwin-x64", "@openai/codex-linux-arm64": "npm:@openai/codex@0.154.0-linux-arm64", "@openai/codex-linux-x64": "npm:@openai/codex@0.154.0-linux-x64", "@openai/codex-win32-arm64": "npm:@openai/codex@0.154.0-win32-arm64", "@openai/codex-win32-x64": "npm:@openai/codex@0.154.0-win32-x64" }, "bin": { "codex": "bin/codex.js" } }, "sha512-FV/x1OHXYv/ifjf3mXj9ThTTAWcUZN6cGIRQRhRxkKNOPuImu1WW0c8ev1vUkE9XGH90dEnYG1tBjIkxRikg0w=="],
+
+    "@openai/codex-darwin-arm64": ["@openai/codex@0.154.0-darwin-arm64", "", { "os": "darwin", "cpu": "arm64" }, "sha512-HP/vJCH/t2hB9Kg6hotN9UglClJ6/z584fal5lEP14C9gNAgAQS4/kTQC7l5V+BA3TqwDPwINSjul28cX8AYXg=="],
+
+    "@openai/codex-darwin-x64": ["@openai/codex@0.154.0-darwin-x64", "", { "os": "darwin", "cpu": "x64" }, "sha512-2aqz+72Hop8PF2RYglQ4JnGjm3OlRIrTykJIT0hyLeUgM6NCFy09RgTmqRCoWliKQZjEn9jjZqUEp7QujAj77g=="],
+
+    "@openai/codex-linux-arm64": ["@openai/codex@0.154.0-linux-arm64", "", { "os": "linux", "cpu": "arm64" }, "sha512-KmTCB6ST484zeYlPpKP/K5P/gRaYmt6TihVD+zotoe6O9q0JSBP+FYvCz4A/zZXR7xDOHURTSjHp0sD8wWS0YQ=="],
+
+    "@openai/codex-linux-x64": ["@openai/codex@0.154.0-linux-x64", "", { "os": "linux", "cpu": "x64" }, "sha512-a4FI3A8sGtwGrOqltrPbrS2hajrHQG591EwmRfiRoLMb10VxdBtUGW4gu6IJVYENiYGA7k3P4jlRHEoCZU/s9Q=="],
+
+    "@openai/codex-sdk": ["@openai/codex-sdk@0.154.0", "", { "dependencies": { "@openai/codex": "0.154.0" } }, "sha512-TTQ2ItcqCRR8gkfgFc+0OAOIG3hJ7dTHezkvnLBYVA3Qd+JkD/kzWwM3MtlTFOgYa4zYBrQ7iStjO0dmvAz3Nw=="],
+
+    "@openai/codex-win32-arm64": ["@openai/codex@0.154.0-win32-arm64", "", { "os": "win32", "cpu": "arm64" }, "sha512-CRUmZnE0Y/a8aLMrrA681EytOGaPaF659wJAiI4I3hsbQjaeYBSPV7PkCjy4Qn5LR/fmwIUORVH+6JaBNQL+tw=="],
+
+    "@openai/codex-win32-x64": ["@openai/codex@0.154.0-win32-x64", "", { "os": "win32", "cpu": "x64" }, "sha512-Stg2KEJPIKVqPPR1wCverGOR4ey3RR3cvakR07w7FNKQUMzmHaOZomRsP2bR1qOT/67yHsks9rB+MCMfIWXcRA=="],
 
     "@payloadcms/db-postgres": ["@payloadcms/db-postgres@3.89.0", "", { "dependencies": { "@payloadcms/drizzle": "3.89.0", "@types/pg": "8.20.0", "console-table-printer": "2.12.1", "drizzle-kit": "0.31.7", "drizzle-orm": "0.45.2", "pg": "8.20.0", "prompts": "2.4.2", "to-snake-case": "1.0.0", "uuid": "13.0.2" }, "peerDependencies": { "payload": "3.89.0" } }, "sha512-Z6sa/8ahAYqW7ttcAL4Y1+50w5SaEN0hJdNVJCzgBFB/1nnrcmFaKO5m++aeeTsAdffSRXV9J8G5n8fBChMr5w=="],
 

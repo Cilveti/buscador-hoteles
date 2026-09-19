@@ -1,0 +1,7 @@
+{
+  "id": "review-confidence",
+  "title": "Valoraciones con un mínimo de opiniones",
+  "description": "Añadir un filtro público por número mínimo de opiniones, integrándolo en contratos, dominio, HTTP, URL y UI sin inventar evidencias.",
+  "browser": true,
+  "expectedSkills": ["hoteles-domain-modeling", "hoteles-hexagonal", "hoteles-testing"]
+}

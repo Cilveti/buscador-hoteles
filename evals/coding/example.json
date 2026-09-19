@@ -1,0 +1,14 @@
+{
+  "task": "advanced-filters",
+  "harness": "codex",
+  "model": "gpt-5.6-luna",
+  "effort": "high",
+  "baseline": "working-tree",
+  "repeats": 1,
+  "concurrency": 1,
+  "browserSkill": true,
+  "taskFile": "evals/coding/tasks/advanced-filters/specification.md",
+  "processSkill": ".agents/skills/abordar-tarea/SKILL.md",
+  "skillLanguage": "en",
+  "candidateChecks": ["lint", "typecheck", "tests", "architecture", "browser"]
+}

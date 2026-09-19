@@ -1,0 +1,7 @@
+{
+  "id": "review-order",
+  "title": "Ordenar por número de opiniones",
+  "description": "Nueva ordenación determinista con recuentos conocidos, desconocidos y empates.",
+  "browser": true,
+  "expectedSkills": ["hoteles-domain-modeling", "hoteles-testing"]
+}

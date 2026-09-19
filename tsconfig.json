@@ -20,5 +20,11 @@
     "tests/e2e/**/*.ts",
     "playwright.config.ts"
   ],
-  "exclude": ["node_modules", "**/node_modules", "tests/browser"]
+  "exclude": [
+    "node_modules",
+    "**/node_modules",
+    "tests/browser",
+    "evals/coding/browser",
+    "evals/coding/ui"
+  ]
 }

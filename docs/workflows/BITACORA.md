@@ -4,7 +4,7 @@
 Grill-me → spec → research/plan → implementación normal o Ralph → verificación externa → revisión adversarial → QA agéntico de navegador. Reproducible en el buscador, independiente del arnés y sin depender de GitHub Actions.
 
 ## Estado actual
-20/09/2026, rama `codex/local-agentic-workflows`. Roles desacoplados del arnés; configuración inicial solo Codex. Normal y Ralph completados. Por petición de Iñigo, el ejemplo inicial usa una tarea MUY sencilla: solo dos textos. No se han integrado los candidatos ni publicado cambios.
+20/09/2026, rama `codex/local-agentic-workflows`. Roles desacoplados del arnés; configuración inicial solo Codex. Normal y Ralph completados. Iñigo descarta cambios de texto y elige una mejora pequeña: borrar la búsqueda con Escape. La simulación con Luna 5.6 high terminó: 9 min 27 s, con un reintento de lint y QA aprobado. No se han integrado los candidatos ni publicado cambios.
 
 ## Decisiones vigentes
 - Configuración por defecto/rol en `workflow.agents.json`, congelada en `state.json` al iniciar. La reanudación no relee el JSON del proyecto.
@@ -17,6 +17,8 @@ Grill-me → spec → research/plan → implementación normal o Ralph → verif
 - QA con React/handlers/core reales y catálogo sintético: no acredita PostgreSQL/Payload, SSR, Sonar ni Actions.
 
 ## Progreso verificado
+- Simulación actual completada en 566,601 s: `2026-09-20T17-07-36-045Z-escape-search-luna-high-normal`. Todos los roles configurados con `gpt-5.6-luna`, `reasoningEffort: high`; sin pausa opcional del plan. Spec en `docs/workflows/tasks/escape-search-luna-high/`; medición externa en `.tmp/simulations/luna-high-2026-09-20T17-07-35Z/`.
+- Añadido paso de reasoningEffort del JSON al adaptador y a los metadatos. 10 tests del controlador, 55 aserciones, verdes. El CLI local y su catálogo confirman Luna, high e imágenes. Verificación completa verde: `.tmp/verification/2026-09-20T17-07-34.698Z-8b6525f3/verification.json`.
 - 10 tests del controlador; 194 tests en la suite completa. Lint, tipos, tests y navegador verdes: `.tmp/verification/2026-09-20T15-02-25.913Z-ee07c5bd/verification.json`.
 - Configuración y permisos probados con dos adaptadores de prueba: todos los roles, rutas, imágenes, salidas inválidas y rechazo de escritura del revisor. Esos dobles no acreditan soporte real de otro arnés.
 - Edición real Codex con workspace-write: `.tmp/codex-workflow-write-probe/result.json`.
@@ -26,6 +28,8 @@ Grill-me → spec → research/plan → implementación normal o Ralph → verif
 - Segundo Ralph Codex: `2026-09-20T15-02-24-884Z-search-keyboard-hint-ralph`, checks y review superados; cancelado durante QA por la petición de simplificar las pruebas. Estado fallido conservado y motivo en operator-note.json.
 - Prueba sencilla completada: `2026-09-20T15-09-40-392Z-copy-search-ralph`. Dos sustituciones de texto, una por subtarea y un intento cada una; sin lógica nueva ni tests de copy. 194 tests y 6 recorridos de navegador, review sin hallazgos y QA con captura inspeccionada. 9 llamadas Codex; solo los dos implementadores con escritura. Es el ejemplo inicial en la guía.
 - Skill abordar-tarea validada con quick_validate; guía y evidencia actualizadas.
+
+- Luna high: 16 llamadas, 2 intentos de implementación, 194 tests y 9 recorridos de navegador. El reintento por imports consumió ~80 s; QA confirmó los tres criterios y las capturas fueron inspeccionadas.
 
 ## Aprendizajes confirmados
 - La skill se usa también en evaluaciones; conserva su procedimiento original en modo trabajador para evitar recursión.
@@ -39,4 +43,4 @@ Grill-me → spec → research/plan → implementación normal o Ralph → verif
 La versión anterior `5bbc1b8` usaba Claude para implementar y Codex para revisión/QA. Ambos modos completaron su recorrido, incluidos ejemplos negativos y feedback real. Los detalles y enlaces mantienen su procedencia en EVIDENCIAS.md; no acreditan la nueva integración Codex.
 
 ## Próximo paso
-Iñigo puede abrir Codex en el buscador e invocar abordar-tarea con `docs/workflows/examples/copy-search.json`, eligiendo normal o Ralph. La guía y EVIDENCIAS.md contienen los comandos y entregas comprobadas. Otros arneses quedan para una integración posterior mediante adaptador.
+Resultado y tiempos en `docs/workflows/tasks/escape-search-luna-high/resultado.md`. Candidato servido en 3183 y original en 3182. El usuario puede probar Escape; el candidato continúa aislado. No queda trabajo para esta simulación. Los tiempos excluyen preparación del controlador y conversación humana. Los intentos y sus incidencias se conservan.

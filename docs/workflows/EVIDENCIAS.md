@@ -1,5 +1,9 @@
 # Ensayos locales · 20 de septiembre de 2026
 
+## Simulación medida: Luna 5.6 high
+
+[Informe completo](tasks/escape-search-luna-high/resultado.md): Escape, modo normal, **9 min 27 s**, 16 llamadas. Checks, revisión y QA aprobados. Incluye un reintento automático por el orden de un import. El tiempo parte de una especificación preparada y usa dependencias instaladas y catálogo sintético.
+
 ## Versión actual: roles configurables, solo Codex
 
 Verificación del repositorio: 194 tests, lint, tipos y navegador en verde. [Informe](../../.tmp/verification/2026-09-20T15-02-25.913Z-ee07c5bd/verification.json).

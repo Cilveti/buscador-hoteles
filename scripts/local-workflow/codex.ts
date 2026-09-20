@@ -23,6 +23,8 @@ export function codexCommand(invocation: HarnessInvocation): string[] {
     invocation.resultPath,
   ];
   if (invocation.model) command.push('--model', invocation.model);
+  if (invocation.reasoningEffort)
+    command.push('-c', `model_reasoning_effort=${JSON.stringify(invocation.reasoningEffort)}`);
   for (const image of invocation.images) command.push('--image', image);
   command.push('-');
   return command;

@@ -37,6 +37,8 @@ Entorno comprobado el 20/09/2026: Bun 1.4.2, Node 24.6.0, Codex CLI 0.149.1 en m
 
 Los roles son `research-product`, `research-verification`, `planner`, `implementer`, `reviewer` y `qa`. Una entrada de `roles` puede sustituir el arnés/modelo de ese rol; por ejemplo `"reviewer": {"harness": "codex", "model": "ID_DEL_MODELO"}`. La configuración no altera sus objetivos, orden, permisos ni condiciones de aceptación.
 
+`reasoningEffort` fija el esfuerzo de razonamiento cuando el arnés lo admite. Por ejemplo: `"default": {"harness": "codex", "model": "gpt-5.6-luna", "reasoningEffort": "high"}`. Codex lo recibe mediante `model_reasoning_effort`; sin esta opción mantiene su valor predeterminado. La selección de esta simulación está en [agents.json](tasks/escape-search-luna-high/agents.json) y se conserva en los metadatos de cada llamada.
+
 El flujo llama al contrato `HarnessAdapter` de `scripts/local-workflow/harness.ts`. El adaptador recibe prompt, workspace, modelo, permiso, imágenes, schema y timeout; devuelve datos que el controlador valida. Solo `codex.ts` conoce los comandos de Codex. Para otro arnés se implementa ese contrato, se registra en `installedHarnesses` dentro de `agents.ts` y se selecciona en el JSON. No hay que modificar `workflow.ts` ni `qa.ts`.
 
 **Hoy solo está instalado y probado el adaptador Codex.** Claude/OpenCode requieren su adaptador antes de poder seleccionarse; escribir un nombre en el JSON no los integra automáticamente. Un arnés desconocido o sin imágenes para QA se rechaza antes de iniciar el trabajo.

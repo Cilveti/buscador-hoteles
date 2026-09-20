@@ -1,0 +1,29 @@
+{
+  "id": "escape-search-luna-high",
+  "title": "Borrar la búsqueda con Escape",
+  "objective": "Permitir borrar el texto de búsqueda con el teclado sin perder los filtros elegidos.",
+  "scope": [
+    "Buscador del catálogo: campo Nombre del hotel o destino y su interacción con la consulta existente.",
+    "Reutilizar el comportamiento del botón Borrar texto de búsqueda.",
+    "Igual que el botón existente, al borrar una consulta activa se vuelve a la página 1. Escape solo actúa dentro del campo de búsqueda."
+  ],
+  "outOfScope": [
+    "No cambiar administración, base de datos, dependencias ni la configuración del arnés.",
+    "No cambiar diseño ni añadir controles visibles."
+  ],
+  "acceptance": [
+    {
+      "id": "AC1",
+      "criterion": "Con la búsqueda Málaga aplicada y el campo enfocado, pulsar Escape vacía el campo y elimina q de la URL; se muestran de nuevo los resultados correspondientes a los demás filtros."
+    },
+    {
+      "id": "AC2",
+      "criterion": "Si country=Spain y sort=rating están activos, Escape conserva ambos parámetros y el foco en el campo; los resultados siguen filtrados por España y ordenados por valoración."
+    },
+    {
+      "id": "AC3",
+      "criterion": "Con el campo ya vacío, pulsar Escape no hace nada: conserva foco, filtros, ordenación, página y resultados. No inicia una consulta nueva. El buscador sigue operativo."
+    }
+  ],
+  "decisions": []
+}

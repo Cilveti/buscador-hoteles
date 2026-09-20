@@ -17,6 +17,7 @@ const targetSchema = z
   .object({
     harness: z.string().regex(/^[a-z][a-z0-9-]*$/),
     model: z.string().min(1).optional(),
+    reasoningEffort: z.enum(['low', 'medium', 'high', 'xhigh', 'max']).optional(),
   })
   .strict();
 export const assignmentsSchema = z.record(roleSchema, targetSchema);
@@ -117,6 +118,7 @@ export async function callAgent<S extends z.ZodType>(
       logPath,
       access,
       model: target.model,
+      reasoningEffort: target.reasoningEffort,
       images: request.images ?? [],
       timeoutMs: (request.timeoutSeconds ?? 300) * 1000,
     }),

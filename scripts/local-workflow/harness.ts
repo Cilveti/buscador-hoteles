@@ -7,6 +7,7 @@ export type HarnessInvocation = {
   logPath: string;
   access: 'read' | 'write';
   model?: string;
+  reasoningEffort?: string;
   images: string[];
   timeoutMs: number;
 };

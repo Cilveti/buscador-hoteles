@@ -9,10 +9,14 @@ import type { HarnessInvocation, HarnessRegistry } from './harness';
 
 test('all roles inherit a harness; an override replaces only its own role', () => {
   const agents = resolveAgents({
-    default: { harness: 'local-demo', model: 'base' },
+    default: { harness: 'local-demo', model: 'base', reasoningEffort: 'high' },
     roles: { reviewer: { harness: 'other-demo', model: 'review' } },
   });
-  expect(agents.implementer).toEqual({ harness: 'local-demo', model: 'base' });
+  expect(agents.implementer).toEqual({
+    harness: 'local-demo',
+    model: 'base',
+    reasoningEffort: 'high',
+  });
   expect(agents.reviewer).toEqual({ harness: 'other-demo', model: 'review' });
   expect(agents.qa).toEqual(agents.implementer);
   expect(() =>
@@ -38,7 +42,7 @@ test('every role uses the adapter contract with validated output, access and evi
     ]),
   );
   const agents = resolveAgents({
-    default: { harness: 'first' },
+    default: { harness: 'first', reasoningEffort: 'high' },
     roles: { reviewer: { harness: 'second' } },
   });
   const resultSchema = z.object({ verdict: z.literal('ok') }).strict();
@@ -76,6 +80,7 @@ test('every role uses the adapter contract with validated output, access and evi
       'read',
     ]);
     expect(invocations.at(-1)?.request.images).toEqual(['screenshot.png']);
+    expect(invocations.at(-1)?.request.reasoningEffort).toBe('high');
     expect(JSON.parse(readFileSync(join(directory, 'reviewer/agent.json'), 'utf8')).harness).toBe(
       'second',
     );
@@ -129,6 +134,7 @@ test('Codex maps editing to workspace-write and preserves readonly for other pha
     access: 'read',
     images: ['/tmp/image with spaces.png'],
     model: 'chosen-model',
+    reasoningEffort: 'high',
     timeoutMs: 1000,
   };
   const reader = codexCommand(request);
@@ -137,6 +143,10 @@ test('Codex maps editing to workspace-write and preserves readonly for other pha
   expect(writer[writer.indexOf('--sandbox') + 1]).toBe('workspace-write');
   expect(writer).not.toContain('--dangerously-bypass-approvals-and-sandbox');
   expect(writer[writer.indexOf('--model') + 1]).toBe('chosen-model');
+  expect(writer).toContain('model_reasoning_effort="high"');
+  expect(codexCommand({ ...request, reasoningEffort: undefined }).join(' ')).not.toContain(
+    'model_reasoning_effort',
+  );
   expect(writer[writer.indexOf('--image') + 1]).toBe('/tmp/image with spaces.png');
   expect(writer.at(-1)).toBe('-');
 });

@@ -63,3 +63,14 @@ Para `test:e2e`, prepara antes la base con `db:up` y `seed`, y deja libre el pue
 - [Proyección pública del catálogo](apps/web/src/composition/catalog/README.md): comportamiento de API y filtros.
 
 La interfaz expone los filtros originales. La API ya admite atributos adicionales de catálogo; este proyecto no incorpora una interfaz nueva para ellos.
+
+## Workflow agéntico local
+
+[Guía de uso](docs/workflows/README.md): conversación → grill-me → spec → investigación y plan → implementación → checks → review adversarial → QA con navegador y capturas. Dos modos: normal y Ralph por subtareas. El agente padre puede lanzarlo usando `.agents/skills/abordar-tarea/SKILL.md` (también disponible en Claude Code).
+
+```sh
+bun run workflow start --spec docs/workflows/examples/escape-search.json --mode normal
+bun run workflow start --spec docs/workflows/examples/search-keyboard-hint.json --mode ralph
+```
+
+Claude implementa y Codex revisa/dirige el QA. Usa sesiones CLI existentes y un snapshot separado; no publica ni integra cambios. El QA rápido usa el catálogo sintético, sin PostgreSQL. La aprobación del plan es opcional con `--plan-review`.

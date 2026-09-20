@@ -15,7 +15,7 @@ import { join, resolve } from 'node:path';
 import { z } from 'zod';
 import { createWorktree, git, linkDependencies, snapshot } from '../coding-eval/workspace';
 import { runVerification } from '../verification/verify';
-import { callAgent } from './agents';
+import { type AgentAssignments, assignmentsSchema, callAgent, validateAgents } from './agents';
 import {
   implementationSchema,
   planSchema,
@@ -34,6 +34,7 @@ const stateSchema = z.object({
   workspace: z.string(),
   base: z.string(),
   mode: z.enum(['normal', 'ralph']),
+  agents: assignmentsSchema.optional(),
   status: z.enum([
     'research',
     'planning',
@@ -144,12 +145,14 @@ export function createRun(
   spec: Specification,
   options: {
     mode: 'normal' | 'ralph';
+    agents: AgentAssignments;
     planReview: boolean;
     headed: boolean;
     maxRounds: number;
     maxTaskAttempts: number;
   },
 ): WorkflowState {
+  validateAgents(options.agents);
   if (!existsSync(join(project, 'node_modules')))
     throw new Error('Install project dependencies first: bun install --frozen-lockfile');
   const id = `${new Date().toISOString().replace(/[:.]/g, '-')}-${spec.id}-${options.mode}`;
@@ -166,6 +169,7 @@ export function createRun(
     workspace,
     base,
     mode: options.mode,
+    agents: structuredClone(options.agents),
     status: 'research',
     spec,
     plan: null,
@@ -189,7 +193,7 @@ const stringify = (value: unknown) => JSON.stringify(value, null, 2);
 function common(state: WorkflowState): string {
   return (
     `SPECIFICATION (authoritative requirements):\n${stringify(state.spec)}\n` +
-    `Read AGENTS.md and docs/architecture.md. This is an isolated candidate workspace. Workers may change product source and colocated tests, and ADD a new tests/browser/*.spec.ts file. Existing tests/browser files, scripts, configuration and dependencies are PROTECTED; never plan edits to those. The external controller executes checks; implementers have no shell. Phase instructions override the orchestration entrypoint: do not invoke abordar-tarea/grill-me/to-spec again.\n`
+    `Read AGENTS.md and docs/architecture.md. This is an isolated candidate workspace. Workers may change product source and colocated tests, and ADD a new tests/browser/*.spec.ts file. Existing tests/browser files, scripts, configuration and dependencies are PROTECTED; never plan edits to those. The external controller executes authoritative checks; worker tool availability depends on the harness. Do not run the full verification suite or start servers, browsers or browser tests yourself: the controller runs them outside the worker sandbox on a dedicated port and returns actual logs. Focused tests that need no server and formatting are allowed. Phase instructions override the orchestration entrypoint and testing skill execution instructions: do not invoke abordar-tarea/grill-me/to-spec again.\n`
   );
 }
 
@@ -213,8 +217,8 @@ async function prepare(state: WorkflowState): Promise<boolean> {
   const baseline = digest(candidatePatch(state));
   const research = await Promise.all([
     callAgent(
+      state.agents,
       {
-        provider: 'claude',
         role: 'research-product',
         root: state.workspace,
         output: join(state.directory, 'research-product'),
@@ -225,8 +229,8 @@ async function prepare(state: WorkflowState): Promise<boolean> {
       researchSchema,
     ),
     callAgent(
+      state.agents,
       {
-        provider: 'claude',
         role: 'research-verification',
         root: state.workspace,
         output: join(state.directory, 'research-verification'),
@@ -240,8 +244,8 @@ async function prepare(state: WorkflowState): Promise<boolean> {
   stable(state, baseline);
   phase(state, 'planning', 'Plan de implementación y subtareas');
   state.plan = await callAgent(
+    state.agents,
     {
-      provider: 'claude',
       role: 'planner',
       root: state.workspace,
       output: join(state.directory, 'plan'),
@@ -299,17 +303,17 @@ async function implement(
       `${key} · intento ${attempt}/${state.maxTaskAttempts} · contexto nuevo`,
     );
     const result = await callAgent(
+      state.agents,
       {
-        provider: 'claude',
-        role: state.mode === 'ralph' ? 'ralph-implementer' : 'implementer',
+        role: 'implementer',
         root: state.workspace,
         output: join(output, 'agent'),
         edit: true,
         prompt:
           common(state) +
-          `APPROVED SCOPE / PLAN:\n${stringify(state.plan)}\nCURRENT ASSIGNMENT:\n${instructions}\n` +
+          `MODE: ${state.mode}\nSCOPE / PLAN:\n${stringify(state.plan)}\nCURRENT ASSIGNMENT:\n${instructions}\n` +
           `PROGRESS:\n${stringify(state.completedTasks)}\nPREVIOUS FEEDBACK:\n${feedback}\n` +
-          'Implement only the assigned work. First inspect the current files: a previous attempt may already have implemented part. Follow .agents/skills/hoteles-testing/SKILL.md and hoteles-hexagonal. You may edit product source and colocated tests, or ADD tests/browser/*.spec.ts; existing external checks/configuration are protected. No dependencies, scripts or changes outside these paths. You have no shell tools: the controller runs verification after your turn and returns actual logs on failure. Never claim you ran checks. For missing product decisions or permissions return blocked. Otherwise implement useful tests and report implemented. Ralph mode: ONE assigned subtask per session, preserve earlier completed work.',
+          'Implement only the assigned work. First inspect the current files: a previous attempt may already have implemented part. Follow .agents/skills/hoteles-testing/SKILL.md and hoteles-hexagonal. You may edit product source and colocated tests, or ADD tests/browser/*.spec.ts; existing external checks/configuration are protected. No dependencies, scripts or changes outside these paths. The controller runs verification after your turn and returns actual logs on failure. Do not run the full suite yourself or claim that the external checks passed before they have run. You may format changed files with the existing formatter if your harness supports it. For missing product decisions or permissions return blocked. Otherwise implement useful tests and report implemented. Ralph mode: ONE assigned subtask per session, preserve earlier completed work.',
       },
       implementationSchema,
     );
@@ -341,6 +345,7 @@ export async function executeWorkflow(
   state: WorkflowState,
   approvePlan = false,
 ): Promise<WorkflowState> {
+  validateAgents(state.agents);
   const lock = join(state.directory, 'running.lock');
   const fd = openSync(lock, 'wx', 0o600);
   writeFileSync(fd, String(process.pid));
@@ -388,11 +393,11 @@ export async function executeWorkflow(
       const patch = candidatePatch(state),
         frozen = digest(patch);
       writeFileSync(join(roundDir, 'candidate.patch'), patch);
-      phase(state, 'reviewing', 'Codex revisa el cambio frente a la especificación');
+      phase(state, 'reviewing', 'El revisor contrasta el cambio con la especificación');
       const review = await callAgent(
+        state.agents,
         {
-          provider: 'codex',
-          role: 'adversarial-code-reviewer',
+          role: 'reviewer',
           root: state.workspace,
           output: join(roundDir, 'review'),
           prompt:
@@ -410,8 +415,9 @@ export async function executeWorkflow(
         feedback = stringify(review);
         continue;
       }
-      phase(state, 'qa', 'Codex prueba la app con navegador y recoge evidencias por criterio');
+      phase(state, 'qa', 'El agente QA prueba la app y recoge evidencias por criterio');
       const qa = await runQa({
+        agents: state.agents,
         root: state.workspace,
         output: join(roundDir, 'qa'),
         spec: state.spec,
@@ -432,7 +438,7 @@ export async function executeWorkflow(
                 `- **${result.id} — ${result.status}:** ${result.observed}\n${result.evidence.map((file) => `  - [${file}](round-${state.round}/qa/${file})`).join('\n')}`,
             )
             .join('\n') +
-          `\n\n[Traza del navegador](round-${state.round}/qa/trace.zip) · [Patch](candidate.patch) · [Plan](plan.md)\n\nRevisión: Codex; implementación: Claude. Checks externos verdes sobre el mismo patch SHA256 ${frozen}.\n\nAlcance de QA: componentes React, handlers HTTP y core con catálogo sintético; no verifica Payload/PostgreSQL ni SSR. No ejecuta Sonar. No ha creado PR, commit del candidato, merge ni despliegue.\n\nWorkspace: ${state.workspace}\n`,
+          `\n\n[Traza del navegador](round-${state.round}/qa/trace.zip) · [Patch](candidate.patch) · [Plan](plan.md)\n\nImplementación: ${state.agents.implementer.harness}; revisión: ${state.agents.reviewer.harness}; QA: ${state.agents.qa.harness}. Sesiones separadas; usar el mismo arnés/modelo no aporta diversidad de proveedor. Checks externos verdes sobre el mismo patch SHA256 ${frozen}.\n\nAlcance de QA: componentes React, handlers HTTP y core con catálogo sintético; no verifica Payload/PostgreSQL ni SSR. No ejecuta Sonar. No ha creado PR, commit del candidato, merge ni despliegue.\n\nWorkspace: ${state.workspace}\n`,
       );
       phase(
         state,

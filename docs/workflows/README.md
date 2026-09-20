@@ -2,9 +2,9 @@
 
 ## Pruébalo conversando
 
-Abre **este repositorio** en Claude Code y di:
+Abre **este repositorio** en Codex y di:
 
-> Usa abordar-tarea. Quiero poder borrar la búsqueda con Escape conservando los filtros y el foco. Refina conmigo lo que falte, prepara la especificación y ejecuta el workflow normal. Enséñame el resultado y las evidencias.
+> Usa abordar-tarea con docs/workflows/examples/copy-search.json. Solo quiero cambiar los dos textos que indica. Ejecuta el workflow normal y enséñame el resultado y las capturas.
 
 Para la segunda versión, sustituye «normal» por **«Ralph»**. Puedes añadir «quiero aprobar el plan» o «quiero ver el navegador del QA»; ninguno es obligatorio.
 
@@ -16,13 +16,34 @@ Las skills canónicas están en `.agents/skills/`; `.claude/skills/` las enlaza,
 
 - Las dependencias del buscador instaladas: `bun install --frozen-lockfile`.
 - Bun, Node y Chrome según el README principal.
-- Claude Code y Codex CLI instalados y autenticados: `claude auth status` y `codex login status`.
-- Permiso de tu cuenta para ejecutar esos modelos. Usan tus sesiones de los proveedores; no se crean claves ni se cambian suscripciones. El consumo depende de tu plan. `WORKFLOW_CLAUDE_MODEL` y `WORKFLOW_CODEX_MODEL` permiten elegir modelos; por defecto Claude usa `claude-sonnet-5` y Codex su modelo predeterminado con configuración de usuario omitida.
+- Codex CLI instalado y autenticado: `codex login status`. La configuración inicial no requiere Claude Code.
+- Permiso de tu cuenta para usar Codex. El consumo depende de tu plan. El arnés y el modelo se eligen en `workflow.agents.json`; sin `model`, se usa el predeterminado del CLI con configuración de usuario omitida. No se leen las antiguas variables `WORKFLOW_CLAUDE_MODEL` ni `WORKFLOW_CODEX_MODEL`.
 - No requiere Docker, PostgreSQL, GitHub, Penpot alojado ni servidores permanentes para este recorrido de catálogo.
 
-Entorno comprobado el 20/09/2026: Bun 1.4.2, Node 24.6.0, Claude Code 2.1.278 y Codex CLI 0.149.1 en macOS. El controlador usa opciones de esas versiones; comprobar compatibilidad si se emplean CLIs anteriores.
+Entorno comprobado el 20/09/2026: Bun 1.4.2, Node 24.6.0, Codex CLI 0.149.1 en macOS. El controlador usa opciones de esas versiones; comprobar compatibilidad si se emplean CLIs anteriores.
 
-«Local» se refiere al controlador, el código, los checks, la app y el navegador. Claude y Codex siguen consultando sus modelos remotos con tu autenticación.
+«Local» se refiere al controlador, el código, los checks, la app y el navegador. El arnés seleccionado sigue consultando su modelo remoto con tu autenticación.
+
+## Roles y arneses separados
+
+`workflow.agents.json` define la selección inicial:
+
+```json
+{
+  "default": { "harness": "codex" },
+  "roles": {}
+}
+```
+
+Los roles son `research-product`, `research-verification`, `planner`, `implementer`, `reviewer` y `qa`. Una entrada de `roles` puede sustituir el arnés/modelo de ese rol; por ejemplo `"reviewer": {"harness": "codex", "model": "ID_DEL_MODELO"}`. La configuración no altera sus objetivos, orden, permisos ni condiciones de aceptación.
+
+El flujo llama al contrato `HarnessAdapter` de `scripts/local-workflow/harness.ts`. El adaptador recibe prompt, workspace, modelo, permiso, imágenes, schema y timeout; devuelve datos que el controlador valida. Solo `codex.ts` conoce los comandos de Codex. Para otro arnés se implementa ese contrato, se registra en `installedHarnesses` dentro de `agents.ts` y se selecciona en el JSON. No hay que modificar `workflow.ts` ni `qa.ts`.
+
+**Hoy solo está instalado y probado el adaptador Codex.** Claude/OpenCode requieren su adaptador antes de poder seleccionarse; escribir un nombre en el JSON no los integra automáticamente. Un arnés desconocido o sin imágenes para QA se rechaza antes de iniciar el trabajo.
+
+El agente padre puede ser cualquier agente con acceso al repositorio y terminal que siga la skill; su identidad no decide los agentes internos. La fase grill-me/to-spec sigue siendo conversacional y la investigación anterior a la spec la realiza el agente padre. Después de la spec, el controlador lanza los dos investigadores configurados.
+
+Con la configuración inicial, implementación, revisión y QA usan Codex en contextos nuevos. Hay separación de sesiones y objetivos, **no diversidad de proveedor**. Los checks deterministas y la decisión de integrar el resultado conservan su función.
 
 ## Recorrido
 
@@ -30,15 +51,17 @@ Entorno comprobado el 20/09/2026: Bun 1.4.2, Node 24.6.0, Claude Code 2.1.278 y 
 |---|---|---|
 | Grill-me | Petición → decisiones resueltas | Tú y el agente padre |
 | To-spec | Decisiones → contrato con aceptación observable | Agente padre; no inventa respuestas |
-| Research | Spec + snapshot → código relevante y riesgos | Dos sesiones Claude de solo lectura |
-| Plan | Spec + research → subtareas verificables | Claude; pausa humana opcional |
-| Implementación | Plan + feedback → cambio en copia aislada | Claude con edición y sin terminal |
+| Research | Spec + snapshot → código relevante y riesgos | Dos investigadores de solo lectura |
+| Plan | Spec + research → subtareas verificables | Planificador; pausa humana opcional |
+| Implementación | Plan + feedback → cambio en copia aislada | Implementador con escritura en su workspace |
 | Verificación | Cambio → lint, tipos, tests y navegador | Código externo al modelo |
-| Review | Spec + diff + checks → hallazgos | Codex, en una sesión nueva |
-| QA | Spec + app + imágenes → acciones y evidencias | Codex dirige Playwright; otra sesión/contexto |
+| Review | Spec + diff + checks → hallazgos | Revisor, en una sesión nueva |
+| QA | Spec + app + imágenes → acciones y evidencias | QA dirige Playwright; otra sesión/contexto |
 | Entrega | Criterios comprobados → informe y patch | El controlador; integración humana posterior |
 
 Antes de llamar modelos, el controlador comprueba que la base pasa la verificación; si el entorno falla, se detiene sin inferencia. Las fases de investigación pueden trabajar a la vez. Solo hay un escritor de código. Cada llamada arranca un contexto nuevo; los resultados estructurados, el plan, el estado y el feedback conservan la continuidad.
+
+El controlador arranca los servidores, las pruebas de navegador y el QA en puertos propios. Los trabajadores escriben código y tests, y pueden ejecutar comprobaciones enfocadas sin servidor; no necesitan levantar una app dentro del sandbox del arnés.
 
 **Plan opcionalmente supervisado:** `--plan-review` guarda `plan.md`, termina el proceso en `waiting-plan` y no implementa. La aprobación reanuda ese plan. Las dudas de producto/alcance bloquean incluso en modo automático. El modo predeterminado permite que un plan sin bloqueos continúe.
 
@@ -56,7 +79,7 @@ Es una adaptación docente acotada de [Ralph, de Geoffrey Huntley](https://ghunt
 
 ## Qué prueba el QA
 
-Levanta un servidor local y un Chrome temporal propio. El servidor carga componentes React, handlers HTTP y lógica real **del snapshot modificado**, con un catálogo sintético. Codex recibe captura, árbol accesible, URL, foco, peticiones HTTP e historial de acciones y observaciones; decide la siguiente navegación, clic, escritura, tecla o comprobación. Playwright ejecuta esa acción y devuelve la observación siguiente. El agente no puede ejecutar JavaScript arbitrario mediante esta interfaz y la navegación/red del navegador queda limitada al origen local.
+Levanta un servidor local y un Chrome temporal propio. El servidor carga componentes React, handlers HTTP y lógica real **del snapshot modificado**, con un catálogo sintético. El agente QA recibe captura, árbol accesible, URL, foco, peticiones HTTP e historial de acciones y observaciones; decide la siguiente navegación, clic, escritura, tecla o comprobación. Playwright ejecuta esa acción y devuelve la observación siguiente. El agente no puede ejecutar JavaScript arbitrario mediante esta interfaz y la navegación/red del navegador queda limitada al origen local.
 
 El informe exige todos los IDs de aceptación, resultado observado y capturas existentes. Las acciones y errores quedan registrados y hay traza de navegador. Una revisión probabilística puede equivocarse: esas comprobaciones estructurales no demuestran que su interpretación sea correcta. Conserva la inspección humana y los tests independientes.
 
@@ -67,16 +90,18 @@ El informe exige todos los IDs de aceptación, resultado observado y capturas ex
 Desde la raíz del buscador:
 
 ```sh
-bun run workflow start --spec docs/workflows/examples/escape-search.json --mode normal
-bun run workflow start --spec docs/workflows/examples/search-keyboard-hint.json --mode ralph
+bun run workflow start --spec docs/workflows/examples/copy-search.json --mode normal
+bun run workflow start --spec docs/workflows/examples/copy-search.json --mode ralph
 ```
 
 Aprobación de plan opcional:
 
 ```sh
-bun run workflow start --spec docs/workflows/examples/escape-search.json --mode normal --plan-review
+bun run workflow start --spec docs/workflows/examples/copy-search.json --mode normal --plan-review
 bun run workflow resume RUTA_DEL_RUN --approve-plan
 ```
+
+`--agents RUTA.json` selecciona otra configuración para una nueva ejecución. Los runs históricos anteriores a esta configuración siguen siendo consultables, pero no se reanudan con agentes distintos de forma implícita.
 
 `--headed` muestra la ventana del QA. `bun run workflow status RUTA_DEL_RUN` muestra estado y bloqueo. `bun run workflow --help` lista límites.
 
@@ -85,7 +110,8 @@ bun run workflow resume RUTA_DEL_RUN --approve-plan
 Cada ejecución imprime su directorio `.tmp/local-workflows/<id>/`:
 
 - `spec.json`, `plan.md` y `progress.md`: intención, plan y avance.
-- `state.json`: estado del controlador e intentos consumidos.
+- `state.json`: estado, intentos y asignación de agentes congelada al iniciar. Una reanudación usa esa asignación; no vuelve a leer la configuración del proyecto.
+- `*/agent.json`: rol, arnés, modelo explícito si lo hay y permiso de lectura/escritura de cada llamada.
 - `state.json.workspace`: ruta del snapshot Git separado, en el temporal del sistema; el checkout original permanece intacto. Se coloca fuera de `.tmp` para que los analizadores no lo ignoren.
 - `round-*/`: prompts, resultados de agentes, verificaciones, revisión y QA.
 - `round-*/qa/`: capturas, árboles accesibles, `actions.json`, `requests.json`, `qa.json` y `trace.zip`.
@@ -98,7 +124,7 @@ Para volver a abrir la app del candidato, entra en la ruta `workspace` que impri
 
 ## Permisos y condiciones de parada
 
-Los trabajadores Claude solo tienen herramientas de lectura o edición de archivos según su fase; no reciben Bash, Git ni herramientas de publicación. Codex corre en modo de solo lectura. El controlador valida el diff antes de ejecutar o aceptar código: permite fuentes y tests colocados del producto y nuevos tests de navegador; protege configuración, dependencias, suites de navegador existentes y el propio workflow. Rechaza borrados, symlinks, modos ejecutables y cambios mayores de 200KB. Una necesidad fuera del perímetro bloquea la tarea.
+El controlador decide los permisos del rol; la configuración no puede conceder escritura a un revisor. El adaptador Codex usa `workspace-write` para el implementador y `read-only` para las demás fases, sin aprobaciones interactivas. El implementador puede usar las herramientas locales de Codex (por ejemplo para aplicar un patch o formatear), pero la suite autoritativa la ejecuta el controlador. El control de rutas del patch se aplica después de la escritura en la copia aislada; no es una ACL que impida cada escritura de archivo. El controlador valida el diff antes de ejecutar o aceptar código: permite fuentes y tests colocados del producto y nuevos tests de navegador; protege configuración, dependencias, suites de navegador existentes y el propio workflow. Rechaza borrados, symlinks, modos ejecutables y cambios mayores de 200KB. Una necesidad fuera del perímetro bloquea la tarea.
 
 El snapshot y los enlaces de dependencias facilitan el aislamiento operativo; **no son un sandbox de código hostil**. Los checks ejecutan código local y comparten dependencias instaladas. Usar tareas y repositorios de confianza. No se promete aislamiento de secretos de toda la cuenta ni contención de un candidato malicioso.
 
@@ -108,10 +134,9 @@ No hace push, PR, merge, despliegue ni aplica el patch a tu rama. Un éxito es u
 
 Muestra el mismo recorrido primero desde la conversación. La diferencia normal/Ralph se observa en los prompts, `progress.md` y el número de sesiones de implementación. La nube cambia el disparador y el entorno: estos comandos y artefactos pueden adaptarse a un runner, pero no se ha conectado este controlador a Actions.
 
-[Spec concreta](examples/escape-search.json) · [Dos mejoras para Ralph](examples/search-keyboard-hint.json) · [Petición vaga](examples/spec-vaga.md). No atribuir una diferencia causal general a dos ejecuciones aisladas.
+[Prueba inicial: solo dos textos](examples/copy-search.json). Los ejemplos anteriores de [Escape](examples/escape-search.json) y [ayuda de teclado](examples/search-keyboard-hint.json) quedan como referencias adicionales. [Petición vaga](examples/spec-vaga.md). No atribuir una diferencia causal general a dos ejecuciones aisladas.
 
 ## Referencias verificadas · 20/09/2026
 
-- [Claude Code programático](https://code.claude.com/docs/en/headless): CLI, herramientas y resultados estructurados.
-- [Codex no interactivo](https://developers.openai.com/codex/noninteractive): CLI y salida estructurada.
+- [Codex no interactivo](https://learn.chatgpt.com/docs/non-interactive-mode): CLI y salida estructurada.
 - [Ralph](https://ghuntley.com/ralph/): técnica original; los límites y gates de esta implementación son decisiones nuestras.

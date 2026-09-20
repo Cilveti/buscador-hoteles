@@ -66,11 +66,11 @@ La interfaz expone los filtros originales. La API ya admite atributos adicionale
 
 ## Workflow agéntico local
 
-[Guía de uso](docs/workflows/README.md): conversación → grill-me → spec → investigación y plan → implementación → checks → review adversarial → QA con navegador y capturas. Dos modos: normal y Ralph por subtareas. El agente padre puede lanzarlo usando `.agents/skills/abordar-tarea/SKILL.md` (también disponible en Claude Code).
+[Guía de uso](docs/workflows/README.md): conversación → grill-me → spec → investigación y plan → implementación → checks → review adversarial → QA con navegador y capturas. Dos modos: normal y Ralph por subtareas. El agente padre puede lanzarlo usando `.agents/skills/abordar-tarea/SKILL.md` (independiente del agente padre).
 
 ```sh
-bun run workflow start --spec docs/workflows/examples/escape-search.json --mode normal
-bun run workflow start --spec docs/workflows/examples/search-keyboard-hint.json --mode ralph
+bun run workflow start --spec docs/workflows/examples/copy-search.json --mode normal
+bun run workflow start --spec docs/workflows/examples/copy-search.json --mode ralph
 ```
 
-Claude implementa y Codex revisa/dirige el QA. Usa sesiones CLI existentes y un snapshot separado; no publica ni integra cambios. El QA rápido usa el catálogo sintético, sin PostgreSQL. La aprobación del plan es opcional con `--plan-review`.
+Los roles usan la configuración de `workflow.agents.json`; inicialmente todo corre con Codex en sesiones separadas. Usa tu autenticación CLI y un snapshot separado; no publica ni integra cambios. El QA rápido usa el catálogo sintético, sin PostgreSQL. La aprobación del plan es opcional con `--plan-review`.

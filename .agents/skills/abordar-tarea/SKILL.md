@@ -25,7 +25,7 @@ bun run workflow start --spec docs/workflows/tasks/<id>/spec.json --mode normal
 
 Si el usuario pide Ralph, usa `--mode ralph`. Añade `--plan-review` solo si quiere aprobar el plan y `--headed` si quiere ver el navegador del QA. El modo normal no pide aprobar el plan: solo se detiene ante bloqueos o límites. El agente padre ejecuta este comando, sigue su salida y comunica fase, resultado o decisión pendiente; no implementa el cambio en paralelo.
 
-El controlador llama a investigadores, planificador, implementador, verificador, revisor y QA. Claude implementa; Codex revisa código y dirige el navegador en otra fase. Los scripts controlan transiciones, permisos del parche, intentos y evidencia. No cambies estado, gates ni presupuestos para conseguir un verde.
+El controlador llama a investigadores, planificador, implementador, revisor y QA, y ejecuta las verificaciones deterministas entre fases. Cada rol agéntico usa el arnés/modelo de `workflow.agents.json`; la configuración actual usa solo Codex. Son sesiones separadas, no necesariamente proveedores distintos. Los scripts controlan transiciones, permisos del parche, intentos y evidencia. No cambies estado, gates ni presupuestos para conseguir un verde.
 
 Para una pausa solicitada: muestra `plan.md` del run y, tras aprobación explícita de ese plan, ejecuta `bun run workflow resume <directorio> --approve-plan`. Si se piden cambios en la especificación, prepara otra ejecución; no continúes con un contrato distinto.
 
@@ -35,6 +35,6 @@ Lee `RESULTADO.md` y `state.json`. Enseña el cambio y las evidencias; un proces
 
 ## Cuando ya eres un trabajador
 
-Si `LOCAL_WORKFLOW_WORKER=1`, si el prompt te identifica como implementador de un workflow, o si estás dentro del laboratorio de evaluación de agentes, NO entrevistes, conviertas a spec ni lances otro workflow. Tu especificación ya está preparada: sigue [el procedimiento de implementación](references/implementation.md) y las herramientas/permisos de tu fase. El controlador ejecuta los checks cuando no dispones de terminal. Este modo evita recursión y conserva las comprobaciones del proceso evaluado.
+Si `LOCAL_WORKFLOW_WORKER=1`, si el prompt te identifica como implementador de un workflow, o si estás dentro del laboratorio de evaluación de agentes, NO entrevistes, conviertas a spec ni lances otro workflow. Tu especificación ya está preparada: sigue [el procedimiento de implementación](references/implementation.md) y las herramientas/permisos de tu fase. El controlador ejecuta los checks de aceptación aunque tu arnés también disponga de terminal. No dupliques la suite completa en el trabajador. Este modo evita recursión y conserva las comprobaciones del proceso evaluado.
 
 Operación y límites: [workflow local](../../../docs/workflows/README.md).

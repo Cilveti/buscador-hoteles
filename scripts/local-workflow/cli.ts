@@ -1,19 +1,20 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { parseArgs } from 'node:util';
+import { readAgents } from './agents';
 import { specSchema } from './contracts';
 import { createRun, executeWorkflow, load } from './workflow';
 
-const help = `Workflow local · Claude implementa / Codex revisa y prueba
+const help = `Workflow local · roles configurables · Codex por defecto
 
-bun run workflow start --spec docs/workflows/examples/escape-search.json [--mode normal|ralph] [--plan-review] [--headed]
+bun run workflow start --spec docs/workflows/examples/copy-search.json [--mode normal|ralph] [--agents workflow.agents.json] [--plan-review] [--headed]
 bun run workflow status <directorio-del-run>
 bun run workflow resume <directorio-del-run> --approve-plan
 
 Default: sin PostgreSQL, 2 intentos por subtarea y 2 rondas de revisión/QA.
 Opciones: --max-rounds 1..3 --max-task-attempts 1..3
-Usa las sesiones CLI existentes de Claude y Codex. No publica ni integra cambios.
-WORKFLOW_CLAUDE_MODEL y WORKFLOW_CODEX_MODEL permiten elegir modelos.
+Usa el arnés/modelo de workflow.agents.json. Configuración inicial: todo con Codex.
+No publica ni integra cambios. Cada ejecución conserva su configuración de agentes.
 `;
 async function main(): Promise<void> {
   const { values, positionals } = parseArgs({
@@ -21,6 +22,7 @@ async function main(): Promise<void> {
     allowPositionals: true,
     options: {
       spec: { type: 'string' },
+      agents: { type: 'string', default: 'workflow.agents.json' },
       mode: { type: 'string', default: 'normal' },
       'plan-review': { type: 'boolean', default: false },
       'approve-plan': { type: 'boolean', default: false },
@@ -59,6 +61,7 @@ async function main(): Promise<void> {
   const spec = specSchema.parse(JSON.parse(readFileSync(resolve(values.spec), 'utf8')));
   const state = createRun(process.cwd(), spec, {
     mode: values.mode,
+    agents: readAgents(resolve(values.agents)),
     planReview: values['plan-review'],
     headed: values.headed,
     maxRounds,

@@ -1,0 +1,25 @@
+{
+  "id": "copy-search",
+  "title": "Dos cambios de texto en el buscador",
+  "objective": "Probar el workflow con una tarea muy sencilla: cambiar dos textos visibles, sin cambiar el comportamiento.",
+  "scope": [
+    "En CatalogSearch, cambiar solo el texto visible del botón Buscar por Buscar hoteles.",
+    "Cambiar el subtítulo Explora nuestros hoteles y encuentra el que va contigo. por Encuentra tu próximo hotel.",
+    "En modo Ralph, realizar cada cambio de texto como una subtarea independiente."
+  ],
+  "outOfScope": [
+    "No cambiar lógica, filtros, estilos, estructura HTML, atributos accesibles, dependencias ni configuración.",
+    "No añadir ni modificar tests para estos cambios de copy: bastan las comprobaciones existentes y la inspección del navegador."
+  ],
+  "acceptance": [
+    {
+      "id": "AC1",
+      "criterion": "El botón de búsqueda muestra el texto exacto Buscar hoteles."
+    },
+    {
+      "id": "AC2",
+      "criterion": "Debajo del título de la página se muestra el subtítulo exacto Encuentra tu próximo hotel."
+    }
+  ],
+  "decisions": []
+}

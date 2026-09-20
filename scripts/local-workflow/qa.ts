@@ -3,7 +3,7 @@ import { closeSync, mkdirSync, openSync, writeFileSync } from 'node:fs';
 import { createServer } from 'node:net';
 import { join } from 'node:path';
 import { chromium, expect, type Page } from '@playwright/test';
-import { callAgent } from './agents';
+import { type AgentAssignments, callAgent } from './agents';
 import { actionSchema, type BrowserAction, type Specification, validQaFinish } from './contracts';
 import { stop } from './process';
 
@@ -64,6 +64,7 @@ export async function act(page: Page, action: BrowserAction, baseURL: string): P
 }
 
 type QaOptions = {
+  agents: AgentAssignments | undefined;
   root: string;
   output: string;
   spec: Specification;
@@ -152,9 +153,9 @@ export async function runQa(options: QaOptions) {
           observation,
         );
         const action = await callAgent(
+          options.agents,
           {
-            provider: 'codex',
-            role: 'QA adversarial de producto',
+            role: 'qa',
             root: options.root,
             output: join(options.output, `step-${step}`),
             images: [image],

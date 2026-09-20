@@ -1,42 +1,42 @@
 # Workflow agéntico local
 
 ## Objetivo
-Grill-me → spec → research/plan → implementación normal o Ralph → verificación externa → revisión adversarial → QA agéntico de navegador. Reproducible en el buscador, sin depender de GitHub Actions.
+Grill-me → spec → research/plan → implementación normal o Ralph → verificación externa → revisión adversarial → QA agéntico de navegador. Reproducible en el buscador, independiente del arnés y sin depender de GitHub Actions.
 
 ## Estado actual
-Completado y probado con agentes reales (20/09/2026). Rama `codex/local-agentic-workflows`. Claude y Codex autenticados. Trabajo local.
+20/09/2026, rama `codex/local-agentic-workflows`. Roles desacoplados del arnés; configuración inicial solo Codex. Normal y Ralph completados. Por petición de Iñigo, el ejemplo inicial usa una tarea MUY sencilla: solo dos textos. No se han integrado los candidatos ni publicado cambios.
 
-## Progreso
-- CLI normal/Ralph, skills y guía implementados.
-- 7 tests del controlador; 191 tests en la suite general. Lint, tipos, suite y navegador verdes: `.tmp/verification/2026-09-20T12-59-50.249Z-4814274c/verification.json`.
-- Skills validadas con quick_validate usando uv + PyYAML.
-- Ralph: dos subtareas implementadas y verificadas en sesiones distintas. La review encontró que la ayuda desplazaba iconos; el controlador inició la corrección automáticamente.
-- QA negativo sobre producto sin la mejora: detectó que Escape no borraba la consulta. Evidencia: `.tmp/local-qa-negative/qa.json`.
-- Plan opcional probado: pausa sin editar producto; reanudación explícita registrada por el operador de la prueba, no atribuida a Iñigo.
-- Normal completado de extremo a extremo: `2026-09-20T12-59-29-636Z-escape-search-normal`; 191 tests, 9 recorridos de navegador, review sin hallazgos y QA con 3 criterios comprobados.
-- Ralph completado: `2026-09-20T13-03-27-877Z-search-keyboard-hint-ralph`; dos subtareas, 191 tests, 10 recorridos de navegador, review sin hallazgos y QA con 4 criterios comprobados. El ensayo anterior `12-50-31` queda fallido por el contrato antiguo de nombres de evidencias, aunque demostró la corrección de un hallazgo real.
+## Decisiones vigentes
+- Configuración por defecto/rol en `workflow.agents.json`, congelada en `state.json` al iniciar. La reanudación no relee el JSON del proyecto.
+- Contrato pequeño en `harness.ts`; CLI Codex en `codex.ts`; fases y QA ajenos al proveedor. Solo Codex está instalado y probado. Otro arnés necesita su adaptador.
+- Implementación, revisión y QA usan sesiones separadas de Codex: separación de contexto, sin afirmar diversidad de proveedor.
+- Aprobación del plan opcional; decisiones pendientes de producto/permisos bloquean.
+- Snapshot Git aislado; integración posterior fuera del workflow.
+- Ralph: contexto nuevo por subtarea/intento, progreso persistente y checks externos. Límites acotados; no reiniciar contadores para obtener un verde.
+- Los trabajadores pueden editar, formatear y ejecutar tests enfocados sin servidor. El controlador arranca servidores y navegador fuera del sandbox del trabajador en puertos propios.
+- QA con React/handlers/core reales y catálogo sintético: no acredita PostgreSQL/Payload, SSR, Sonar ni Actions.
 
-## Decisiones
-- Aprobación del plan opcional; bloqueo obligatorio ante decisiones pendientes.
-- CLI Bun/TypeScript; Claude implementa y Codex revisa/QA, usando autenticación local.
-- Cada ejecución trabaja sobre un snapshot Git aislado. Integración posterior fuera del workflow.
-- QA interactivo mediante Playwright dirigido por decisiones estructuradas de Codex; capturas, acciones y veredictos por criterio.
-- Ralph acotado: contexto nuevo por subtarea/intento, progreso persistente y comprobaciones externas.
-- Default sin PostgreSQL: componentes/handlers reales con catálogo sintético. No acredita persistencia/SSR.
+## Progreso verificado
+- 10 tests del controlador; 194 tests en la suite completa. Lint, tipos, tests y navegador verdes: `.tmp/verification/2026-09-20T15-02-25.913Z-ee07c5bd/verification.json`.
+- Configuración y permisos probados con dos adaptadores de prueba: todos los roles, rutas, imágenes, salidas inválidas y rechazo de escritura del revisor. Esos dobles no acreditan soporte real de otro arnés.
+- Edición real Codex con workspace-write: `.tmp/codex-workflow-write-probe/result.json`.
+- Normal Codex completado: `2026-09-20T14-51-47-750Z-escape-search-normal`; 12 llamadas Codex, solo implementador con escritura, 9 recorridos de navegador y QA AC1–AC3.
+- Configuración congelada comprobada: reanudó con Codex pese a cambiar la copia del JSON de entrada; intentar continuar sin aprobación no modificó el estado. El operador de prueba leyó y aprobó el plan; no se atribuye esa aprobación a Iñigo.
+- Primer Ralph Codex: `2026-09-20T14-51-48-903Z-search-keyboard-hint-ralph`, bloqueado. La review detectó desplazamiento de controles, devolvió el hallazgo y se generaron tests de geometría que detectaron una corrección incompleta. El siguiente intento corrigió el código, pero reportó EADDRINUSE al intentar Playwright dentro del sandbox. Se conserva el bloqueo.
+- Segundo Ralph Codex: `2026-09-20T15-02-24-884Z-search-keyboard-hint-ralph`, checks y review superados; cancelado durante QA por la petición de simplificar las pruebas. Estado fallido conservado y motivo en operator-note.json.
+- Prueba sencilla completada: `2026-09-20T15-09-40-392Z-copy-search-ralph`. Dos sustituciones de texto, una por subtarea y un intento cada una; sin lógica nueva ni tests de copy. 194 tests y 6 recorridos de navegador, review sin hallazgos y QA con captura inspeccionada. 9 llamadas Codex; solo los dos implementadores con escritura. Es el ejemplo inicial en la guía.
+- Skill abordar-tarea validada con quick_validate; guía y evidencia actualizadas.
 
 ## Aprendizajes confirmados
-- La skill de proceso también se usa en evaluaciones: se conserva el procedimiento original como modo de trabajador para evitar recursión.
-- El QA necesita conservar observaciones previas junto a acciones; sin ellas repite escenarios y puede confundir estados. Se guardan URL, foco, árbol accesible y contador de peticiones, además de capturas.
-- El snapshot debe vivir fuera de carpetas ignoradas y usar la ruta canónica del temporal en macOS.
+- La skill se usa también en evaluaciones; conserva su procedimiento original en modo trabajador para evitar recursión.
+- QA necesita historial de observaciones y acciones, además de URL, foco, árbol accesible, peticiones y capturas.
+- Validar que un archivo de evidencia existe no valida su interpretación: revisar capturas antes de enseñar resultados.
+- Worktrees fuera de carpetas ignoradas por Biome; rutas canónicas del temporal macOS para resolver enlaces.
+- El control de rutas del diff es posterior a la escritura. No es una ACL por archivo ni un sandbox de código hostil.
+- El servidor de QA debe arrancarlo el controlador, sin depender de la capacidad del arnés para escuchar puertos.
 
-## Errores y correcciones
-- JSON Schema draft-2020-12 rechazado por Claude: usar draft-7.
-- Alias sonnet heredaba un modelo retirado desde el entorno: ID explícito claude-sonnet-5, sin modificar configuración personal.
-- Investigadores confundieron dudas reversibles con bloqueos: el planificador las reconcilia contra la spec; las decisiones pendientes siguen bloqueando.
-- El plan devolvió explicaciones donde se esperaban IDs: patrón AC en el contrato y cobertura validada externamente.
-- Biome ignoraba worktrees bajo `.tmp`: mover al temporal del sistema; comprobar baseline antes de consumir modelos.
-- Enlaces relativos incorrectos por `/var` frente a `/private/var`: canonicalizar con realpath.
-- Un veredicto QA añadió comentarios a nombres de capturas: el gate rechazó la entrega. Se reforzó el schema para exigir nombres exactos, sin debilitar la validación. Esa ejecución sigue fallida.
+## Historial
+La versión anterior `5bbc1b8` usaba Claude para implementar y Codex para revisión/QA. Ambos modos completaron su recorrido, incluidos ejemplos negativos y feedback real. Los detalles y enlaces mantienen su procedencia en EVIDENCIAS.md; no acreditan la nueva integración Codex.
 
-## Entrega
-Ambos recorridos completados. Guía en README.md y enlaces auditables en EVIDENCIAS.md. El siguiente paso de Iñigo es abrir el buscador en Claude Code e invocar abordar-tarea; puede elegir normal/Ralph y revisión opcional del plan. Ningún candidato se ha aplicado al checkout original.
+## Próximo paso
+Iñigo puede abrir Codex en el buscador e invocar abordar-tarea con `docs/workflows/examples/copy-search.json`, eligiendo normal o Ralph. La guía y EVIDENCIAS.md contienen los comandos y entregas comprobadas. Otros arneses quedan para una integración posterior mediante adaptador.

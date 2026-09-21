@@ -51,7 +51,15 @@ Para una pausa solicitada: muestra `plan.md` del run y, tras aprobación explíc
 
 ## 4. Revisión humana y entrega
 
-Al finalizar, lee `RESULTADO.md` y `state.json` y avisa al usuario con un resumen corto: qué cambió, qué checks/revisión/QA pasaron o quedaron pendientes, duración y enlaces al candidato y sus evidencias. Indica cómo inspeccionar la app siguiendo la guía del workflow. Un proceso terminado no equivale a checks superados. Describe el límite del QA sin base de datos; no atribuirle persistencia ni SSR.
+Al finalizar, lee `RESULTADO.md` y `state.json` y avisa al usuario con un resumen corto: qué cambió, qué checks/revisión/QA pasaron o quedaron pendientes, duración y enlaces al candidato y sus evidencias. Un proceso terminado no equivale a checks superados. Describe el límite del QA sin base de datos; no atribuirle persistencia ni SSR.
+
+**Facilita la prueba humana, no entregues solo logs.** Para cambios visibles, levanta el entorno local ligero desde `state.json.workspace`, siguiendo la guía del workflow, en un puerto libre y con salida propia. Comprueba que responde y que sirve ese candidato, no el checkout original ni otro ensayo. El servidor temporal del QA se cierra al terminar: no reutilices su URL como si siguiera disponible. Deja el proceso de preview activo para la revisión y comunica:
+
+- **Dónde:** enlace clicable con la URL real, incluyendo ruta y parámetros que preparan el escenario del criterio de aceptación.
+- **Qué hacer:** entre uno y tres pasos concretos, por ejemplo «enfoca el buscador y pulsa Escape».
+- **Qué debería pasar:** resultado observable, incluido un caso límite relevante si cabe.
+
+Si no puedes arrancarlo, explica el bloqueo y proporciona la ruta exacta del candidato y el comando para levantarlo; no presentes una URL sin verificar como disponible. Para cambios sin interfaz, da el comando o la petición concreta y su resultado esperado. Mantén estas instrucciones breves y adaptadas a la tarea.
 
 Ahora revisa el usuario: el workspace y el patch siguen aislados. Si pide correcciones, recoge su feedback y aclara si cambia la spec antes de encargar otro intento; conserva el historial y los límites. La entrega o integración posterior requiere ese encargo: no aplicar, publicar ni fusionar automáticamente al obtener un verde.
 

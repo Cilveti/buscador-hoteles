@@ -42,12 +42,15 @@ bun run verify
 
 Ejecuta lint, tipos, tests y navegador con fixtures sintéticos, sin necesitar una base de datos. Conserva un informe y logs en `.tmp/verification/`. El navegador de esta comprobación usa el puerto `3181`, componentes React y handlers HTTP reales, con un catálogo sintético en lugar de Payload/PostgreSQL.
 
+Para iterar solo en el producto, `bun run verify:app` mantiene lint, todos los tipos, tests del producto/arquitectura y navegador, y omite los tests del laboratorio y del workflow. Usar `verify` completo al cambiar scripts, configuración o dependencias; CI conserva el completo. El [workflow local](docs/workflows/README.md) usa el perfil de producto y exige al implementador sus propias comprobaciones enfocadas.
+
 | Comando | Qué comprueba |
 |---|---|
 | `bun run lint` | Formato, imports y reglas de Biome |
 | `bun run lint:report` | Incluye también advertencias no bloqueantes |
 | `bun run typecheck` | Tipos de aplicación, contratos, scripts y tests |
-| `bun run test` | Comportamiento determinista, contratos y arquitectura |
+| `bun run test` | Producto, arquitectura, laboratorio, verificador y workflows |
+| `bun run test:app` | Solo comportamiento y contratos del producto, más arquitectura |
 | `bun run check:architecture` | Dependencias permitidas y rutas de imports analizables |
 | `bun run test:browser` | Interacciones, navegación, recuperación de errores, teclado y accesibilidad |
 | `bun run test:e2e` | Catálogo y administración con Payload/PostgreSQL reales |

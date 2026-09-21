@@ -56,6 +56,7 @@ test('every role uses the adapter contract with validated output, access and evi
           output: join(directory, role),
           prompt: 'A literal $(command).',
           edit: role === 'implementer',
+          env: role === 'implementer' ? { TEST_BROWSER_PORT: '43210' } : undefined,
           images: role === 'qa' ? ['screenshot.png'] : [],
         },
         resultSchema,
@@ -81,6 +82,8 @@ test('every role uses the adapter contract with validated output, access and evi
     ]);
     expect(invocations.at(-1)?.request.images).toEqual(['screenshot.png']);
     expect(invocations.at(-1)?.request.reasoningEffort).toBe('high');
+    expect(invocations[3]?.request.env).toEqual({ TEST_BROWSER_PORT: '43210' });
+    expect(invocations[0]?.request.env).toBeUndefined();
     expect(JSON.parse(readFileSync(join(directory, 'reviewer/agent.json'), 'utf8')).harness).toBe(
       'second',
     );
@@ -142,6 +145,8 @@ test('Codex maps editing to workspace-write and preserves readonly for other pha
   expect(reader[reader.indexOf('--sandbox') + 1]).toBe('read-only');
   expect(writer[writer.indexOf('--sandbox') + 1]).toBe('workspace-write');
   expect(writer).not.toContain('--dangerously-bypass-approvals-and-sandbox');
+  expect(writer).toContain('sandbox_workspace_write.network_access=true');
+  expect(reader).not.toContain('sandbox_workspace_write.network_access=true');
   expect(writer[writer.indexOf('--model') + 1]).toBe('chosen-model');
   expect(writer).toContain('model_reasoning_effort="high"');
   expect(codexCommand({ ...request, reasoningEffort: undefined }).join(' ')).not.toContain(

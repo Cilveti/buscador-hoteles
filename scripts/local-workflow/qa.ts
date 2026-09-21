@@ -23,6 +23,28 @@ export function availablePort(): Promise<number> {
   });
 }
 
+/** Chrome is owned by the controller; sandboxed workers use Playwright's existing connection. */
+export async function withBrowserChecks<T>(
+  output: string,
+  run: (environment: Record<string, string>) => Promise<T>,
+): Promise<T> {
+  const port = await availablePort();
+  const browser = await chromium.launchServer({
+    channel: process.env.TEST_BROWSER_CHANNEL ?? 'chrome',
+    headless: true,
+    host: '127.0.0.1',
+  });
+  try {
+    return await run({
+      TEST_BROWSER_PORT: String(port),
+      TEST_BROWSER_OUTPUT: output,
+      TEST_BROWSER_WS_ENDPOINT: browser.wsEndpoint(),
+    });
+  } finally {
+    await browser.close();
+  }
+}
+
 /** Narrow browser actions: no arbitrary JavaScript, file access or navigation to other origins. */
 export async function act(page: Page, action: BrowserAction, baseURL: string): Promise<void> {
   const locator = () => {
@@ -164,7 +186,7 @@ export async function runQa(options: QaOptions) {
               `You inspect a REAL running local app using the screenshot and accessibility tree below. You do NOT edit code, run shell commands, or merely infer behavior from source. The controller executes your chosen browser action and feeds back results.\n` +
               `SPECIFICATION:\n${JSON.stringify(options.spec)}\nURL: ${page.url()}\nLOCAL ORIGIN: ${baseURL}\n` +
               `OBSERVATION (${screenshot}):\n${observation}\nHISTORY:\n${JSON.stringify(history)}\n` +
-              'Choose ONE action. Fields role/name/value are empty or none when unused. Navigate only relative paths. click/fill/select/press use exact accessible role and name. expect-text asserts exact visible text; expect-url asserts a relative URL. inspect observes after an interaction. Do not assume an interaction succeeded: inspect its resulting state. A filled form field is not an applied search: submit with Enter/the search button and confirm the query URL and filtered results BEFORE testing a reset of an applied search. Explicitly establish the starting state of each criterion; repeat setup if a previous step skipped it. Test every acceptance criterion and a relevant edge/recovery case. Avoid redundant actions.\n' +
+              'Return exactly ONE action JSON in your FINAL response. Do not emit an action in commentary and then finish: the controller executes only your final JSON. The next observation arrives in a new controller turn; you are not waiting for a tool result inside this turn. If a criterion is incomplete, choose the next action; finish with not-verified only for a concrete blocker. Fields role/name/value are empty or none when unused. Navigate only relative paths; you may use setup URLs supplied by the acceptance criteria, then confirm their actual initial state. click/fill/select/press use exact accessible role and name. expect-text asserts exact visible text; expect-url asserts a relative URL. inspect observes after an interaction. Do not assume an interaction succeeded: inspect its resulting state. A filled form field is not an applied search: submit with Enter/the search button and confirm the query URL and filtered results BEFORE testing a reset of an applied search. Explicitly establish the starting state of each criterion; repeat setup if a previous step skipped it. Test every acceptance criterion and a relevant edge/recovery case. Avoid redundant actions.\n' +
               'Only finish when you have evidence or a specific blocker. History includes the observed state BEFORE each action; the current observation is AFTER the last action. Use that evidence instead of repeating already observed transitions. To assert no request occurred, compare the recorded API request counts. For finish, results must cover EVERY acceptance ID exactly once with pass/fail/not-verified, actual observed behavior, and filenames of screenshots already provided. Other actions use results: []. Never mark a criterion passed based only on static code, the existing test suite or a planned action. A screenshot alone does not establish a transition.\n' +
               `Remaining actions: ${(options.maxSteps ?? 16) - step}. Previously captured: ${screenshots.join(', ')}.\nScope: real React/HTTP/core with synthetic catalog; no PostgreSQL, Payload admin or SSR. Mark criteria requiring those as not-verified.`,
           },

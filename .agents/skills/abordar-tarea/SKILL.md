@@ -35,6 +35,8 @@ Lee `RESULTADO.md` y `state.json`. Enseña el cambio y las evidencias; un proces
 
 ## Cuando ya eres un trabajador
 
-Si `LOCAL_WORKFLOW_WORKER=1`, si el prompt te identifica como implementador de un workflow, o si estás dentro del laboratorio de evaluación de agentes, NO entrevistes, conviertas a spec ni lances otro workflow. Tu especificación ya está preparada: sigue [el procedimiento de implementación](references/implementation.md) y las herramientas/permisos de tu fase. El controlador ejecuta los checks de aceptación aunque tu arnés también disponga de terminal. No dupliques la suite completa en el trabajador. Este modo evita recursión y conserva las comprobaciones del proceso evaluado.
+Si `LOCAL_WORKFLOW_WORKER=1` o el prompt te identifica como trabajador de un workflow, NO entrevistes, conviertas a spec ni lances otro workflow. Respeta tu fase: investigadores, planificador, revisor y QA no implementan. El implementador sigue [implementar](../implementar/SKILL.md), ejecuta los checks relevantes y entrega sus resultados. El controlador verifica después de forma independiente.
+
+Si estás dentro del laboratorio de evaluación de agentes, sigue [el procedimiento de implementación evaluado](references/implementation.md). Conserva sus comandos completos y su aceptación específica; el perfil rápido del workflow no sustituye el control del experimento.
 
 Operación y límites: [workflow local](../../../docs/workflows/README.md).

@@ -1,0 +1,29 @@
+{
+  "id": "escape-search-acceptance-url",
+  "title": "Borrar la búsqueda con Escape",
+  "objective": "Permitir borrar el texto de búsqueda con el teclado sin perder los filtros elegidos.",
+  "scope": [
+    "Buscador del catálogo: campo Nombre del hotel o destino y su interacción con la consulta existente.",
+    "Reutilizar el comportamiento del botón Borrar texto de búsqueda.",
+    "Igual que el botón existente, al borrar una consulta activa se vuelve a la página 1. Escape solo actúa dentro del campo de búsqueda."
+  ],
+  "outOfScope": [
+    "No cambiar administración, base de datos, dependencias ni la configuración del arnés.",
+    "No cambiar diseño ni añadir controles visibles."
+  ],
+  "acceptance": [
+    {
+      "id": "AC1",
+      "criterion": "Dado que abro /?q=M%C3%A1laga&country=Spain&sort=rating y confirmo que Málaga está aplicada (campo, URL y resultados filtrados), cuando enfoco el campo Nombre del hotel o destino y pulso Escape, entonces el campo queda vacío, desaparece q de la URL y se muestran los resultados correspondientes a los demás filtros. La URL prepara el estado; Escape debe ejecutarse y su resultado observarse."
+    },
+    {
+      "id": "AC2",
+      "criterion": "Dado el mismo estado inicial /?q=M%C3%A1laga&country=Spain&sort=rating, cuando pulso Escape en el campo, entonces country=Spain y sort=rating permanecen en la URL, el foco sigue en el campo y los resultados siguen filtrados por España y ordenados por valoración. Se puede comprobar AC1 y AC2 en la misma transición observada."
+    },
+    {
+      "id": "AC3",
+      "criterion": "Dado que el campo está vacío después de la transición anterior (URL /?country=Spain&sort=rating), registro el foco, la URL, la página, los resultados y el contador de peticiones; cuando pulso Escape de nuevo en ese campo vacío, entonces todo ese estado se conserva y no se inicia una consulta nueva. El buscador sigue operativo. Si hay que preparar el escenario por separado, puedo abrir esa URL y observar su estado antes de actuar."
+    }
+  ],
+  "decisions": []
+}

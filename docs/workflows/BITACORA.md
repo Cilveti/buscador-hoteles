@@ -4,7 +4,7 @@
 Grill-me → spec → research/plan → implementación normal o Ralph → verificación externa → revisión adversarial → QA agéntico de navegador. Reproducible en el buscador, independiente del arnés y sin depender de GitHub Actions.
 
 ## Estado actual
-20/09/2026, rama `codex/local-agentic-workflows`. Roles desacoplados del arnés; configuración inicial solo Codex. Normal y Ralph completados. Iñigo descarta cambios de texto y elige una mejora pequeña: borrar la búsqueda con Escape. La simulación con Luna 5.6 high terminó: 9 min 27 s, con un reintento de lint y QA aprobado. No se han integrado los candidatos ni publicado cambios.
+20/09/2026, rama `codex/local-agentic-workflows`. Workflow completo con tests automáticos en implementación y aceptación Dado/Cuando/Entonces más URL para revisión/QA: **completado en 464,685 s**, todos los roles Luna high, un intento y una ronda. Informe en `tasks/escape-search-acceptance-url/resultado.md`. Candidato aislado, sin integrar ni publicar.
 
 ## Decisiones vigentes
 - Configuración por defecto/rol en `workflow.agents.json`, congelada en `state.json` al iniciar. La reanudación no relee el JSON del proyecto.
@@ -13,10 +13,16 @@ Grill-me → spec → research/plan → implementación normal o Ralph → verif
 - Aprobación del plan opcional; decisiones pendientes de producto/permisos bloquean.
 - Snapshot Git aislado; integración posterior fuera del workflow.
 - Ralph: contexto nuevo por subtarea/intento, progreso persistente y checks externos. Límites acotados; no reiniciar contadores para obtener un verde.
-- Los trabajadores pueden editar, formatear y ejecutar tests enfocados sin servidor. El controlador arranca servidores y navegador fuera del sandbox del trabajador en puertos propios.
+- El implementador debe ejecutar lint, tipos y tests relevantes antes de entregar; Playwright si cambia interacción de UI. El controlador proporciona Chrome temporal y puerto de app; el worker ejecuta los tests contra esa conexión. Los otros roles no implementan. Se conserva la verificación externa independiente.
+- Perfil `app` para candidatos de producto: lint/tipos completos, producto/arquitectura y navegador. Perfil completo para cambios del arnés/configuración y CI. No se borran tests ni se altera el procedimiento evaluado en `abordar-tarea/references/implementation.md`.
 - QA con React/handlers/core reales y catálogo sintético: no acredita PostgreSQL/Payload, SSR, Sonar ni Actions.
 
 ## Progreso verificado
+- Último recorrido completo: `2026-09-20T18-21-18-110Z-escape-search-acceptance-url-normal`. Implementador con lint/tipos/tests y Playwright automático; sin exploración manual. Checks externos: 60 tests y 7 casos de navegador; review sin hallazgos; QA confirma AC1–AC3 en 46,614 s, con 3 acciones y 4 llamadas. Capturas 01→02→03 y contador de peticiones inspeccionados. Preflight completo verde: 195 tests y 6 casos base en `.tmp/verification/acceptance-url-preflight/`.
+- Comparación QA con/sin atajo completada: `qa-atajos-comparacion.md`. Misma implementación inmutable y Luna high; pareja válida con los tres criterios: 76,107 s/8 llamadas/166.847 tokens frente a 43,795 s/5 llamadas/96.865 tokens. Un enlace ahorró tres acciones de preparación. Piloto inconcluso preservado, sin atribuir su menor tiempo a una revisión terminada. La aclaración del protocolo de una sola acción final se incorporó posteriormente al QA y pasó el recorrido completo.
+- Prueba real cerrada: `.tmp/self-check-proofs/2026-09-20T17-36-35-274Z/`. Implementador 154,019 s; verificación externa 12,182 s; total 166,399 s. El agente corrigió lint y un escenario de test en la misma sesión, pasó 3 casos Playwright; el controlador pasó 60 tests y 9 recorridos. Alcance y enlaces en EVIDENCIAS.md.
+- Perfil app: lint 619 ms, tipos 4722 ms, tests 1043 ms, navegador 5633 ms. Completo tras los cambios: lint 759 ms, tipos 4691 ms, tests 18014 ms, navegador 5502 ms; 195 tests y 6 recorridos, todo verde. Evidencias en `.tmp/verification/app-profile-current/` y `full-after-self-checks/`.
+- 16 tests del verificador/workflow pasan; validadores de `implementar` y `abordar-tarea` pasan usando `PYTHONPATH=.tmp/skill-validator-deps`. Conexión de Playwright comprobada desde sandbox con 4 recorridos: `.tmp/worker-browser-connection/`.
 - Simulación actual completada en 566,601 s: `2026-09-20T17-07-36-045Z-escape-search-luna-high-normal`. Todos los roles configurados con `gpt-5.6-luna`, `reasoningEffort: high`; sin pausa opcional del plan. Spec en `docs/workflows/tasks/escape-search-luna-high/`; medición externa en `.tmp/simulations/luna-high-2026-09-20T17-07-35Z/`.
 - Añadido paso de reasoningEffort del JSON al adaptador y a los metadatos. 10 tests del controlador, 55 aserciones, verdes. El CLI local y su catálogo confirman Luna, high e imágenes. Verificación completa verde: `.tmp/verification/2026-09-20T17-07-34.698Z-8b6525f3/verification.json`.
 - 10 tests del controlador; 194 tests en la suite completa. Lint, tipos, tests y navegador verdes: `.tmp/verification/2026-09-20T15-02-25.913Z-ee07c5bd/verification.json`.
@@ -37,10 +43,10 @@ Grill-me → spec → research/plan → implementación normal o Ralph → verif
 - Validar que un archivo de evidencia existe no valida su interpretación: revisar capturas antes de enseñar resultados.
 - Worktrees fuera de carpetas ignoradas por Biome; rutas canónicas del temporal macOS para resolver enlaces.
 - El control de rutas del diff es posterior a la escritura. No es una ACL por archivo ni un sandbox de código hostil.
-- El servidor de QA debe arrancarlo el controlador, sin depender de la capacidad del arnés para escuchar puertos.
+- El QA conserva servidor propio del controlador. Para autoevaluación del implementador, red habilitada permite arrancar la app, pero Chrome sigue bloqueado por Seatbelt en macOS; usar Chrome temporal del controlador mediante `TEST_BROWSER_WS_ENDPOINT`, que la configuración Playwright ya soportaba. No recurrir a desactivar el sandbox de archivos.
 
 ## Historial
 La versión anterior `5bbc1b8` usaba Claude para implementar y Codex para revisión/QA. Ambos modos completaron su recorrido, incluidos ejemplos negativos y feedback real. Los detalles y enlaces mantienen su procedencia en EVIDENCIAS.md; no acreditan la nueva integración Codex.
 
 ## Próximo paso
-Resultado y tiempos en `docs/workflows/tasks/escape-search-luna-high/resultado.md`. Candidato servido en 3183 y original en 3182. El usuario puede probar Escape; el candidato continúa aislado. No queda trabajo para esta simulación. Los tiempos excluyen preparación del controlador y conversación humana. Los intentos y sus incidencias se conservan.
+Prueba solicitada terminada y documentada. Compartir duración y evidencias; conservar el candidato aislado para inspección. No quedan pasos pendientes de esta prueba.

@@ -1,10 +1,29 @@
 # Ensayos locales · 20 de septiembre de 2026
 
+## Workflow completo con aceptación y URL de preparación
+
+[Informe y capturas](tasks/escape-search-acceptance-url/resultado.md): **7 min 44,685 s**, Luna high, un intento. Implementador con tests automáticos; revisión independiente y QA con criterios Dado/Cuando/Entonces. Verificación final: 60 tests y 7 casos de navegador. QA: tres criterios aprobados, tres acciones y cuatro llamadas. La URL prepara el estado; Escape se prueba interactuando con la app.
+
+## QA con estados preparados
+
+[Comparación rápida](qa-atajos-comparacion.md): mismo candidato y Luna high. Preparación con controles: 76,107 s y 8 llamadas; con URL preparada: 43,795 s y 5 llamadas. Ambos verificaron AC1–AC3. Una muestra válida por condición; se conserva también una pareja piloto inconclusa. Después se incorporó la aclaración del protocolo de acciones al QA y se probó el workflow completo descrito arriba.
+
+## Implementador que comprueba su propio cambio
+
+Prueba acotada de la fase de implementación, con la misma spec de Escape y `gpt-5.6-luna` en high. **2 min 34 s** para implementar y pasar sus checks; **12,2 s** de verificación externa después, **2 min 46 s** en total. No es otra medición del workflow completo: no incluye research, plan, revisión ni QA agéntico.
+
+- El agente leyó `implementar`, ejecutó lint, tipos, 3 tests unitarios relevantes y 3 casos nuevos de Playwright. Detectó un fallo de formato y un escenario mal preparado (página 2 sin tamaño de página) y corrigió ambos en la misma sesión. Logs y resultado: [llamada real](../../.tmp/self-check-proofs/2026-09-20T17-36-35-274Z/agent/agent.log), [resumen](../../.tmp/self-check-proofs/2026-09-20T17-36-35-274Z/result.json).
+- El controlador verificó después el mismo patch: 60 tests de producto/arquitectura, 9 casos de navegador, lint y tipos verdes. [Verificación externa](../../.tmp/self-check-proofs/2026-09-20T17-36-35-274Z/verification/verification.json).
+- El candidato quedó aislado. No se integró ni se publicó. Chrome temporal se abrió/cerró desde el controlador; los tests los ejecutó el implementador con Playwright a través de la conexión proporcionada.
+- El repositorio del arnés pasó además su suite completa: **195 tests de Bun y 6 casos base de navegador**, lint y tipos. [Informe](../../.tmp/verification/full-after-self-checks/verification.json). El test adicional respecto a los 194 anteriores valida la separación de perfiles conservando el fallo del laboratorio en el perfil completo.
+
+El ahorro viene de no ejecutar los tests del laboratorio por cada parche de producto. No se ha eliminado ningún test ni sustituido la verificación externa por la declaración del agente.
+
 ## Simulación medida: Luna 5.6 high
 
 [Informe completo](tasks/escape-search-luna-high/resultado.md): Escape, modo normal, **9 min 27 s**, 16 llamadas. Checks, revisión y QA aprobados. Incluye un reintento automático por el orden de un import. El tiempo parte de una especificación preparada y usa dependencias instaladas y catálogo sintético.
 
-## Versión actual: roles configurables, solo Codex
+## Ensayos anteriores: roles configurables, solo Codex
 
 Verificación del repositorio: 194 tests, lint, tipos y navegador en verde. [Informe](../../.tmp/verification/2026-09-20T15-02-25.913Z-ee07c5bd/verification.json).
 

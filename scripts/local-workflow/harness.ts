@@ -6,6 +6,7 @@ export type HarnessInvocation = {
   resultPath: string;
   logPath: string;
   access: 'read' | 'write';
+  env?: Record<string, string>;
   model?: string;
   reasoningEffort?: string;
   images: string[];

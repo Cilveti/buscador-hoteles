@@ -22,6 +22,9 @@ export function codexCommand(invocation: HarnessInvocation): string[] {
     '--output-last-message',
     invocation.resultPath,
   ];
+  // Allow the local app and the connection to the controller-owned Playwright browser.
+  if (invocation.access === 'write')
+    command.push('-c', 'sandbox_workspace_write.network_access=true');
   if (invocation.model) command.push('--model', invocation.model);
   if (invocation.reasoningEffort)
     command.push('-c', `model_reasoning_effort=${JSON.stringify(invocation.reasoningEffort)}`);
@@ -37,7 +40,7 @@ export const codexHarness: HarnessAdapter = {
       cwd: invocation.root,
       log: invocation.logPath,
       input: invocation.prompt,
-      env: { ...process.env, LOCAL_WORKFLOW_WORKER: '1' },
+      env: { ...process.env, ...invocation.env, LOCAL_WORKFLOW_WORKER: '1' },
       timeoutMs: invocation.timeoutMs,
     });
     return JSON.parse(readFileSync(invocation.resultPath, 'utf8'));

@@ -67,6 +67,7 @@ export type AgentRequest = {
   output: string;
   prompt: string;
   edit?: boolean;
+  env?: Record<string, string>;
   images?: string[];
   timeoutSeconds?: number;
 };
@@ -103,6 +104,7 @@ export async function callAgent<S extends z.ZodType>(
         role: request.role,
         ...target,
         access,
+        environment: request.env,
       },
       null,
       2,
@@ -117,6 +119,7 @@ export async function callAgent<S extends z.ZodType>(
       resultPath,
       logPath,
       access,
+      env: request.env,
       model: target.model,
       reasoningEffort: target.reasoningEffort,
       images: request.images ?? [],

@@ -24,6 +24,7 @@ export type VerificationOptions = {
   output: string;
   timeoutSeconds?: number;
   browser?: boolean;
+  profile?: 'full' | 'app';
   env?: Record<string, string>;
   /** Permite comprobar el ejecutor con comandos aislados. */
   checks?: CheckDefinition[];
@@ -39,11 +40,14 @@ export type VerificationResult = {
   checks: CheckResult[];
 };
 
-export function defaultChecks(browser = false): CheckDefinition[] {
+export function defaultChecks(
+  browser = false,
+  profile: 'full' | 'app' = 'full',
+): CheckDefinition[] {
   const checks: CheckDefinition[] = [
     { id: 'lint', command: ['bun', 'run', 'lint'] },
     { id: 'typecheck', command: ['bun', 'run', 'typecheck'] },
-    { id: 'tests', command: ['bun', 'run', 'test'] },
+    { id: 'tests', command: ['bun', 'run', profile === 'app' ? 'test:app' : 'test'] },
   ];
   if (browser) checks.push({ id: 'browser', command: ['bun', 'run', 'test:browser'] });
   return checks;
@@ -135,7 +139,7 @@ export async function runVerification(options: VerificationOptions): Promise<Ver
   if (!Number.isFinite(timeoutSeconds) || timeoutSeconds <= 0) {
     throw new Error('timeoutSeconds must be a positive finite number.');
   }
-  const definitions = options.checks ?? defaultChecks(options.browser);
+  const definitions = options.checks ?? defaultChecks(options.browser, options.profile);
   validateChecks(definitions);
   const root = resolve(options.root);
   const output = resolve(options.output);
@@ -166,17 +170,20 @@ async function main(): Promise<void> {
       output: { type: 'string' },
       'timeout-seconds': { type: 'string', default: '600' },
       browser: { type: 'boolean', default: false },
+      profile: { type: 'string', default: 'full' },
       help: { type: 'boolean', short: 'h' },
     },
   });
   if (values.help) {
     console.log(
-      'verify [--root DIR] [--output DIR] [--timeout-seconds N] [--browser]\n' +
-        'Runs lint, typecheck and the full deterministic test suite; --browser adds isolated browser tests.\n' +
+      'verify [--root DIR] [--output DIR] [--timeout-seconds N] [--browser] [--profile full|app]\n' +
+        'Runs lint and typecheck. full includes all tests; app includes product and architecture tests. --browser adds isolated browser tests.\n' +
         'Timeout applies separately to each check. JSON and stdout/stderr logs are saved in output.',
     );
     return;
   }
+  if (values.profile !== 'full' && values.profile !== 'app')
+    throw new Error('Unknown verification profile; use full or app.');
   const root = resolve(values.root ?? process.cwd());
   const output = resolve(
     values.output ??
@@ -187,6 +194,7 @@ async function main(): Promise<void> {
     output,
     timeoutSeconds: Number(values['timeout-seconds']),
     browser: values.browser,
+    profile: values.profile,
   });
   for (const check of result.checks) {
     console.log(`${check.id}: ${check.status} (${check.durationMs} ms)`);

@@ -1,5 +1,5 @@
 import { afterEach, expect, test } from 'bun:test';
-import { mkdtempSync, readFileSync, realpathSync, rmSync } from 'node:fs';
+import { mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { runVerification } from './verify';
@@ -14,6 +14,34 @@ function fixture() {
 afterEach(() => {
   for (const directory of directories.splice(0))
     rmSync(directory, { recursive: true, force: true });
+});
+
+test('app profile retains lint, types and browser; full still detects a laboratory failure', async () => {
+  const options = fixture();
+  writeFileSync(
+    join(options.root, 'package.json'),
+    JSON.stringify({
+      scripts: {
+        lint: 'bun -e "process.exit(0)"',
+        typecheck: 'bun -e "process.exit(0)"',
+        test: 'bun -e "process.exit(9)"',
+        'test:app': 'bun -e "process.exit(0)"',
+        'test:browser': 'bun -e "process.exit(0)"',
+      },
+    }),
+  );
+  const app = await runVerification({ ...options, profile: 'app', browser: true });
+  expect(app.passed).toBe(true);
+  expect(app.checks.map(({ id }) => id)).toEqual(['lint', 'typecheck', 'tests', 'browser']);
+  const full = await runVerification({
+    ...options,
+    output: join(options.root, 'full'),
+    browser: true,
+  });
+  expect(full.passed).toBe(false);
+  expect(full.checks.filter(({ status }) => status === 'failed').map(({ id }) => id)).toEqual([
+    'tests',
+  ]);
 });
 
 test('records failure evidence and continues with remaining checks', async () => {

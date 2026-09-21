@@ -4,7 +4,7 @@
 
 Abre **este repositorio** en Codex y di:
 
-> Usa abordar-tarea con docs/workflows/examples/copy-search.json. Solo quiero cambiar los dos textos que indica. Ejecuta el workflow normal y enséñame el resultado y las capturas.
+> Usa abordar-tarea con docs/workflows/tasks/escape-search-luna-high/spec.json. Quiero borrar la búsqueda pulsando Escape sin perder los otros filtros. Ejecuta el workflow normal y enséñame el resultado y las capturas.
 
 Para la segunda versión, sustituye «normal» por **«Ralph»**. Puedes añadir «quiero aprobar el plan» o «quiero ver el navegador del QA»; ninguno es obligatorio.
 
@@ -39,7 +39,7 @@ Los roles son `research-product`, `research-verification`, `planner`, `implement
 
 `reasoningEffort` fija el esfuerzo de razonamiento cuando el arnés lo admite. Por ejemplo: `"default": {"harness": "codex", "model": "gpt-5.6-luna", "reasoningEffort": "high"}`. Codex lo recibe mediante `model_reasoning_effort`; sin esta opción mantiene su valor predeterminado. La selección de esta simulación está en [agents.json](tasks/escape-search-luna-high/agents.json) y se conserva en los metadatos de cada llamada.
 
-El flujo llama al contrato `HarnessAdapter` de `scripts/local-workflow/harness.ts`. El adaptador recibe prompt, workspace, modelo, permiso, imágenes, schema y timeout; devuelve datos que el controlador valida. Solo `codex.ts` conoce los comandos de Codex. Para otro arnés se implementa ese contrato, se registra en `installedHarnesses` dentro de `agents.ts` y se selecciona en el JSON. No hay que modificar `workflow.ts` ni `qa.ts`.
+El flujo llama al contrato `HarnessAdapter` de `scripts/local-workflow/harness.ts`. El adaptador recibe prompt, workspace, modelo, permiso, entorno de checks, imágenes, schema y timeout; devuelve datos que el controlador valida. Solo `codex.ts` conoce los comandos de Codex. Para otro arnés se implementa ese contrato, se registra en `installedHarnesses` dentro de `agents.ts` y se selecciona en el JSON. No hay que modificar `workflow.ts` ni `qa.ts`.
 
 **Hoy solo está instalado y probado el adaptador Codex.** Claude/OpenCode requieren su adaptador antes de poder seleccionarse; escribir un nombre en el JSON no los integra automáticamente. Un arnés desconocido o sin imágenes para QA se rechaza antes de iniciar el trabajo.
 
@@ -55,7 +55,7 @@ Con la configuración inicial, implementación, revisión y QA usan Codex en con
 | To-spec | Decisiones → contrato con aceptación observable | Agente padre; no inventa respuestas |
 | Research | Spec + snapshot → código relevante y riesgos | Dos investigadores de solo lectura |
 | Plan | Spec + research → subtareas verificables | Planificador; pausa humana opcional |
-| Implementación | Plan + feedback → cambio en copia aislada | Implementador con escritura en su workspace |
+| Implementación | Plan + feedback → cambio y checks relevantes | Implementador con escritura en su workspace |
 | Verificación | Cambio → lint, tipos, tests y navegador | Código externo al modelo |
 | Review | Spec + diff + checks → hallazgos | Revisor, en una sesión nueva |
 | QA | Spec + app + imágenes → acciones y evidencias | QA dirige Playwright; otra sesión/contexto |
@@ -63,7 +63,17 @@ Con la configuración inicial, implementación, revisión y QA usan Codex en con
 
 Antes de llamar modelos, el controlador comprueba que la base pasa la verificación; si el entorno falla, se detiene sin inferencia. Las fases de investigación pueden trabajar a la vez. Solo hay un escritor de código. Cada llamada arranca un contexto nuevo; los resultados estructurados, el plan, el estado y el feedback conservan la continuidad.
 
-El controlador arranca los servidores, las pruebas de navegador y el QA en puertos propios. Los trabajadores escriben código y tests, y pueden ejecutar comprobaciones enfocadas sin servidor; no necesitan levantar una app dentro del sandbox del arnés.
+El implementador sigue la skill [implementar](../../.agents/skills/implementar/SKILL.md): lint, tipos y tests relevantes antes de entregar, con Playwright cuando cambia comportamiento de UI. El controlador abre un Chrome temporal y proporciona `TEST_BROWSER_PORT`, `TEST_BROWSER_OUTPUT` y `TEST_BROWSER_WS_ENDPOINT`; el trabajador ejecuta `bun run test:browser <archivo.spec.ts>` contra ese navegador. El runner arranca/cierra la app sintética y el controlador cierra Chrome al terminar la fase, también si hay un error. Esto evita el arranque de Chrome bloqueado por el sandbox de macOS. El QA y la verificación externa conservan sus instancias independientes.
+
+### Checks proporcionales
+
+- `bun run verify:app`: lint, todos los tipos, tests del producto y arquitectura, y navegador. Es el perfil del workflow porque su permiso de cambios excluye scripts, configuración y laboratorio.
+- `bun run verify`: añade los tests del laboratorio, del verificador y del propio workflow. Sigue siendo obligatorio al cambiar esos sistemas y se conserva en CI.
+- Dentro de la implementación: lint/tipos y los tests afectados; `verify:app` si no hay una selección enfocada clara. El controlador comprueba después todo el perfil de producto sobre el mismo patch. Las comprobaciones del agente no sustituyen esa puerta externa.
+
+No se han borrado tests. En la simulación original había **194 tests de Bun** (56 de producto, 4 de arquitectura, 10 del workflow y 124 del laboratorio/verificador), más **9 recorridos de Playwright** (6 base y 3 de Escape). La verificación tardaba unos **31 s**, de ellos **7 s** de navegador. La medición inicial del nuevo perfil sobre la base: **12,0 s** con 60 tests y 6 recorridos. Fuentes: `.tmp/verification/app-profile-current/verification.json` y [simulación original](tasks/escape-search-luna-high/resultado.md). Son mediciones locales con dependencias instaladas, no una garantía de duración en otra máquina.
+
+Las suites deterministas no llaman a modelos ni consumen tokens. El QA agéntico sí: en aquella simulación fueron unos **120 s**, separados de los tests de Playwright. Ejecutar los checks en local no consume minutos de GitHub Actions.
 
 **Plan opcionalmente supervisado:** `--plan-review` guarda `plan.md`, termina el proceso en `waiting-plan` y no implementa. La aprobación reanuda ese plan. Las dudas de producto/alcance bloquean incluso en modo automático. El modo predeterminado permite que un plan sin bloqueos continúe.
 
@@ -92,14 +102,14 @@ El informe exige todos los IDs de aceptación, resultado observado y capturas ex
 Desde la raíz del buscador:
 
 ```sh
-bun run workflow start --spec docs/workflows/examples/copy-search.json --mode normal
-bun run workflow start --spec docs/workflows/examples/copy-search.json --mode ralph
+bun run workflow start --spec docs/workflows/tasks/escape-search-luna-high/spec.json --mode normal
+bun run workflow start --spec docs/workflows/tasks/escape-search-luna-high/spec.json --mode ralph
 ```
 
 Aprobación de plan opcional:
 
 ```sh
-bun run workflow start --spec docs/workflows/examples/copy-search.json --mode normal --plan-review
+bun run workflow start --spec docs/workflows/tasks/escape-search-luna-high/spec.json --mode normal --plan-review
 bun run workflow resume RUTA_DEL_RUN --approve-plan
 ```
 
@@ -113,7 +123,7 @@ Cada ejecución imprime su directorio `.tmp/local-workflows/<id>/`:
 
 - `spec.json`, `plan.md` y `progress.md`: intención, plan y avance.
 - `state.json`: estado, intentos y asignación de agentes congelada al iniciar. Una reanudación usa esa asignación; no vuelve a leer la configuración del proyecto.
-- `*/agent.json`: rol, arnés, modelo explícito si lo hay y permiso de lectura/escritura de cada llamada.
+- `*/agent.json`: rol, arnés, modelo explícito si lo hay, permiso y entorno de comprobación de cada llamada. Los checks propios del implementador quedan en `workspace/.tmp/self-check-*/`; sus comandos y resultados, en `agent.log` y `result.json`.
 - `state.json.workspace`: ruta del snapshot Git separado, en el temporal del sistema; el checkout original permanece intacto. Se coloca fuera de `.tmp` para que los analizadores no lo ignoren.
 - `round-*/`: prompts, resultados de agentes, verificaciones, revisión y QA.
 - `round-*/qa/`: capturas, árboles accesibles, `actions.json`, `requests.json`, `qa.json` y `trace.zip`.
@@ -126,7 +136,9 @@ Para volver a abrir la app del candidato, entra en la ruta `workspace` que impri
 
 ## Permisos y condiciones de parada
 
-El controlador decide los permisos del rol; la configuración no puede conceder escritura a un revisor. El adaptador Codex usa `workspace-write` para el implementador y `read-only` para las demás fases, sin aprobaciones interactivas. El implementador puede usar las herramientas locales de Codex (por ejemplo para aplicar un patch o formatear), pero la suite autoritativa la ejecuta el controlador. El control de rutas del patch se aplica después de la escritura en la copia aislada; no es una ACL que impida cada escritura de archivo. El controlador valida el diff antes de ejecutar o aceptar código: permite fuentes y tests colocados del producto y nuevos tests de navegador; protege configuración, dependencias, suites de navegador existentes y el propio workflow. Rechaza borrados, symlinks, modos ejecutables y cambios mayores de 200KB. Una necesidad fuera del perímetro bloquea la tarea.
+El controlador decide los permisos del rol; la configuración no puede conceder escritura a un revisor. El adaptador Codex usa `workspace-write` para el implementador y `read-only` para las demás fases, sin aprobaciones interactivas. Solo el implementador recibe `sandbox_workspace_write.network_access=true` para arrancar la app y conectarse al navegador temporal. Esa opción permite red saliente en general, **no es una restricción técnica a localhost**; el prompt limita el uso a estas pruebas. [Referencia oficial de la opción](https://learn.chatgpt.com/docs/config-file/config-reference). No se desactiva el sandbox de archivos.
+
+El control de rutas del patch se aplica después de la escritura en la copia aislada; no es una ACL que impida cada escritura de archivo. El controlador valida el diff antes de ejecutar sus checks o aceptar código: permite fuentes y tests colocados del producto y nuevos tests de navegador; protege configuración, dependencias, suites de navegador existentes y el propio workflow. Rechaza borrados, symlinks, modos ejecutables y cambios mayores de 200KB. Una necesidad fuera del perímetro bloquea la tarea.
 
 El snapshot y los enlaces de dependencias facilitan el aislamiento operativo; **no son un sandbox de código hostil**. Los checks ejecutan código local y comparten dependencias instaladas. Usar tareas y repositorios de confianza. No se promete aislamiento de secretos de toda la cuenta ni contención de un candidato malicioso.
 

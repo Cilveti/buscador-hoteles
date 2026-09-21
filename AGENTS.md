@@ -12,7 +12,7 @@ Proyecto independiente para enseñar desarrollo y verificación determinista. Ma
 - Usar base de datos, volumen y puertos exclusivos de este proyecto.
 - No publicar secretos ni credenciales. Mantener datos locales y pruebas separados de entornos ajenos.
 - Si se trabaja en paralelo, acordar propiedad de archivos y verificar la integración antes de entregar.
-- Ejecutar `bun run verify` tras cambios funcionales. Para persistencia o administración, preparar la base exclusiva y ejecutar `bun run test:e2e`.
+- Tras cambios funcionales solo en fuentes/tests del catálogo, ejecutar `bun run verify:app` (lint, todos los tipos, tests del producto/arquitectura y navegador). Para scripts, workflows, laboratorio, dependencias o configuración, ejecutar `bun run verify` completo; CI conserva esa suite. El implementador comprueba primero su cambio y el controlador verifica después de forma independiente. Para persistencia o administración, preparar la base exclusiva y ejecutar `bun run test:e2e`.
 
 ## Datos
 

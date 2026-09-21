@@ -25,7 +25,7 @@ import {
   specSchema,
   validatePlan,
 } from './contracts';
-import { availablePort, runQa } from './qa';
+import { availablePort, runQa, withBrowserChecks } from './qa';
 
 const stateSchema = z.object({
   id: z.string(),
@@ -193,7 +193,7 @@ const stringify = (value: unknown) => JSON.stringify(value, null, 2);
 function common(state: WorkflowState): string {
   return (
     `SPECIFICATION (authoritative requirements):\n${stringify(state.spec)}\n` +
-    `Read AGENTS.md and docs/architecture.md. This is an isolated candidate workspace. Workers may change product source and colocated tests, and ADD a new tests/browser/*.spec.ts file. Existing tests/browser files, scripts, configuration and dependencies are PROTECTED; never plan edits to those. The external controller executes authoritative checks; worker tool availability depends on the harness. Do not run the full verification suite or start servers, browsers or browser tests yourself: the controller runs them outside the worker sandbox on a dedicated port and returns actual logs. Focused tests that need no server and formatting are allowed. Phase instructions override the orchestration entrypoint and testing skill execution instructions: do not invoke abordar-tarea/grill-me/to-spec again.\n`
+    `Read AGENTS.md and docs/architecture.md. This is an isolated candidate workspace. ONLY the implementer may change product source and colocated tests, and ADD a new tests/browser/*.spec.ts file. All other roles inspect and report without editing or starting servers. Existing tests/browser files, scripts, skills, configuration and dependencies are PROTECTED; never plan edits to those. The implementer follows .agents/skills/implementar/SKILL.md, runs relevant checks including Playwright for UI behavior, and reports actual results. The controller repeats authoritative product checks independently and returns actual logs on failure. Do not invoke abordar-tarea/grill-me/to-spec or another workflow.\n`
   );
 }
 
@@ -281,6 +281,7 @@ async function verify(state: WorkflowState, output: string) {
     root: state.workspace,
     output,
     browser: true,
+    profile: 'app',
     timeoutSeconds: 180,
     env: { TEST_BROWSER_PORT: String(port), TEST_BROWSER_OUTPUT: join(output, 'browser') },
   });
@@ -302,20 +303,25 @@ async function implement(
       'implementing',
       `${key} · intento ${attempt}/${state.maxTaskAttempts} · contexto nuevo`,
     );
-    const result = await callAgent(
-      state.agents,
-      {
-        role: 'implementer',
-        root: state.workspace,
-        output: join(output, 'agent'),
-        edit: true,
-        prompt:
-          common(state) +
-          `MODE: ${state.mode}\nSCOPE / PLAN:\n${stringify(state.plan)}\nCURRENT ASSIGNMENT:\n${instructions}\n` +
-          `PROGRESS:\n${stringify(state.completedTasks)}\nPREVIOUS FEEDBACK:\n${feedback}\n` +
-          'Implement only the assigned work. First inspect the current files: a previous attempt may already have implemented part. Follow .agents/skills/hoteles-testing/SKILL.md and hoteles-hexagonal. You may edit product source and colocated tests, or ADD tests/browser/*.spec.ts; existing external checks/configuration are protected. No dependencies, scripts or changes outside these paths. The controller runs verification after your turn and returns actual logs on failure. Do not run the full suite yourself or claim that the external checks passed before they have run. You may format changed files with the existing formatter if your harness supports it. For missing product decisions or permissions return blocked. Otherwise implement useful tests and report implemented. Ralph mode: ONE assigned subtask per session, preserve earlier completed work.',
-      },
-      implementationSchema,
+    const result = await withBrowserChecks(
+      join(state.workspace, '.tmp', `self-check-${state.round}-${key}-${attempt}`),
+      (environment) =>
+        callAgent(
+          state.agents,
+          {
+            role: 'implementer',
+            root: state.workspace,
+            output: join(output, 'agent'),
+            edit: true,
+            env: environment,
+            prompt:
+              common(state) +
+              `MODE: ${state.mode}\nSCOPE / PLAN:\n${stringify(state.plan)}\nCURRENT ASSIGNMENT:\n${instructions}\n` +
+              `PROGRESS:\n${stringify(state.completedTasks)}\nPREVIOUS FEEDBACK:\n${feedback}\n` +
+              'Implement only the assigned work. First read and follow .agents/skills/implementar/SKILL.md. Before returning, run lint (not just format), typecheck and relevant tests; use scripted Playwright tests for changed UI behavior. Verify through automated tests, not a second manual browser exploration: independent interactive QA comes later. The browser runner starts/stops the synthetic app and connects to the controller-owned Chrome using TEST_BROWSER_PORT/TEST_BROWSER_OUTPUT/TEST_BROWSER_WS_ENDPOINT already provided. Do not replace those values or launch another browser; custom scripts must use chromium.connect(process.env.TEST_BROWSER_WS_ENDPOINT). No installations, deployments or other network use. Report the actual commands and results in summary. The controller repeats the product checks afterwards; never claim those future checks have passed. For missing product decisions, permissions or necessary checks you cannot run, return blocked. Ralph mode: ONE assigned subtask per session, preserve earlier completed work.',
+          },
+          implementationSchema,
+        ),
     );
     candidatePatch(state);
     if (result.status === 'blocked' || result.blockers.length) {

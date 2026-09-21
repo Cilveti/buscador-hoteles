@@ -2,13 +2,21 @@
 
 ## Pruébalo conversando
 
-Abre **este repositorio** en Codex y di:
+Abre **este repositorio** en Cursor, Codex u otro agente con terminal y di:
 
-> Usa abordar-tarea con docs/workflows/tasks/escape-search-luna-high/spec.json. Quiero borrar la búsqueda pulsando Escape sin perder los otros filtros. Ejecuta el workflow normal y enséñame el resultado y las capturas.
+> Usa la skill .agents/skills/abordar-tarea/SKILL.md con https://github.com/Cilveti/buscador-hoteles/issues/16. Quiero usar Luna high.
 
-Para la segunda versión, sustituye «normal» por **«Ralph»**. Puedes añadir «quiero aprobar el plan» o «quiero ver el navegador del QA»; ninguno es obligatorio.
+1. El agente lee la issue y sus comentarios con `gh` y consulta el código.
+2. Hace un grill-me conciso, con un máximo de tres preguntas por tanda.
+3. Resume lo acordado y pregunta **«¿Lo paso a spec y lanzo el workflow?»**. Espera tu confirmación.
+4. Con tu confirmación, genera y valida la spec y ejecuta el script. Espera hasta que termine, comunicando avances.
+5. Te avisa con el resultado y las evidencias para que revises el candidato. La integración es posterior y requiere tu encargo.
 
-Las skills canónicas están en `.agents/skills/`; `.claude/skills/` las enlaza, sin duplicar su contenido. Desde otro agente, pide que lea `.agents/skills/abordar-tarea/SKILL.md` y siga el mismo proceso. El agente padre entrevista, prepara el contrato, ejecuta el comando y comunica progreso; no implementa por su cuenta mientras trabajan los agentes del workflow.
+Puedes pedir **Ralph** para implementar por subtareas, «quiero aprobar el plan» o «quiero ver el navegador del QA»; ninguno es obligatorio. La confirmación al terminar el grill-me es distinta de la aprobación opcional del plan técnico.
+
+Las skills canónicas están en `.agents/skills/`; `.claude/skills/` las enlaza, sin duplicar su contenido. Leer explícitamente la ruta evita depender del descubrimiento automático de skills de cada editor. El agente padre entrevista, prepara el contrato, ejecuta el comando y comunica progreso; no implementa por su cuenta mientras trabajan los agentes del workflow. El modelo del agente padre es independiente de los modelos configurados para el script.
+
+La pausa de confirmación es una instrucción de la skill conversacional, no una puerta técnica del CLI. Ejecutar directamente `bun run workflow start` con una spec preparada omite la entrevista y esa pausa.
 
 [Ensayos y evidencias locales](EVIDENCIAS.md): resultados de los recorridos y ejemplos de fallos detectados.
 
@@ -17,8 +25,9 @@ Las skills canónicas están en `.agents/skills/`; `.claude/skills/` las enlaza,
 - Las dependencias del buscador instaladas: `bun install --frozen-lockfile`.
 - Bun, Node y Chrome según el README principal.
 - Codex CLI instalado y autenticado: `codex login status`. La configuración inicial no requiere Claude Code.
+- Para empezar desde un ticket: `gh` autenticado con acceso al repositorio. La skill usa `gh issue view URL --json number,title,body,comments,labels,url,state,updatedAt`; no modifica la issue ni activa Actions.
 - Permiso de tu cuenta para usar Codex. El consumo depende de tu plan. El arnés y el modelo se eligen en `workflow.agents.json`; sin `model`, se usa el predeterminado del CLI con configuración de usuario omitida. No se leen las antiguas variables `WORKFLOW_CLAUDE_MODEL` ni `WORKFLOW_CODEX_MODEL`.
-- No requiere Docker, PostgreSQL, GitHub, Penpot alojado ni servidores permanentes para este recorrido de catálogo.
+- El recorrido de catálogo no requiere Docker, PostgreSQL, Penpot alojado ni servidores permanentes. GitHub solo hace falta para leer un ticket remoto; también se puede partir de una petición o spec local.
 
 Entorno comprobado el 20/09/2026: Bun 1.4.2, Node 24.6.0, Codex CLI 0.149.1 en macOS. El controlador usa opciones de esas versiones; comprobar compatibilidad si se emplean CLIs anteriores.
 
@@ -51,7 +60,9 @@ Con la configuración inicial, implementación, revisión y QA usan Codex en con
 
 | Fase | Entrada → salida | Quién decide |
 |---|---|---|
+| Lectura de tarea | Issue + comentarios → contexto contrastado con el repo | Agente padre con `gh` |
 | Grill-me | Petición → decisiones resueltas | Tú y el agente padre |
+| Confirmación | Resumen acordado → permiso para generar spec y ejecutar | Tú; el agente espera |
 | To-spec | Decisiones → contrato con aceptación observable | Agente padre; no inventa respuestas |
 | Research | Spec + snapshot → código relevante y riesgos | Dos investigadores de solo lectura |
 | Plan | Spec + research → subtareas verificables | Planificador; pausa humana opcional |
@@ -59,7 +70,8 @@ Con la configuración inicial, implementación, revisión y QA usan Codex en con
 | Verificación | Cambio → lint, tipos, tests y navegador | Código externo al modelo |
 | Review | Spec + diff + checks → hallazgos | Revisor, en una sesión nueva |
 | QA | Spec + app + imágenes → acciones y evidencias | QA dirige Playwright; otra sesión/contexto |
-| Entrega | Criterios comprobados → informe y patch | El controlador; integración humana posterior |
+| Revisión humana | Informe, patch y evidencias → aceptación o feedback | Tú |
+| Entrega | Candidato revisado → integración encargada | Fuera del script; requiere tu encargo |
 
 Antes de llamar modelos, el controlador comprueba que la base pasa la verificación; si el entorno falla, se detiene sin inferencia. Las fases de investigación pueden trabajar a la vez. Solo hay un escritor de código. Cada llamada arranca un contexto nuevo; los resultados estructurados, el plan, el estado y el feedback conservan la continuidad.
 

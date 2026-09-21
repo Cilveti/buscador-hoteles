@@ -4,9 +4,11 @@
 Grill-me → spec → research/plan → implementación normal o Ralph → verificación externa → revisión adversarial → QA agéntico de navegador. Reproducible en el buscador, independiente del arnés y sin depender de GitHub Actions.
 
 ## Estado actual
-20/09/2026, rama `codex/local-agentic-workflows`. Workflow completo con tests automáticos en implementación y aceptación Dado/Cuando/Entonces más URL para revisión/QA: **completado en 464,685 s**, todos los roles Luna high, un intento y una ronda. Informe en `tasks/escape-search-acceptance-url/resultado.md`. Candidato aislado, sin integrar ni publicar.
+21/09/2026, rama `codex/local-agentic-workflows`. Mejoras previas del workflow guardadas en `b5c9930`; verificación completa verde. Entrada conversacional actualizada según la slide: URL de issue → `gh` → grill-me breve → confirmación explícita → to-spec y script → espera → revisión humana. Se conserva el controlador existente. Las tres skills conversacionales pasan el validador; sus enlaces locales resuelven y el diff pasa la comprobación de espacios. Este cambio se guarda en el segundo commit del encargo.
 
 ## Decisiones vigentes
+- Confirmación explícita al terminar el grill-me, con un resumen corto: autoriza to-spec y ejecución en un solo paso. Es una instrucción conversacional de la skill; el CLI directo no fuerza esta pausa. El plan técnico sigue sin aprobación por defecto y la integración queda fuera del script.
+- La entrada por issue lee descripción y comentarios con `gh`; el agente padre consulta el repo, pregunta como máximo tres cosas por tanda, espera el proceso y avisa al terminar. No activa Actions ni modifica la issue por leerla.
 - Configuración por defecto/rol en `workflow.agents.json`, congelada en `state.json` al iniciar. La reanudación no relee el JSON del proyecto.
 - Contrato pequeño en `harness.ts`; CLI Codex en `codex.ts`; fases y QA ajenos al proveedor. Solo Codex está instalado y probado. Otro arnés necesita su adaptador.
 - Implementación, revisión y QA usan sesiones separadas de Codex: separación de contexto, sin afirmar diversidad de proveedor.
@@ -18,6 +20,7 @@ Grill-me → spec → research/plan → implementación normal o Ralph → verif
 - QA con React/handlers/core reales y catálogo sintético: no acredita PostgreSQL/Payload, SSR, Sonar ni Actions.
 
 ## Progreso verificado
+- 21/09: verificación completa antes de los commits: lint, tipos, 195 tests (1406 aserciones) y 6 casos de navegador verdes. Evidencia: `.tmp/verification/workflow-before-commits-2026-09-21/verification.json`. Comando de lectura de issue comprobado contra #16, con título, cuerpo, comentarios, etiquetas, URL, estado y fecha de actualización.
 - Último recorrido completo: `2026-09-20T18-21-18-110Z-escape-search-acceptance-url-normal`. Implementador con lint/tipos/tests y Playwright automático; sin exploración manual. Checks externos: 60 tests y 7 casos de navegador; review sin hallazgos; QA confirma AC1–AC3 en 46,614 s, con 3 acciones y 4 llamadas. Capturas 01→02→03 y contador de peticiones inspeccionados. Preflight completo verde: 195 tests y 6 casos base en `.tmp/verification/acceptance-url-preflight/`.
 - Comparación QA con/sin atajo completada: `qa-atajos-comparacion.md`. Misma implementación inmutable y Luna high; pareja válida con los tres criterios: 76,107 s/8 llamadas/166.847 tokens frente a 43,795 s/5 llamadas/96.865 tokens. Un enlace ahorró tres acciones de preparación. Piloto inconcluso preservado, sin atribuir su menor tiempo a una revisión terminada. La aclaración del protocolo de una sola acción final se incorporó posteriormente al QA y pasó el recorrido completo.
 - Prueba real cerrada: `.tmp/self-check-proofs/2026-09-20T17-36-35-274Z/`. Implementador 154,019 s; verificación externa 12,182 s; total 166,399 s. El agente corrigió lint y un escenario de test en la misma sesión, pasó 3 casos Playwright; el controlador pasó 60 tests y 9 recorridos. Alcance y enlaces en EVIDENCIAS.md.
@@ -49,4 +52,4 @@ Grill-me → spec → research/plan → implementación normal o Ralph → verif
 La versión anterior `5bbc1b8` usaba Claude para implementar y Codex para revisión/QA. Ambos modos completaron su recorrido, incluidos ejemplos negativos y feedback real. Los detalles y enlaces mantienen su procedencia en EVIDENCIAS.md; no acreditan la nueva integración Codex.
 
 ## Próximo paso
-Prueba solicitada terminada y documentada. Compartir duración y evidencias; conservar el candidato aislado para inspección. No quedan pasos pendientes de esta prueba.
+Sin cambios de implementación pendientes de este encargo. Próxima prueba de usuario: invocar abordar-tarea con #16 desde un chat nuevo, responder al grill-me y confirmar el paso a spec/ejecución. La lectura real con gh y la validación de skills están comprobadas; esa interacción completa desde Cursor aún no se ha ensayado. Commits locales, sin push ni integración de los candidatos aislados.

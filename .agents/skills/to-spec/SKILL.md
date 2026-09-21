@@ -5,7 +5,11 @@ description: Convierte requisitos ya refinados en el contrato ejecutable del wor
 
 # To-spec
 
+En el proceso de `abordar-tarea`, entra aquí después de la confirmación explícita al terminar el grill-me. Esa confirmación permite generar la spec y lanzar el workflow; una petición limitada a preparar la spec no autoriza ejecutarlo.
+
 Parte de la conversación y del código observado, no de supuestos sobre lo que suele querer un usuario. Guarda `docs/workflows/tasks/<id>/spec.json` y un `spec.md` corto con la misma intención. Usa el ejemplo [Escape en búsqueda](../../../docs/workflows/examples/escape-search.json) y el schema real en `scripts/local-workflow/contracts.ts`.
+
+Si parte de una issue, conserva su URL, fecha de actualización consultada y las decisiones confirmadas en `spec.md`, sin añadir campos al contrato JSON. Para UI, incluye URLs de preparación conocidas en los criterios Dado/Cuando/Entonces: el QA debe observar el estado inicial y ejecutar la interacción que se evalúa.
 
 El contrato contiene `id`, `title`, `objective`, `scope`, `outOfScope`, `acceptance` (IDs únicos AC1, AC2… y `criterion`) y `decisions`. Cada criterio describe una situación inicial, acción y resultado observable. Añade un caso límite o recuperación pertinente; no redactes una lista de archivos como sustituto de la intención.
 

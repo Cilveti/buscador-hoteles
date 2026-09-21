@@ -69,7 +69,7 @@ La interfaz expone los filtros originales. La API ya admite atributos adicionale
 
 ## Workflow agéntico local
 
-[Guía de uso](docs/workflows/README.md): conversación → grill-me → spec → investigación y plan → implementación → checks → review adversarial → QA con navegador y capturas. Dos modos: normal y Ralph por subtareas. El agente padre puede lanzarlo usando `.agents/skills/abordar-tarea/SKILL.md` (independiente del agente padre).
+[Guía de uso](docs/workflows/README.md): URL de issue → lectura con `gh` → grill-me conciso → confirmación humana → spec → investigación y plan → implementación → checks → review adversarial → QA con navegador y capturas → revisión humana. Dos modos: normal y Ralph por subtareas. El agente padre sigue `.agents/skills/abordar-tarea/SKILL.md`, ejecuta el script tras la confirmación y espera a que termine; después entrega las evidencias para revisión.
 
 ```sh
 bun run workflow start --spec docs/workflows/examples/copy-search.json --mode normal

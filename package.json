@@ -8,7 +8,8 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "bun run --cwd apps/web --env-file=../../.env.local dev",
+    "dev": "TEST_BROWSER_PORT=3184 TEST_BROWSER_OUTPUT=.tmp/dev bun tests/browser/server.ts",
+    "dev:full": "bun run --cwd apps/web --env-file=../../.env.local dev",
     "setup": "bun scripts/dev/provision-local-env.ts",
     "db:up": "docker compose --env-file .env.local -f infra/compose.yaml up -d --wait",
     "db:stop": "docker compose --env-file .env.local -f infra/compose.yaml stop",

@@ -23,7 +23,7 @@ export default defineConfig({
     serviceWorkers: 'block',
   },
   webServer: {
-    command: 'bun run dev',
+    command: 'bun run dev:full',
     url: 'http://127.0.0.1:3101/api/health',
     reuseExistingServer: false,
     timeout: 180_000,

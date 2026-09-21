@@ -16,6 +16,18 @@ El producto no necesita claves de modelos ni servicios de IA. No incluye búsque
 
 ## Arranque
 
+### Demo rápida sin base de datos
+
+Con Bun instalado, ejecuta `bun install --frozen-lockfile` una vez. Después:
+
+```sh
+bun dev
+```
+
+Abre <http://127.0.0.1:3184>. Usa el buscador y las fichas reales con los **3 hoteles en memoria** de `tests/browser/fixtures.ts`. No necesita Docker, `.env.local` ni PostgreSQL; no incluye administración ni SSR. Reutiliza el servidor del QA, con puerto y salida separados de los tests. Tras editar el frontend, reinicia el comando y recarga la página; este modo no tiene recarga automática.
+
+### Aplicación completa con administración y 60 hoteles
+
 Requisitos: **Bun 1.4.2**, **Node 24.6 o posterior dentro de la rama 24**, Docker con el motor arrancado y Google Chrome para las pruebas de navegador.
 
 ```sh
@@ -23,7 +35,7 @@ bun install --frozen-lockfile
 bun run setup
 bun run db:up
 bun run seed
-bun run dev
+bun run dev:full
 ```
 
 - Buscador: <http://127.0.0.1:3101>

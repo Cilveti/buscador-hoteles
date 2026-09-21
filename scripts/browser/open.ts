@@ -12,7 +12,7 @@ try {
   const response = await fetch(`${baseURL}/api/health`, { signal: AbortSignal.timeout(3000) });
   if (!response.ok) throw new Error('Servidor no disponible');
 } catch {
-  throw new Error('Arranca primero la aplicación con bun run dev.');
+  throw new Error('Arranca primero la aplicación completa con bun run dev:full.');
 }
 const browser = await chromium.launch({ channel: 'chrome', headless: false });
 const context = await browser.newContext({ baseURL });

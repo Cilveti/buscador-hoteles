@@ -3,7 +3,8 @@ import { resolve } from 'node:path';
 import { parseArgs } from 'node:util';
 import { readAgents } from './agents';
 import { specSchema } from './contracts';
-import { createRun, executeWorkflow, load } from './workflow';
+import { createRun, load } from './run-state';
+import { executeWorkflow } from './workflow';
 
 const help = `Workflow local · roles configurables · Codex por defecto
 

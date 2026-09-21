@@ -6,6 +6,7 @@ import { chromium, expect, type Page } from '@playwright/test';
 import { type AgentAssignments, callAgent } from './agents';
 import { actionSchema, type BrowserAction, type Specification, validQaFinish } from './contracts';
 import { stop } from './process';
+import { qaPrompt } from './prompts';
 
 export function availablePort(): Promise<number> {
   return new Promise((resolve, reject) => {
@@ -94,6 +95,26 @@ type QaOptions = {
   maxSteps?: number;
 };
 
+async function waitForApp(
+  server: ReturnType<typeof spawn>,
+  baseURL: string,
+  getLaunchError: () => Error | undefined,
+): Promise<void> {
+  let ready = false;
+  const deadline = Date.now() + 60_000;
+  while (Date.now() < deadline) {
+    const launchError = getLaunchError();
+    if (launchError) throw launchError;
+    if (server.exitCode !== null) throw new Error('QA app exited; see app.log');
+    try {
+      ready = (await fetch(`${baseURL}/api/health`, { signal: AbortSignal.timeout(800) })).ok;
+    } catch {}
+    if (ready) break;
+    await Bun.sleep(200);
+  }
+  if (!ready) throw new Error('QA app did not become healthy in 60 seconds');
+}
+
 export async function runQa(options: QaOptions) {
   mkdirSync(options.output, { recursive: true });
   const port = await availablePort();
@@ -125,18 +146,7 @@ export async function runQa(options: QaOptions) {
   }[] = [];
   const screenshots: string[] = [];
   try {
-    let ready = false;
-    const deadline = Date.now() + 60_000;
-    while (Date.now() < deadline) {
-      if (launchError) throw launchError;
-      if (server.exitCode !== null) throw new Error('QA app exited; see app.log');
-      try {
-        ready = (await fetch(`${baseURL}/api/health`, { signal: AbortSignal.timeout(800) })).ok;
-      } catch {}
-      if (ready) break;
-      await Bun.sleep(200);
-    }
-    if (!ready) throw new Error('QA app did not become healthy in 60 seconds');
+    await waitForApp(server, baseURL, () => launchError);
     browser = await chromium.launch({ channel: 'chrome', headless: !options.headed });
     const context = await browser.newContext({
       viewport: { width: 1280, height: 900 },
@@ -182,13 +192,16 @@ export async function runQa(options: QaOptions) {
             output: join(options.output, `step-${step}`),
             images: [image],
             timeoutSeconds: 180,
-            prompt:
-              `You inspect a REAL running local app using the screenshot and accessibility tree below. You do NOT edit code, run shell commands, or merely infer behavior from source. The controller executes your chosen browser action and feeds back results.\n` +
-              `SPECIFICATION:\n${JSON.stringify(options.spec)}\nURL: ${page.url()}\nLOCAL ORIGIN: ${baseURL}\n` +
-              `OBSERVATION (${screenshot}):\n${observation}\nHISTORY:\n${JSON.stringify(history)}\n` +
-              'Return exactly ONE action JSON in your FINAL response. Do not emit an action in commentary and then finish: the controller executes only your final JSON. The next observation arrives in a new controller turn; you are not waiting for a tool result inside this turn. If a criterion is incomplete, choose the next action; finish with not-verified only for a concrete blocker. Fields role/name/value are empty or none when unused. Navigate only relative paths; you may use setup URLs supplied by the acceptance criteria, then confirm their actual initial state. click/fill/select/press use exact accessible role and name. expect-text asserts exact visible text; expect-url asserts a relative URL. inspect observes after an interaction. Do not assume an interaction succeeded: inspect its resulting state. A filled form field is not an applied search: submit with Enter/the search button and confirm the query URL and filtered results BEFORE testing a reset of an applied search. Explicitly establish the starting state of each criterion; repeat setup if a previous step skipped it. Test every acceptance criterion and a relevant edge/recovery case. Avoid redundant actions.\n' +
-              'Only finish when you have evidence or a specific blocker. History includes the observed state BEFORE each action; the current observation is AFTER the last action. Use that evidence instead of repeating already observed transitions. To assert no request occurred, compare the recorded API request counts. For finish, results must cover EVERY acceptance ID exactly once with pass/fail/not-verified, actual observed behavior, and filenames of screenshots already provided. Other actions use results: []. Never mark a criterion passed based only on static code, the existing test suite or a planned action. A screenshot alone does not establish a transition.\n' +
-              `Remaining actions: ${(options.maxSteps ?? 16) - step}. Previously captured: ${screenshots.join(', ')}.\nScope: real React/HTTP/core with synthetic catalog; no PostgreSQL, Payload admin or SSR. Mark criteria requiring those as not-verified.`,
+            prompt: qaPrompt({
+              spec: options.spec,
+              url: page.url(),
+              baseURL,
+              screenshot,
+              observation,
+              history,
+              remainingActions: (options.maxSteps ?? 16) - step,
+              screenshots,
+            }),
           },
           actionSchema,
         );

@@ -35,6 +35,17 @@ Entorno comprobado el 20/09/2026: Bun 1.4.2, Node 24.6.0, Codex CLI 0.149.1 en m
 
 ## Roles y arneses separados
 
+### Dónde leer o cambiar cada parte
+
+- `scripts/local-workflow/workflow.ts`: preparación y dos bucles explícitos. Un fallo de checks reintenta la implementación; los hallazgos de revisión/QA abren una ronda de corrección. Ralph divide la primera implementación por subtareas.
+- `stages.ts`: operaciones concretas de cada fase (agentes, checks, navegador). Se pueden sustituir en los tests del controlador sin consumir modelos.
+- `prompts/*.md`: instrucciones de cada agente, separadas de los datos de la tarea. `prompts.ts` compone ambos sin un motor de plantillas.
+- `run-state.ts`: creación del snapshot, estado persistente, bloqueo y aprobación del plan.
+- `policy.ts`: permisos del patch y protección del candidato contra cambios durante su revisión.
+- `qa.ts`: interacción con navegador y evidencias; `report.ts`: entrega final.
+
+Para cambiar modelos o arneses, sigue usando `workflow.agents.json`. El orden del proceso permanece explícito en TypeScript; no hay un motor de grafos ni un formato nuevo de configuración. Se conservan los comandos y el formato de los runs existentes. Rechazar una reanudación no altera su estado guardado ni sus contadores.
+
 `workflow.agents.json` define la selección inicial:
 
 ```json

@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { git } from '../coding-eval/workspace';
 import { actionSchema, planSchema, specSchema, validatePlan, validQaFinish } from './contracts';
-import { allowedChange, candidatePatch } from './workflow';
+import { allowedChange, candidatePatch } from './policy';
 
 const spec = specSchema.parse({
   id: 'demo-task',

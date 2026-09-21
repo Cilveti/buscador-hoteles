@@ -4,7 +4,7 @@
 Grill-me → spec → research/plan → implementación normal o Ralph → verificación externa → revisión adversarial → QA agéntico de navegador. Reproducible en el buscador, independiente del arnés y sin depender de GitHub Actions.
 
 ## Estado actual
-21/09/2026, `main`. Iñigo solicita guardar y subir el refactor. Refactor terminado: controlador de 158 líneas con preparación y dos bucles explícitos, operaciones por fase, prompts Markdown y módulos de estado/permisos/entrega. Comandos, formatos de runs y selección de arneses conservados. Verificación completa verde: 202 tests, 6 casos de navegador, lint y tipos. Los 17 tests del workflow incluyen siete nuevos recorridos de control con agentes simulados; no se ha repetido una ejecución con modelos reales.
+21/09/2026. Timeout del implementador corregido dentro del presupuesto existente, sin ampliar tiempo/intentos. Suite completa verde: 205 tests y 6 casos de navegador. Prueba **real** Luna high completada en 705,034 s, un intento, checks externos (60 tests + 8 casos), review y QA AC1–AC4 verdes. Run `2026-09-21T13-14-13-188Z-escape-search-normal`; [informe y límites](timeout-implementador-2026-09-21.md). Original fallido conservado. Candidato Escape aislado; spec del usuario sigue sin seguimiento, no se incorpora por accidente al arreglo.
 
 ## Decisiones vigentes
 - El proceso sigue expresado en TypeScript, con fases concretas; no se introduce un motor de workflows, un DSL, dependencias nuevas ni configuración dinámica del grafo. Los prompts se mantienen fuera del controlador. La inyección de fases sirve para probar orden, feedback, pausas y límites sin llamadas al modelo.
@@ -54,4 +54,4 @@ Grill-me → spec → research/plan → implementación normal o Ralph → verif
 La versión anterior `5bbc1b8` usaba Claude para implementar y Codex para revisión/QA. Ambos modos completaron su recorrido, incluidos ejemplos negativos y feedback real. Los detalles y enlaces mantienen su procedencia en EVIDENCIAS.md; no acreditan la nueva integración Codex.
 
 ## Próximo paso
-Refactor listo para revisión del usuario en `workflow.ts`, `stages.ts` y `prompts/`. No hay comprobaciones pendientes del cambio solicitado. Los tests nuevos usan dobles de las fases; no atribuirles una ejecución real de agentes o una nueva medición de coste/tiempo. La entrega incluye un commit específico del refactor y su publicación en main, por encargo de Iñigo.
+Revisión humana del candidato, si Iñigo quiere integrarlo. No hay comprobaciones pendientes del arreglo. La recuperación por timeout se probó automáticamente; el nuevo recorrido real terminó al primer intento, sin atribuirle un reintento inexistente.

@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import { validateAgents } from './agents';
 import { validatePlan } from './contracts';
 import { assertCandidateUnchanged, candidatePatch, digest } from './policy';
+import { ProcessTimeoutError } from './process';
 import { approveSavedPlan, phase, save, type WorkflowState, withRunLock } from './run-state';
 import { localStages, type WorkflowStages } from './stages';
 
@@ -58,7 +59,7 @@ async function preparePlan(state: WorkflowState, stages: WorkflowStages): Promis
   return true;
 }
 
-/** Retry only an implementation whose deterministic checks failed, with their evidence. */
+/** Retry failed checks or an expired implementer within the same persisted attempt budget. */
 async function implementAndVerify(
   state: WorkflowState,
   task: Assignment,
@@ -74,7 +75,24 @@ async function implementAndVerify(
       'implementing',
       `${task.id} · intento ${attempt}/${state.maxTaskAttempts} · contexto nuevo`,
     );
-    const result = await stages.implement(state, { task, feedback, output, attempt });
+    let result: Awaited<ReturnType<WorkflowStages['implement']>>;
+    try {
+      result = await stages.implement(state, { task, feedback, output, attempt });
+    } catch (error) {
+      if (!(error instanceof ProcessTimeoutError)) throw error;
+      candidatePatch(state);
+      feedback = [
+        feedback,
+        error.message,
+        'The previous worker timed out without a final delivery. Its partial changes remain in this workspace.',
+        `Inspect them and the logs in ${output}; finish the assignment and return the final structured result.`,
+        'Reuse successful checks only if they cover the unchanged candidate; never assume timeout means success.',
+      ]
+        .filter(Boolean)
+        .join('\n\n');
+      writeFileSync(join(output, 'feedback.md'), feedback);
+      continue;
+    }
     candidatePatch(state);
     if (result.status === 'blocked' || result.blockers.length) {
       phase(state, 'blocked', `${result.summary}\n${result.blockers.join('\n')}`);

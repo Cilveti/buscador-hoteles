@@ -18,7 +18,7 @@ Las skills canónicas están en `.agents/skills/`; `.claude/skills/` las enlaza,
 
 La pausa de confirmación es una instrucción de la skill conversacional, no una puerta técnica del CLI. Ejecutar directamente `bun run workflow start` con una spec preparada omite la entrevista y esa pausa.
 
-[Ensayos y evidencias locales](EVIDENCIAS.md): resultados de los recorridos y ejemplos de fallos detectados.
+[Ensayos y evidencias locales](EVIDENCIAS.md): resultados de los recorridos y ejemplos de fallos detectados. [Prueba real tras corregir el timeout](timeout-implementador-2026-09-21.md): Luna high, implementación, checks, revisión y QA completos.
 
 ## Qué necesitas
 
@@ -37,7 +37,7 @@ Entorno comprobado el 20/09/2026: Bun 1.4.2, Node 24.6.0, Codex CLI 0.149.1 en m
 
 ### Dónde leer o cambiar cada parte
 
-- `scripts/local-workflow/workflow.ts`: preparación y dos bucles explícitos. Un fallo de checks reintenta la implementación; los hallazgos de revisión/QA abren una ronda de corrección. Ralph divide la primera implementación por subtareas.
+- `scripts/local-workflow/workflow.ts`: preparación y dos bucles explícitos. Un fallo de checks o timeout del implementador consume el siguiente intento disponible; los hallazgos de revisión/QA abren una ronda de corrección. Ralph divide la primera implementación por subtareas.
 - `stages.ts`: operaciones concretas de cada fase (agentes, checks, navegador). Se pueden sustituir en los tests del controlador sin consumir modelos.
 - `prompts/*.md`: instrucciones de cada agente, separadas de los datos de la tarea. `prompts.ts` compone ambos sin un motor de plantillas.
 - `run-state.ts`: creación del snapshot, estado persistente, bloqueo y aprobación del plan.
@@ -92,7 +92,7 @@ El implementador sigue la skill [implementar](../../.agents/skills/implementar/S
 
 - `bun run verify:app`: lint, todos los tipos, tests del producto y arquitectura, y navegador. Es el perfil del workflow porque su permiso de cambios excluye scripts, configuración y laboratorio.
 - `bun run verify`: añade los tests del laboratorio, del verificador y del propio workflow. Sigue siendo obligatorio al cambiar esos sistemas y se conserva en CI.
-- Dentro de la implementación: lint/tipos y los tests afectados; `verify:app` si no hay una selección enfocada clara. El controlador comprueba después todo el perfil de producto sobre el mismo patch. Las comprobaciones del agente no sustituyen esa puerta externa.
+- Dentro de la implementación: checks enfocados durante la corrección y `verify:app` una vez sobre el estado final, como exige AGENTS.md; no ejecutar previamente por separado todos sus componentes. El controlador comprueba después todo el perfil de producto sobre el mismo patch. Las comprobaciones del agente no sustituyen esa puerta externa.
 
 No se han borrado tests. En la simulación original había **194 tests de Bun** (56 de producto, 4 de arquitectura, 10 del workflow y 124 del laboratorio/verificador), más **9 recorridos de Playwright** (6 base y 3 de Escape). La verificación tardaba unos **31 s**, de ellos **7 s** de navegador. La medición inicial del nuevo perfil sobre la base: **12,0 s** con 60 tests y 6 recorridos. Fuentes: `.tmp/verification/app-profile-current/verification.json` y [simulación original](tasks/escape-search-luna-high/resultado.md). Son mediciones locales con dependencias instaladas, no una garantía de duración en otra máquina.
 
@@ -110,7 +110,7 @@ El implementador recibe el plan completo. Una sesión puede resolver sus diferen
 
 El plan se convierte en una cola de subtareas. Cada iteración recibe la spec, el plan, el progreso, el código actual y el feedback, y trabaja **solo en una subtarea**. Los checks externos deben pasar antes de marcarla completada. La siguiente iteración abre otra sesión. Al completar la cola, pasan review y QA; los hallazgos pueden iniciar una ronda de corrección con contexto nuevo.
 
-Es una adaptación docente acotada de [Ralph, de Geoffrey Huntley](https://ghuntley.com/ralph/): sesión nueva, una tarea por iteración, estado en archivos y feedback de comprobaciones. No instala el plugin de Claude ni usa un bucle infinito. Por defecto: 2 intentos por tarea y 2 rondas de review/QA. Se pueden subir a 3 explícitamente. Cada llamada tiene timeout; QA tiene como máximo 16 acciones. Estos límites acotan ejecución, no garantizan una factura exacta ni que otro run no vuelva a consumir.
+Es una adaptación docente acotada de [Ralph, de Geoffrey Huntley](https://ghuntley.com/ralph/): sesión nueva, una tarea por iteración, estado en archivos y feedback de comprobaciones. No instala el plugin de Claude ni usa un bucle infinito. Por defecto: 2 intentos por tarea y 2 rondas de review/QA. Se pueden subir a 3 explícitamente. Cada llamada tiene timeout (300 s; cada acción QA, 180 s); QA tiene como máximo 16 acciones. Si el implementador agota su tiempo, se conservan los cambios parciales y los logs y se usa el siguiente intento disponible con contexto nuevo. Un timeout nunca cuenta como tarea terminada: sigue haciendo falta una entrega válida y pasar checks, revisión y QA. Agotar ambos intentos termina en `exhausted`; los demás errores técnicos siguen siendo fallos. Estos límites acotan ejecución, no garantizan una factura exacta ni que otro run no vuelva a consumir.
 
 ## Qué prueba el QA
 

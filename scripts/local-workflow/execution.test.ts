@@ -5,6 +5,7 @@ import { join } from 'node:path';
 import { git } from '../coding-eval/workspace';
 import { resolveAgents } from './agents';
 import { type Plan, specSchema } from './contracts';
+import { ProcessTimeoutError } from './process';
 import { load, save, type WorkflowState } from './run-state';
 import { localStages, type WorkflowStages } from './stages';
 import { executeWorkflow } from './workflow';
@@ -271,4 +272,62 @@ test('a blocked worker stops without retries; a reviewer cannot invalidate the f
   expect(changed.state.status).toBe('failed');
   expect(changed.calls).not.toContain('qa');
   expect(existsSync(join(changed.state.directory, 'running.lock'))).toBe(false);
+});
+
+test('implementer timeout preserves work and consumes a bounded retry before independent checks', async () => {
+  const { state, stages, inputs, calls } = fixture();
+  const implement = stages.implement;
+  stages.implement = async (...args) => {
+    const result = await implement(...args);
+    const file = join(state.workspace, 'apps/web/src/example.ts');
+    if (inputs.length === 1) {
+      writeFileSync(file, 'export const value = 2;\n');
+      throw new ProcessTimeoutError('codex', join(args[1].output, 'agent.log'));
+    }
+    expect(readFileSync(file, 'utf8')).toContain('value = 2');
+    return result;
+  };
+  await executeWorkflow(state, false, stages);
+  expect(state.status).toBe('completed');
+  expect(state.attempts['implementation-1']).toBe(2);
+  expect(inputs[1]?.feedback).toContain('partial changes remain');
+  expect(calls).toEqual([
+    'verify',
+    'research',
+    'plan',
+    'implement',
+    'implement',
+    'verify',
+    'review',
+    'qa',
+    'deliver',
+  ]);
+});
+
+test('repeated timeouts exhaust the existing budget without review or delivery', async () => {
+  const { state, stages, inputs, calls } = fixture();
+  const implement = stages.implement;
+  stages.implement = async (...args) => {
+    await implement(...args);
+    throw new ProcessTimeoutError('codex', join(args[1].output, 'agent.log'));
+  };
+  await executeWorkflow(state, false, stages);
+  expect(state.status).toBe('exhausted');
+  expect(inputs).toHaveLength(2);
+  expect(calls.filter((call) => call === 'verify')).toHaveLength(1);
+  expect(calls).not.toContain('deliver');
+  expect(
+    readFileSync(join(state.directory, 'round-1/implementation-1-2/feedback.md'), 'utf8'),
+  ).toContain('timeout');
+});
+
+test('worker errors other than timeouts still fail immediately', async () => {
+  const { state, stages, calls } = fixture();
+  stages.implement = async () => {
+    throw new Error('Invalid worker result');
+  };
+  await expect(executeWorkflow(state, false, stages)).rejects.toThrow('Invalid worker result');
+  expect(state.status).toBe('failed');
+  expect(state.attempts['implementation-1']).toBe(1);
+  expect(calls).not.toContain('review');
 });

@@ -2,6 +2,14 @@ import { spawn } from 'node:child_process';
 import { closeSync, mkdirSync, openSync } from 'node:fs';
 import { dirname } from 'node:path';
 
+/** A bounded worker invocation expired; callers decide whether their retry budget allows recovery. */
+export class ProcessTimeoutError extends Error {
+  constructor(executable: string, log: string) {
+    super(`${executable}: timeout (see ${log})`);
+    this.name = 'ProcessTimeoutError';
+  }
+}
+
 /** Only processes owned by this invocation are terminated, including their child processes. */
 export function stop(pid: number | undefined): void {
   if (!pid) return;
@@ -67,9 +75,9 @@ export async function execute(
         if (code === 0 && !timedOut) resolve();
         else
           reject(
-            new Error(
-              `${executable}: ${timedOut ? 'timeout' : `exit ${code ?? signal}`} (see ${options.log})`,
-            ),
+            timedOut
+              ? new ProcessTimeoutError(executable, options.log)
+              : new Error(`${executable}: exit ${code ?? signal} (see ${options.log})`),
           );
       });
       child.stdin?.on('error', () => {});

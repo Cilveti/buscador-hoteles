@@ -2,7 +2,7 @@ import { expect, test } from 'bun:test';
 import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { execute } from './process';
+import { execute, ProcessTimeoutError } from './process';
 
 test('worker runner passes text through stdin without shell expansion', async () => {
   const root = mkdtempSync(join(tmpdir(), 'workflow-process-'));
@@ -32,7 +32,7 @@ test('timeout stops the owned process and reports failure rather than a complete
         log: join(root, 'worker.log'),
         timeoutMs: 80,
       }),
-    ).rejects.toThrow('timeout');
+    ).rejects.toBeInstanceOf(ProcessTimeoutError);
     expect(performance.now() - started).toBeLessThan(4000);
   } finally {
     rmSync(root, { recursive: true, force: true });

@@ -181,6 +181,7 @@ export function Composer({
   const [skillPath, setSkillPath] = useState('');
   const [skillContent, setSkillContent] = useState('');
   const catalog = bootstrap?.catalog;
+  const workflow = text(draft.candidateKind, 'single-agent') === 'workflow';
   const language = text(draft.skillLanguage, 'en');
   const overrides =
     z.record(z.string(), z.enum(['en', 'es'])).safeParse(draft.skillLanguages).data ?? {};
@@ -232,7 +233,9 @@ export function Composer({
     draft.candidateChecks == null
       ? checks.map((check) => check.id)
       : strings(draft.candidateChecks);
-  const ready = typeof draft.specificationText === 'string' && typeof draft.promptText === 'string';
+  const ready = workflow
+    ? Boolean(text(draft.workflowSpec))
+    : typeof draft.specificationText === 'string' && typeof draft.promptText === 'string';
   function update(key: string, value: unknown) {
     if (!readOnly) onDraft((current) => ({ ...current, [key]: value }));
   }
@@ -289,8 +292,9 @@ export function Composer({
     onDraft((current) => ({
       ...current,
       task,
-      taskFile: source || null,
-      specificationText: source ? null : '',
+      taskFile: workflow ? null : source || null,
+      workflowSpec: workflow ? `evals/coding/tasks/${task}/workflow-spec.json` : null,
+      specificationText: workflow ? null : source ? null : '',
       privateAcceptance: null,
       judgeDossier: null,
     }));
@@ -387,6 +391,38 @@ export function Composer({
       )}
       <fieldset className="composer-fields" disabled={readOnly}>
         <section className="compact-settings">
+          <Field title="Candidato">
+            <select
+              value={workflow ? 'workflow' : 'single-agent'}
+              onChange={(event) => {
+                const selected = event.target.value === 'workflow';
+                const source = catalog?.taskFiles.find((file) => file.taskId === currentTask)?.path;
+                onDraft((current) => ({
+                  ...current,
+                  candidateKind: selected ? 'workflow' : 'single-agent',
+                  workflowSpec: selected
+                    ? `evals/coding/tasks/${currentTask}/workflow-spec.json`
+                    : null,
+                  harness: selected ? 'codex' : current.harness,
+                  effort:
+                    selected && ['default', 'minimal'].includes(text(current.effort))
+                      ? 'high'
+                      : current.effort,
+                  taskFile: selected ? null : source || null,
+                  specificationText: null,
+                  promptText: null,
+                  processSkill: null,
+                  promptSource: null,
+                  promptFile: null,
+                  initialSkills: [],
+                  candidateChecks: null,
+                }));
+              }}
+            >
+              <option value="single-agent">Agente único</option>
+              <option value="workflow">Workflow completo</option>
+            </select>
+          </Field>
           <Field title="Idioma de las skills">
             <select
               value={language}
@@ -415,7 +451,9 @@ export function Composer({
               }}
             >
               <option value="codex">Codex</option>
-              <option value="opencode">OpenCode</option>
+              <option value="opencode" disabled={workflow}>
+                OpenCode
+              </option>
             </select>
           </Field>
           <Picker
@@ -435,7 +473,11 @@ export function Composer({
               onChange={(event) => update('effort', event.target.value)}
             >
               {['default', 'minimal', 'low', 'medium', 'high', 'xhigh', 'max']
-                .filter((value) => draft.harness === 'opencode' || value !== 'default')
+                .filter((value) =>
+                  workflow
+                    ? !['default', 'minimal'].includes(value)
+                    : draft.harness === 'opencode' || value !== 'default',
+                )
                 .map((value) => (
                   <option key={value}>{value}</option>
                 ))}
@@ -469,21 +511,10 @@ export function Composer({
           />
         </section>
       </fieldset>
-      <div className="source-grid">
-        <SourceEditor
-          readOnly={readOnly}
-          title="Especificación"
-          source={taskFile}
-          value={draft.specificationText}
-          onValue={(value) => sourceValue('specificationText', value)}
-          onHydrate={(value, source) => sourceValue('specificationText', value, source)}
-          onRestore={() => update('specificationText', null)}
-        >
+      {workflow ? (
+        <fieldset className="composer-fields" disabled={readOnly}>
           <Field title="Tarea de referencia">
             <select value={currentTask} onChange={(event) => selectTask(event.target.value)}>
-              {readOnly && !bootstrap?.tasks.some((task) => task.id === currentTask) && (
-                <option value={currentTask}>{currentTask}</option>
-              )}
               {bootstrap?.tasks.map((task) => (
                 <option value={task.id} key={task.id}>
                   {task.title}
@@ -491,42 +522,82 @@ export function Composer({
               ))}
             </select>
           </Field>
-        </SourceEditor>
-        <SourceEditor
-          readOnly={readOnly}
-          key={`${promptSource}:${processLanguage}`}
-          title="Prompt de proceso"
-          language={processLanguage}
-          source={promptSource}
-          value={draft.promptText}
-          onValue={(value) => sourceValue('promptText', value)}
-          onHydrate={(value, source) => sourceValue('promptText', value, source)}
-          onRestore={() => update('promptText', null)}
-        >
-          <Picker
-            optional
-            title="Fuente del prompt"
-            value={promptSource}
-            options={[
-              ...(catalog?.skills.map((skill) => ({ value: skill.path, label: skill.name })) ?? []),
-              ...(catalog?.prompts.map((prompt) => ({ value: prompt.path, label: prompt.label })) ??
-                []),
-            ]}
-            onChange={selectPrompt}
-          />
-        </SourceEditor>
-      </div>
+          <Field title="Spec pública del workflow">
+            <Input
+              value={text(draft.workflowSpec)}
+              onChange={(event) => update('workflowSpec', event.target.value)}
+            />
+          </Field>
+          <p>
+            Research, plan, implementación, verify, review y QA forman un solo candidato. La
+            aceptación privada y las seis notas del juez se aplican a su entrega final.
+          </p>
+        </fieldset>
+      ) : (
+        <div className="source-grid">
+          <SourceEditor
+            readOnly={readOnly}
+            title="Especificación"
+            source={taskFile}
+            value={draft.specificationText}
+            onValue={(value) => sourceValue('specificationText', value)}
+            onHydrate={(value, source) => sourceValue('specificationText', value, source)}
+            onRestore={() => update('specificationText', null)}
+          >
+            <Field title="Tarea de referencia">
+              <select value={currentTask} onChange={(event) => selectTask(event.target.value)}>
+                {readOnly && !bootstrap?.tasks.some((task) => task.id === currentTask) && (
+                  <option value={currentTask}>{currentTask}</option>
+                )}
+                {bootstrap?.tasks.map((task) => (
+                  <option value={task.id} key={task.id}>
+                    {task.title}
+                  </option>
+                ))}
+              </select>
+            </Field>
+          </SourceEditor>
+          <SourceEditor
+            readOnly={readOnly}
+            key={`${promptSource}:${processLanguage}`}
+            title="Prompt de proceso"
+            language={processLanguage}
+            source={promptSource}
+            value={draft.promptText}
+            onValue={(value) => sourceValue('promptText', value)}
+            onHydrate={(value, source) => sourceValue('promptText', value, source)}
+            onRestore={() => update('promptText', null)}
+          >
+            <Picker
+              optional
+              title="Fuente del prompt"
+              value={promptSource}
+              options={[
+                ...(catalog?.skills.map((skill) => ({ value: skill.path, label: skill.name })) ??
+                  []),
+                ...(catalog?.prompts.map((prompt) => ({
+                  value: prompt.path,
+                  label: prompt.label,
+                })) ?? []),
+              ]}
+              onChange={selectPrompt}
+            />
+          </SourceEditor>
+        </div>
+      )}
       <fieldset className="composer-fields" disabled={readOnly}>
         <div className="harness-grid">
-          <section className="harness-card">
-            <SkillsPicker
-              title="Skills al inicio"
-              options={catalog?.skills ?? []}
-              value={initial}
-              onChange={(value) => update('initialSkills', value)}
-            />
-            <div className="injection-label">Inyectadas en el prompt inicial</div>
-          </section>
+          {!workflow && (
+            <section className="harness-card">
+              <SkillsPicker
+                title="Skills al inicio"
+                options={catalog?.skills ?? []}
+                value={initial}
+                onChange={(value) => update('initialSkills', value)}
+              />
+              <div className="injection-label">Inyectadas en el prompt inicial</div>
+            </section>
+          )}
           <section className="harness-card">
             <SkillsPicker
               title="Skills disponibles"
@@ -535,55 +606,57 @@ export function Composer({
               onChange={setAvailable}
             />
           </section>
-          <section className="harness-card check-settings">
-            <div className="section-heading">
-              <h3>Checks del candidato</h3>
-              <span className="count">{selectedChecks.length}</span>
-            </div>
-            <div className="actions">
-              <Button
-                type="button"
-                size="sm"
-                variant="outline"
-                onClick={() => update('candidateChecks', null)}
-              >
-                Todos
-              </Button>
-              <Button
-                type="button"
-                size="sm"
-                variant="outline"
-                onClick={() => update('candidateChecks', [])}
-              >
-                Ninguno
-              </Button>
-            </div>
-            {checks.map((check) => (
-              <div className="check-option" key={check.id}>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={selectedChecks.includes(check.id)}
-                    onChange={(event) =>
-                      update(
-                        'candidateChecks',
-                        event.target.checked
-                          ? [...selectedChecks, check.id]
-                          : selectedChecks.filter((id) => id !== check.id),
-                      )
-                    }
-                  />
-                  {check.label}
-                </label>
-                <details>
-                  <summary>Scripts</summary>
-                  {check.scripts.map((script) => (
-                    <code key={script}>{script}</code>
-                  ))}
-                </details>
+          {!workflow && (
+            <section className="harness-card check-settings">
+              <div className="section-heading">
+                <h3>Checks del candidato</h3>
+                <span className="count">{selectedChecks.length}</span>
               </div>
-            ))}
-          </section>
+              <div className="actions">
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => update('candidateChecks', null)}
+                >
+                  Todos
+                </Button>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => update('candidateChecks', [])}
+                >
+                  Ninguno
+                </Button>
+              </div>
+              {checks.map((check) => (
+                <div className="check-option" key={check.id}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={selectedChecks.includes(check.id)}
+                      onChange={(event) =>
+                        update(
+                          'candidateChecks',
+                          event.target.checked
+                            ? [...selectedChecks, check.id]
+                            : selectedChecks.filter((id) => id !== check.id),
+                        )
+                      }
+                    />
+                    {check.label}
+                  </label>
+                  <details>
+                    <summary>Scripts</summary>
+                    {check.scripts.map((script) => (
+                      <code key={script}>{script}</code>
+                    ))}
+                  </details>
+                </div>
+              ))}
+            </section>
+          )}
         </div>
         <details className="advanced">
           <summary>Idioma por skill</summary>
@@ -636,7 +709,7 @@ export function Composer({
             />
             <div className="judge-model">
               <span>Juez</span>
-              <strong>gpt-5.6-sol · high</strong>
+              <strong>gpt-6-sol · high</strong>
             </div>
           </div>
         </section>

@@ -1,4 +1,5 @@
 import { spawn } from 'node:child_process';
+import { randomUUID } from 'node:crypto';
 import {
   closeSync,
   existsSync,
@@ -13,12 +14,19 @@ import {
   writeSync,
 } from 'node:fs';
 import { homedir, tmpdir } from 'node:os';
-import { resolve } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import type { Readable } from 'node:stream';
+import { codexExecutable } from './codex-executable';
+import { type CodexCollaboration, collectCodexCollaboration } from './codex-rollout';
 import { type Compactions, collectCodexCompactions } from './compactions';
 import { type CandidateCheck, JUDGE } from './config';
 import { isolatedEnvironment, withCandidateIsolation } from './isolation';
 import { judgmentOutputSchema } from './judge';
+import {
+  type OpenCodeIsolationProbe,
+  openCodeIsolationPrompt,
+  validateOpenCodeIsolationProbe,
+} from './opencode-isolation';
 import { cleanupFixtureServers, type FixtureCleanup } from './process-cleanup';
 import { personalSkillOverride } from './skill-isolation';
 import { analyzeEvents } from './trace';
@@ -55,6 +63,15 @@ export type AgentResult = {
   fixtureCleanup?: FixtureCleanup;
   compactions?: Compactions;
   compactionsPath?: string;
+  collaboration?: CodexCollaboration;
+  collaborationPath?: string;
+  isolationProbe?: {
+    status: 'passed';
+    model: string;
+    durationMs: number;
+    reportedCostUsd: number | null;
+    output: string;
+  };
 };
 
 /** The environment is used for authentication but never serialized into run artifacts. */
@@ -259,11 +276,34 @@ function validateAgentOptions(options: AgentOptions): void {
     throw new Error('maxReportedCostUsd must be positive.');
 }
 
+function agentStatus(input: {
+  timedOut: boolean;
+  exitSignal: NodeJS.Signals | null;
+  launchFailed: boolean;
+  budgetExceeded: boolean;
+  exitCode: number | null;
+  traceCompleted: boolean;
+  traceErrors: string[];
+  final: string;
+  harness: AgentOptions['harness'];
+}): AgentResult['status'] {
+  if (input.timedOut) return 'timed_out';
+  if (input.exitSignal === 'SIGINT' || input.exitSignal === 'SIGTERM') return 'cancelled';
+  const completed =
+    !input.launchFailed &&
+    !input.budgetExceeded &&
+    input.exitCode === 0 &&
+    input.traceErrors.length === 0 &&
+    (input.traceCompleted || input.harness === 'opencode') &&
+    Boolean(input.final.trim());
+  return completed ? 'completed' : 'failed';
+}
+
 /** Runs the real CLI; commandPrefix permits an executable fixture without changing global PATH. */
 async function runAgentImpl(
   options: AgentOptions,
   commandPrefix: [string, ...string[]] = [
-    options.harness === 'codex' ? (process.env.EVAL_CODEX_BIN ?? 'codex') : options.harness,
+    options.harness === 'codex' ? codexExecutable() : options.harness,
   ],
   permissionArgs: string[] = [],
 ): Promise<AgentResult> {
@@ -357,7 +397,15 @@ async function runAgentImpl(
     closeSync(stdout);
     closeSync(stderr);
     closeSync(eventFile);
-    if (!options.readOnly) fixtureCleanup = await cleanupFixtureServers(options.root);
+    try {
+      if (!options.readOnly) fixtureCleanup = await cleanupFixtureServers(options.root);
+    } finally {
+      // Credentials and the mutable OpenCode database are process-scoped, even on cleanup errors.
+      if (options.harness === 'opencode') {
+        rmSync(resolve(output, 'opencode-data'), { recursive: true, force: true });
+        rmSync(resolve(output, 'opencode-config'), { recursive: true, force: true });
+      }
+    }
   }
   const trace = analyzeEvents(events);
   const compactions = codexHome
@@ -365,6 +413,14 @@ async function runAgentImpl(
     : trace.compactions;
   const compactionsPath = resolve(output, 'compactions.json');
   writeFileSync(compactionsPath, `${JSON.stringify(compactions, null, 2)}\n`, { mode: 0o600 });
+  const collaboration = codexHome
+    ? collectCodexCollaboration(codexHome, trace.sessionId)
+    : undefined;
+  const collaborationPath = collaboration ? resolve(output, 'collaboration.json') : undefined;
+  if (collaborationPath)
+    writeFileSync(collaborationPath, `${JSON.stringify(collaboration, null, 2)}\n`, {
+      mode: 0o600,
+    });
   // The public JSON events remain; private rollout payloads and credential links do not.
   if (codexHome) rmSync(codexHome, { recursive: true, force: true });
   const final = redact(
@@ -376,19 +432,95 @@ async function runAgentImpl(
     command,
     compactions,
     compactionsPath,
+    collaboration,
+    collaborationPath,
     durationMs: Math.round(performance.now() - started),
     exitCode: launchFailed ? null : exitCode,
     exitSignal,
     budgetExceeded,
     fixtureCleanup,
-    status: timedOut
-      ? 'timed_out'
-      : exitSignal === 'SIGINT' || exitSignal === 'SIGTERM'
-        ? 'cancelled'
-        : !launchFailed && !budgetExceeded && exitCode === 0 && trace.completed && final.trim()
-          ? 'completed'
-          : 'failed',
+    status: agentStatus({
+      timedOut,
+      exitSignal,
+      launchFailed,
+      budgetExceeded,
+      exitCode,
+      traceCompleted: trace.completed,
+      traceErrors: trace.errors,
+      final,
+      harness: options.harness,
+    }),
   };
+}
+
+function parseEventFile(path: string): unknown[] {
+  return readFileSync(path, 'utf8')
+    .split('\n')
+    .filter(Boolean)
+    .flatMap((line) => {
+      try {
+        return [JSON.parse(line)];
+      } catch {
+        return [];
+      }
+    });
+}
+
+async function runOpenCodeIsolationProbe(
+  options: AgentOptions,
+  commandPrefix?: [string, ...string[]],
+): Promise<NonNullable<AgentResult['isolationProbe']>> {
+  const externalRoot = dirname(options.root);
+  const marker = `OPENCODE_PRIVATE_CANARY_${randomUUID()}`;
+  const probe: OpenCodeIsolationProbe = {
+    externalRoot,
+    canary: join(externalRoot, 'controller-canary.txt'),
+    forbiddenWrite: join(externalRoot, 'forbidden-write.txt'),
+    allowedWrite: join(options.root, 'isolation-probe-allowed.txt'),
+    marker,
+  };
+  const output = resolve(dirname(options.output), 'environment-preflight/opencode-tool-isolation');
+  writeFileSync(probe.canary, `${marker}\n`, { mode: 0o600 });
+  try {
+    const result = await runAgentImpl(
+      {
+        ...options,
+        output,
+        prompt: openCodeIsolationPrompt(probe),
+        timeoutSeconds: 240,
+        maxSteps: 12,
+        maxReportedCostUsd: 0.1,
+        privateReadRoots: undefined,
+      },
+      commandPrefix,
+    );
+    const validation = validateOpenCodeIsolationProbe(result.eventsPath, probe);
+    if (result.status !== 'completed' || !validation.passed)
+      throw new Error(
+        `OpenCode private isolation probe failed: ${[
+          `agent status ${result.status}`,
+          ...validation.failures,
+        ].join('; ')}`,
+      );
+    const trace = analyzeEvents(parseEventFile(result.eventsPath));
+    const summary = {
+      status: 'passed' as const,
+      model: options.model,
+      durationMs: result.durationMs,
+      reportedCostUsd: trace.reportedCostUsd,
+      output,
+    };
+    writeFileSync(
+      resolve(dirname(options.output), 'opencode-isolation.json'),
+      `${JSON.stringify(summary, null, 2)}\n`,
+      { mode: 0o600 },
+    );
+    return summary;
+  } finally {
+    rmSync(probe.canary, { force: true });
+    rmSync(probe.forbiddenWrite, { force: true });
+    rmSync(probe.allowedWrite, { force: true });
+  }
 }
 
 export function runAgent(
@@ -396,19 +528,27 @@ export function runAgent(
   commandPrefix?: [string, ...string[]],
 ): Promise<AgentResult> {
   if (options.privateReadRoots?.length && !options.readOnly) {
-    if (options.harness !== 'codex')
-      throw new Error('Private candidate read isolation currently requires Codex.');
-    const executable = commandPrefix?.[0] ?? process.env.EVAL_CODEX_BIN ?? 'codex';
+    const executable =
+      options.harness === 'codex' ? (commandPrefix?.[0] ?? codexExecutable()) : codexExecutable();
     return withCandidateIsolation(
       options.root,
       options.privateReadRoots,
       executable,
-      (args, root) =>
-        runAgentImpl(
-          { ...options, root, env: isolatedEnvironment(options.env ?? {}, options.root, root) },
-          commandPrefix,
-          args,
-        ),
+      async (args, root) => {
+        const isolatedOptions = {
+          ...options,
+          root,
+          env: isolatedEnvironment(options.env ?? {}, options.root, root),
+        };
+        if (options.harness === 'opencode') {
+          const isolationProbe = await runOpenCodeIsolationProbe(isolatedOptions, commandPrefix);
+          return {
+            ...(await runAgentImpl(isolatedOptions, commandPrefix)),
+            isolationProbe,
+          };
+        }
+        return runAgentImpl(isolatedOptions, commandPrefix, args);
+      },
       { checks: options.candidateChecks, env: options.env },
     );
   }

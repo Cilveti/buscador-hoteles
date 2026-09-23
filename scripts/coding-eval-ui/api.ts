@@ -19,6 +19,7 @@ import { candidateScriptGroup } from '../coding-eval/candidate-checks';
 import { candidateCheckIds, configSchema, type EvalConfig, listTasks } from '../coding-eval/config';
 import { effectiveRun } from '../coding-eval/reverify';
 import { skillSource } from '../coding-eval/skill-language';
+import { specSchema } from '../local-workflow/contracts';
 
 const object = z.record(z.string(), z.unknown());
 const id = z.string().regex(/^[a-zA-Z0-9][a-zA-Z0-9_.-]{0,160}$/);
@@ -68,6 +69,8 @@ function runSummary(run: Record<string, unknown>) {
       'verificationRevision',
       'repositoryChecksPassed',
       'candidateTestsPassed',
+      'candidateKind',
+      'workflowCompleted',
       'judgeTaskVerdict',
       'taskAcceptancePassed',
       'privateAcceptancePassed',
@@ -461,6 +464,16 @@ export function createLabApi(project: string, token: string, launch: Launch) {
   function validateInputs(config: z.infer<typeof configSchema>) {
     if (!listTasks(project).some((task) => task.id === config.task))
       throw new Error('Tarea desconocida.');
+    if (config.candidateKind === 'workflow') {
+      const expected = `evals/coding/tasks/${config.task}/workflow-spec.json`;
+      if (config.workflowSpec !== expected)
+        throw new Error('Selecciona la spec pública del workflow de esta tarea.');
+      const spec = specSchema.parse(
+        JSON.parse(readFileSync(sourceFile(project, expected), 'utf8')),
+      );
+      if (spec.id !== config.task) throw new Error('La spec del workflow pertenece a otra tarea.');
+      return;
+    }
     // A skill path can cause resource copying even with an inline override.
     if (config.processSkill) {
       const path = relative(

@@ -14,6 +14,7 @@ import { delimiter, join, resolve } from 'node:path';
 import { Codex, type ThreadEvent } from '@openai/codex-sdk';
 import { withEvaluationBrowser } from './browser';
 import { provisionCandidateChecks } from './candidate-checks';
+import { codexExecutable } from './codex-executable';
 import type { CandidateCheck } from './config';
 import { provisionEnvironmentGuide } from './environment-guide';
 import { isolatedEnvironment, withCandidateIsolation } from './isolation';
@@ -61,7 +62,7 @@ async function main() {
   if (profileName && !profiles.some((profile) => profile.id === profileName))
     throw new Error(`Unknown profile: ${profileName}`);
   const results = [];
-  const executable = process.env.EVAL_CODEX_BIN ?? 'codex';
+  const executable = codexExecutable();
   for (const profile of profiles.filter((profile) => !profileName || profile.id === profileName)) {
     const runOutput = join(output, profile.id);
     const candidate = join(runOutput, 'candidate');

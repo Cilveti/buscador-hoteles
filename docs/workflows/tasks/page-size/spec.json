@@ -1,0 +1,31 @@
+{
+  "id": "page-size",
+  "title": "Elegir cuántos hoteles mostrar por página",
+  "objective": "Permitir elegir 12 o 24 hoteles por página en el listado público y conservar esa elección en la URL.",
+  "scope": [
+    "Listado público del buscador: un control Hoteles por página, junto a Ordenar por, con exactamente las opciones 12 y 24.",
+    "La elección se refleja en el parámetro pageSize de la URL. 12 es el valor por defecto y se omite, igual que el orden por nombre.",
+    "Al cambiar el tamaño se vuelve a la página 1 y se conservan la búsqueda, los filtros y el orden. El control se maneja como el desplegable de orden, también con teclado."
+  ],
+  "outOfScope": [
+    "No subir el máximo de pageSize por encima de 24 ni ofrecer otros tamaños.",
+    "No recordar la elección en el navegador mediante almacenamiento local, cookies u otra preferencia.",
+    "No cambiar administración, base de datos, dependencias ni la configuración del arnés.",
+    "No cambiar el comportamiento de página anterior y siguiente, salvo el regreso a la página 1 al cambiar el tamaño."
+  ],
+  "acceptance": [
+    {
+      "id": "AC1",
+      "criterion": "Dado que abro / y confirmo que el control Hoteles por página, junto a Ordenar por, muestra 12, que la URL no contiene pageSize y que el listado muestra los hoteles del catálogo sintético (menos de 12, sin paginación), cuando elijo 24 en ese control, entonces la URL contiene pageSize=24 y no page, la petición del catálogo usa pageSize=24, el control queda en 24 y siguen viéndose todos los hoteles, que caben en una página. La URL inicial solo prepara el estado; hay que elegir 24 y observar URL, petición y listado."
+    },
+    {
+      "id": "AC2",
+      "criterion": "Dado que abro /?country=Spain&sort=rating&page=2 y confirmo el aviso Esta página ya no tiene resultados, con country=Spain y sort=rating en la URL y el control Hoteles por página disponible, cuando elijo 24, entonces la URL conserva country=Spain y sort=rating, contiene pageSize=24, ya no contiene page y vuelven a mostrarse los hoteles de España. La URL prepara la página vacía; hay que elegir 24 y observar el regreso a la primera página."
+    },
+    {
+      "id": "AC3",
+      "criterion": "Dado que abro /?pageSize=24 y confirmo que el control muestra 24, cuando elijo 12, entonces pageSize desaparece de la URL y el control muestra 12. Cuando después abro / sin parámetros, el control sigue en 12 y pageSize no reaparece: la elección anterior no se restaura desde el navegador. La URL con pageSize=24 prepara el estado; hay que elegir 12 y luego abrir /."
+    }
+  ],
+  "decisions": []
+}

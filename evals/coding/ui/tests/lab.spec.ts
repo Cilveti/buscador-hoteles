@@ -89,7 +89,7 @@ test('ejecutar lleva al progreso animado y actualiza al terminar sin llamar mode
     await page.getByRole('button', { name: '＋ Nueva evaluación' }).click();
     await page.getByLabel('Nombre', { exact: true }).fill(name);
     await page.getByRole('button', { name: '▶ Ejecutar evaluación', exact: true }).click();
-    await expect(page.getByRole('heading', { name: 'Ejecuciones', exact: true })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Evaluaciones', exact: true })).toBeVisible();
     const progress = page.getByRole('region', { name: 'Progreso de ejecución' });
     await expect(progress).toContainText('Candidato');
     await expect(progress.getByRole('status').locator('.spinner')).toBeVisible();
@@ -203,7 +203,7 @@ test('idioma global, excepción de testing y prompt propio se conservan al guard
     await page.goto('/');
     await page.getByRole('button', { name: '＋ Nueva evaluación' }).click();
     await expect(page.getByRole('textbox', { name: 'Prompt de proceso', exact: true })).toHaveValue(
-      /Approach a development task/,
+      /Abordar una tarea/,
     );
     await page
       .getByRole('combobox', { name: 'Idioma de las skills', exact: true })
@@ -256,7 +256,7 @@ test('el acceso inicial protege los resultados y desaparece de la URL', async ({
     const page = await context.newPage();
     const token = loadAccess(resolve('.agent-evals/ui/access.json'));
     await page.goto(`${baseURL}/#access=${token}`);
-    await expect(page.getByRole('heading', { name: 'Ejecuciones', exact: true })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Evaluaciones', exact: true })).toBeVisible();
     expect(new URL(page.url()).hash).toBe('');
     expect((await context.request.get(`${baseURL}/api/campaigns`)).status()).toBe(403);
     expect(
@@ -286,7 +286,7 @@ test('el acceso inicial protege los resultados y desaparece de la URL', async ({
     }
 
     await page.reload();
-    await expect(page.getByRole('heading', { name: 'Ejecuciones', exact: true })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Evaluaciones', exact: true })).toBeVisible();
   } finally {
     await context.close();
   }

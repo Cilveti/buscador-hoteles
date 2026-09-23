@@ -12,7 +12,7 @@ import {
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { z } from 'zod';
-import { createWorktree, linkDependencies, snapshot } from '../coding-eval/workspace';
+import { createWorktree, git, linkDependencies, snapshot } from '../coding-eval/workspace';
 import { type AgentAssignments, assignmentsSchema, validateAgents } from './agents';
 import { planSchema, type Specification, specSchema } from './contracts';
 import { digest } from './policy';
@@ -47,6 +47,9 @@ const stateSchema = z.object({
   maxRounds: z.number(),
   maxTaskAttempts: z.number(),
   headed: z.boolean(),
+  evaluation: z
+    .object({ permissionArgs: z.array(z.string()), browserEndpoint: z.string() })
+    .optional(),
   message: z.string(),
   createdAt: z.string(),
   updatedAt: z.string(),
@@ -132,6 +135,45 @@ export function createRun(
     message: 'Snapshot aislado; no modifica tu checkout ni publica cambios.',
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
+  };
+  writeFileSync(join(directory, 'spec.json'), JSON.stringify(spec, null, 2));
+  save(state);
+  return state;
+}
+
+/** Reuse the coding-eval candidate tree; its private sandbox and browser lease outlive every phase. */
+export function createEvaluationRun(
+  workspace: string,
+  directory: string,
+  spec: Specification,
+  agents: AgentAssignments,
+  evaluation: { permissionArgs: string[]; browserEndpoint: string },
+): WorkflowState {
+  validateAgents(agents);
+  mkdirSync(directory, { recursive: true });
+  const now = new Date().toISOString();
+  const state: WorkflowState = {
+    id: `${spec.id}-${now.replace(/[:.]/g, '-')}`,
+    project: workspace,
+    directory,
+    workspace,
+    base: git(workspace, ['rev-parse', 'HEAD']),
+    mode: 'normal',
+    agents: structuredClone(agents),
+    status: 'research',
+    spec,
+    plan: null,
+    approval: false,
+    completedTasks: [],
+    attempts: {},
+    round: 0,
+    maxRounds: 2,
+    maxTaskAttempts: 2,
+    headed: false,
+    evaluation,
+    message: 'Evaluación aislada del workflow completo.',
+    createdAt: now,
+    updatedAt: now,
   };
   writeFileSync(join(directory, 'spec.json'), JSON.stringify(spec, null, 2));
   save(state);

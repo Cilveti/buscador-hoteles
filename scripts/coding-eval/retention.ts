@@ -1,7 +1,18 @@
 import { createHash } from 'node:crypto';
-import { existsSync, lstatSync, readdirSync, readFileSync, realpathSync, rmSync } from 'node:fs';
+import {
+  existsSync,
+  lstatSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  realpathSync,
+  rmSync,
+} from 'node:fs';
 import { isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { z } from 'zod';
+import type { WorkflowAgent } from '../workflow-observer/contracts';
+import { localAgentLog, localAgents } from '../workflow-observer/local';
+import { archiveTrace } from '../workflow-observer/trace';
 import { git, saveJson } from './workspace';
 
 const terminal = new Set(['evaluated', 'completed', 'incomplete', 'baseline_failed', 'prepared']);
@@ -129,12 +140,48 @@ export function compactEvaluation(project: string, directory: string) {
     const runState = readMetadata(resultFile);
     if (!terminal.has(runState.status)) return;
     pin(run, runState);
+    const archive = join(run, 'trace-archive');
+    const traces: (WorkflowAgent & { events: number })[] = [];
+    const preserve = (agent: WorkflowAgent, source: string) => {
+      if (!existsSync(source)) return;
+      mkdirSync(archive, { recursive: true, mode: 0o700 });
+      const events = archiveTrace(source, join(archive, `${agent.id}.projected.jsonl`));
+      traces.push({ ...agent, traceAvailable: true, resumeCommand: null, events });
+    };
+    const candidate = join(run, 'candidate-session/events.jsonl');
+    preserve(
+      {
+        id: 'candidate',
+        role: 'implementer',
+        harness: 'codex',
+        model: null,
+        status: 'unknown',
+        startedAt: null,
+        durationMs: null,
+        traceAvailable: true,
+        output: existsSync(join(run, 'candidate-session/final.txt'))
+          ? readFileSync(join(run, 'candidate-session/final.txt'), 'utf8').slice(0, 12_000)
+          : null,
+        sessionId: null,
+        resumeCommand: null,
+      },
+      candidate,
+    );
+    const workflow = join(run, 'workflow');
+    if (existsSync(workflow))
+      for (const agent of localAgents(workflow)) {
+        const source = localAgentLog(workflow, agent.id);
+        if (source) preserve(agent, source);
+      }
+    if (traces.length) saveJson(join(archive, 'agents.json'), traces);
     // Final JSON values, prompts, patches, final messages and compaction summaries remain.
     for (const path of [
       'judge-input',
       'browser',
       'candidate-tests/browser',
       'private-acceptance/artifacts',
+      'workflow',
+      'workflow-candidate-events.jsonl',
     ])
       remove(join(run, path));
     for (const session of ['candidate-session', 'judge-session']) {

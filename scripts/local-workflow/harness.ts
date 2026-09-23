@@ -11,6 +11,8 @@ export type HarnessInvocation = {
   reasoningEffort?: string;
   images: string[];
   timeoutMs: number;
+  permissionArgs?: string[];
+  persistSession?: boolean;
 };
 
 export type HarnessAdapter = {

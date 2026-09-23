@@ -7,6 +7,7 @@ import type { Job, LabCatalog } from '../../../scripts/coding-eval-ui/api';
 import { apiFetch } from './api-fetch';
 import { Composer } from './composer';
 import { RunsTable } from './run-table';
+import { WorkflowRoom } from './workflow-room';
 
 const object = z.record(z.string(), z.unknown());
 const list = z.array(object);
@@ -189,7 +190,10 @@ function Lab() {
   const [campaigns, setCampaigns] = useState<Record<string, unknown>[]>([]);
   const [recipes, setRecipes] = useState<Record<string, unknown>[]>([]);
   const [jobs, setJobs] = useState<Job[]>([]);
-  const [view, setView] = useState<'runs' | 'recipes' | 'configuration'>('runs');
+  const [view, setView] = useState<
+    'runs' | 'recipes' | 'configuration' | 'workflows' | 'evaluation-trace'
+  >('runs');
+  const [evaluationTraceRef, setEvaluationTraceRef] = useState<string | null>(null);
   const [selected, setSelected] = useState<{ campaign: string; run: string } | null>(null);
   const [detail, setDetail] = useState<Record<string, unknown> | null>(null);
   const [configurationRun, setConfigurationRun] = useState<{
@@ -416,9 +420,18 @@ function Lab() {
         <div className="logo">
           <span>H</span>Harness lab
         </div>
-        <Button variant={view === 'runs' ? 'secondary' : 'ghost'} onClick={() => setView('runs')}>
-          Ejecuciones{' '}
+        <Button
+          variant={view === 'runs' || view === 'evaluation-trace' ? 'secondary' : 'ghost'}
+          onClick={() => setView('runs')}
+        >
+          Evaluaciones{' '}
           <span className="count">{flatRuns.filter((run) => run.runId != null).length}</span>
+        </Button>
+        <Button
+          variant={view === 'workflows' ? 'secondary' : 'ghost'}
+          onClick={() => setView('workflows')}
+        >
+          Workflows
         </Button>
         <Button
           variant={view === 'recipes' ? 'secondary' : 'ghost'}
@@ -434,31 +447,42 @@ function Lab() {
       <main>
         <header>
           <h1>
-            {view === 'runs'
-              ? 'Ejecuciones'
-              : view === 'configuration'
-                ? `Configuración · Run ${configurationRun?.run}`
-                : 'Configurar evaluación'}
+            {view === 'workflows'
+              ? 'Workflows'
+              : view === 'evaluation-trace'
+                ? 'Evaluación · recorrido'
+                : view === 'runs'
+                  ? 'Evaluaciones'
+                  : view === 'configuration'
+                    ? `Configuración · Run ${configurationRun?.run}`
+                    : 'Configurar evaluación'}
           </h1>
           <div className="actions">
             {view === 'configuration' && (
               <>
                 <span className="status info">Solo lectura</span>
                 <Button variant="outline" onClick={() => setView('runs')}>
-                  Volver a ejecuciones
+                  Volver a evaluaciones
                 </Button>
               </>
             )}
             {view === 'runs' && (
               <Button onClick={() => loadRecipe(bootstrap?.example)}>＋ Nueva evaluación</Button>
             )}
-            <Button
-              variant="outline"
-              aria-label="Actualizar ejecuciones"
-              onClick={() => void refresh().catch((failure) => setError(String(failure)))}
-            >
-              ↻ Actualizar
-            </Button>
+            {view === 'evaluation-trace' && (
+              <Button variant="outline" onClick={() => setView('runs')}>
+                Volver a evaluaciones
+              </Button>
+            )}
+            {view !== 'workflows' && view !== 'evaluation-trace' && (
+              <Button
+                variant="outline"
+                aria-label="Actualizar evaluaciones"
+                onClick={() => void refresh().catch((failure) => setError(String(failure)))}
+              >
+                ↻ Actualizar
+              </Button>
+            )}
           </div>
         </header>
         {error && (
@@ -477,7 +501,7 @@ function Lab() {
             </button>
           </div>
         )}
-        {activeJob && (
+        {activeJob && view !== 'workflows' && view !== 'evaluation-trace' && (
           <button
             type="button"
             className="active-job"
@@ -493,7 +517,16 @@ function Lab() {
             <span className="push-right">Ver progreso →</span>
           </button>
         )}
-        {view === 'configuration' ? (
+        {view === 'workflows' ? (
+          <WorkflowRoom token={bootstrap?.token ?? ''} />
+        ) : view === 'evaluation-trace' ? (
+          <WorkflowRoom
+            key={evaluationTraceRef}
+            token={bootstrap?.token ?? ''}
+            scope="evaluation"
+            initialRef={evaluationTraceRef}
+          />
+        ) : view === 'configuration' ? (
           configuration ? (
             <>
               <div className="configuration-origin">{configurationRun?.campaign}</div>
@@ -622,6 +655,16 @@ function Lab() {
           >
             <div className="detail-heading">
               <SheetTitle>Run {selected.run}</SheetTitle>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setEvaluationTraceRef(`evaluation:${selected.campaign}:${selected.run}`);
+                  setSelected(null);
+                  setView('evaluation-trace');
+                }}
+              >
+                Ver recorrido
+              </Button>
               <Button variant="outline" onClick={() => openConfiguration(selected)}>
                 Ver configuración
               </Button>

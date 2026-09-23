@@ -19,16 +19,17 @@ import { z } from 'zod';
 export function git(
   root: string,
   args: string[],
-  options: { env?: Record<string, string>; input?: string } = {},
+  options: { env?: Record<string, string>; input?: string; trimOutput?: boolean } = {},
 ): string {
-  return execFileSync('git', args, {
+  const output = execFileSync('git', args, {
     cwd: root,
     encoding: 'utf8',
     maxBuffer: 128 * 1024 * 1024,
     env: { ...process.env, ...options.env },
     input: options.input,
     stdio: ['pipe', 'pipe', 'pipe'],
-  }).trimEnd();
+  });
+  return options.trimOutput === false ? output : output.trimEnd();
 }
 
 /** A private index freezes tracked + untracked files, without staging or committing the user's checkout. */

@@ -1,12 +1,12 @@
 import { randomUUID } from 'node:crypto';
 import { existsSync, mkdirSync, readdirSync, readFileSync } from 'node:fs';
 import { createServer } from 'node:net';
-import { join, resolve } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import { z } from 'zod';
 import { verifyCandidateTests } from './candidate-tests';
 import { configSchema, taskSchema } from './config';
 import { evaluationOutcome } from './outcome';
-import { finishEvaluationStorage, requireRetainedEvidence } from './retention';
+import { finishEvaluationStorage } from './retention';
 import { qualityScore } from './score';
 import { hashFile, saveJson } from './workspace';
 
@@ -113,7 +113,6 @@ async function availablePort() {
 /** Re-execute candidate tests on the frozen delivery. No candidate or judge model is called. */
 export async function reverifyCandidateTests(project: string, directory: string) {
   const run = resolve(project, directory);
-  requireRetainedEvidence(run);
   const original = z
     .object({
       status: z.literal('evaluated'),
@@ -125,9 +124,14 @@ export async function reverifyCandidateTests(project: string, directory: string)
   const changed = z
     .object({ changedPaths: z.array(z.string()) })
     .parse(JSON.parse(readFileSync(join(run, 'delivery.json'), 'utf8')));
-  const task = taskSchema.parse(
-    JSON.parse(readFileSync(join(run, 'judge-input/task-reference/task.json'), 'utf8')),
+  const retainedTask = join(run, 'judge-input/task-reference/task.json');
+  const campaignInputs = join(dirname(dirname(run)), 'inputs.json');
+  const taskPayload: unknown = JSON.parse(
+    readFileSync(existsSync(retainedTask) ? retainedTask : campaignInputs, 'utf8'),
   );
+  const task = existsSync(retainedTask)
+    ? taskSchema.parse(taskPayload)
+    : z.object({ task: taskSchema }).parse(taskPayload).task;
   const output = join(
     run,
     'reverifications',

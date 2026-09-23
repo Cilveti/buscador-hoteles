@@ -13,27 +13,29 @@ export const roleSchema = z.enum([
   'qa',
 ]);
 export type AgentRole = z.infer<typeof roleSchema>;
-const targetSchema = z
+export const targetSchema = z
   .object({
     harness: z.string().regex(/^[a-z][a-z0-9-]*$/),
     model: z.string().min(1).optional(),
-    reasoningEffort: z.enum(['low', 'medium', 'high', 'xhigh', 'max']).optional(),
+    reasoningEffort: z.enum(['low', 'medium', 'high', 'xhigh', 'max', 'ultra']).optional(),
   })
   .strict();
 export const assignmentsSchema = z.record(roleSchema, targetSchema);
 export type AgentAssignments = z.infer<typeof assignmentsSchema>;
-const configSchema = z
+export const agentConfigSchema = z
   .object({
     default: targetSchema,
     roles: z.partialRecord(roleSchema, targetSchema).default({}),
   })
   .strict();
+export type AgentConfig = z.infer<typeof agentConfigSchema>;
+export type AgentTarget = z.infer<typeof targetSchema>;
 
 // Composition point: adding a harness does not change the workflow, prompts or QA loop.
 export const installedHarnesses: HarnessRegistry = { codex: codexHarness };
 
 export function resolveAgents(value: unknown): AgentAssignments {
-  const config = configSchema.parse(value);
+  const config = agentConfigSchema.parse(value);
   return assignmentsSchema.parse(
     Object.fromEntries(
       roleSchema.options.map((role) => [role, config.roles[role] ?? config.default]),
@@ -70,6 +72,8 @@ export type AgentRequest = {
   env?: Record<string, string>;
   images?: string[];
   timeoutSeconds?: number;
+  permissionArgs?: string[];
+  persistSession?: boolean;
 };
 
 /** Fresh session and validated results, independent of the selected harness. */
@@ -105,27 +109,39 @@ export async function callAgent<S extends z.ZodType>(
         ...target,
         access,
         environment: request.env,
+        sessionPersisted: request.persistSession === true,
       },
       null,
       2,
     ),
   );
   console.log(`  ${request.role} · ${target.harness}${target.model ? ` / ${target.model}` : ''}`);
-  const result = schema.parse(
-    await adapter.run({
-      root: request.root,
-      prompt,
-      schemaPath,
-      resultPath,
-      logPath,
-      access,
-      env: request.env,
-      model: target.model,
-      reasoningEffort: target.reasoningEffort,
-      images: request.images ?? [],
-      timeoutMs: (request.timeoutSeconds ?? 300) * 1000,
-    }),
-  );
-  writeFileSync(resultPath, JSON.stringify(result, null, 2));
-  return result;
+  const startedAt = new Date().toISOString();
+  const started = performance.now();
+  try {
+    const result = schema.parse(
+      await adapter.run({
+        root: request.root,
+        prompt,
+        schemaPath,
+        resultPath,
+        logPath,
+        access,
+        env: request.env,
+        model: target.model,
+        reasoningEffort: target.reasoningEffort,
+        images: request.images ?? [],
+        timeoutMs: (request.timeoutSeconds ?? 300) * 1000,
+        permissionArgs: request.permissionArgs,
+        persistSession: request.persistSession,
+      }),
+    );
+    writeFileSync(resultPath, JSON.stringify(result, null, 2));
+    return result;
+  } finally {
+    writeFileSync(
+      join(request.output, 'timing.json'),
+      JSON.stringify({ startedAt, durationMs: Math.round(performance.now() - started) }, null, 2),
+    );
+  }
 }

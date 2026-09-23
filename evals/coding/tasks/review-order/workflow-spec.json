@@ -1,0 +1,28 @@
+{
+  "id": "review-order",
+  "title": "Ordenar por número de opiniones",
+  "objective": "Añadir «Más opiniones» al buscador convencional, con orden determinista por recuentos conocidos y estado compartible.",
+  "scope": [
+    "Añadir la opción «Más opiniones» al control de ordenación existente, en escritorio y móvil, y admitir sort=review-count en el contrato y por HTTP.",
+    "Ordenar por opiniones conocidas de mayor a menor: cero es conocido, null va después de cualquier valor conocido, y una valoración ausente no invalida un recuento conocido. Resolver empates por nombre y luego por ID.",
+    "Aplicar texto y filtros antes de ordenar y paginar después, conservando totales y facetas. No cambiar los datos para forzar el orden.",
+    "Al cambiar el orden volver a página 1; conservar sort=review-count en URL, recarga y recorrido listado-ficha-resultados. Mantener sort=name, sort=rating y el orden implícito existentes.",
+    "Un sort inválido mantiene el error HTTP existente sin cargar el catálogo. Añadir tests de comportamiento con expectativas independientes y datos sintéticos que distingan conocido, cero, desconocido y empates."
+  ],
+  "outOfScope": ["No cambiar /explore, administración, datos del catálogo ni dependencias."],
+  "acceptance": [
+    {
+      "id": "AC1",
+      "criterion": "Dado el listado sin filtros, cuando elijo «Más opiniones», entonces la URL indica sort=review-count, la primera página se reinicia y los hoteles visibles aparecen por número de opiniones conocido descendente, dejando los recuentos desconocidos al final. Comprobar el orden observado, no solo la opción del selector."
+    },
+    {
+      "id": "AC2",
+      "criterion": "Dado que sort=review-count está activo, cuando recargo o abro la ficha de un hotel y vuelvo a resultados, entonces la URL, la opción seleccionada y el orden de los resultados se conservan."
+    },
+    {
+      "id": "AC3",
+      "criterion": "Dado un filtro de país y paginación activos, cuando cambio a «Más opiniones», entonces el filtro permanece, la página vuelve a 1 y la ordenación se aplica solo a los hoteles filtrados; cambiar después a orden por nombre o valoración conserva los comportamientos previos."
+    }
+  ],
+  "decisions": []
+}

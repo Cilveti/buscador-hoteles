@@ -1,29 +1,35 @@
 import { readFileSync } from 'node:fs';
+import { codexExecutable } from '../coding-eval/codex-executable';
+import { personalSkillOverride } from '../coding-eval/skill-isolation';
 import type { HarnessAdapter, HarnessInvocation } from './harness';
 import { execute } from './process';
 
 export function codexCommand(invocation: HarnessInvocation): string[] {
   const command = [
-    'codex',
+    codexExecutable(),
     'exec',
     '--ignore-user-config',
-    '--ephemeral',
+    ...(invocation.persistSession ? [] : ['--ephemeral']),
     '--json',
     '--color',
     'never',
-    '--sandbox',
-    invocation.access === 'write' ? 'workspace-write' : 'read-only',
+    ...(invocation.permissionArgs ?? [
+      '--sandbox',
+      invocation.access === 'write' ? 'workspace-write' : 'read-only',
+    ]),
     '-c',
     'approval_policy="never"',
     '-c',
     'web_search="disabled"',
+    '-c',
+    personalSkillOverride(),
     '--output-schema',
     invocation.schemaPath,
     '--output-last-message',
     invocation.resultPath,
   ];
   // Allow the local app and the connection to the controller-owned Playwright browser.
-  if (invocation.access === 'write')
+  if (invocation.access === 'write' && !invocation.permissionArgs)
     command.push('-c', 'sandbox_workspace_write.network_access=true');
   if (invocation.model) command.push('--model', invocation.model);
   if (invocation.reasoningEffort)

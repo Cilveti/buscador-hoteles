@@ -37,6 +37,30 @@
         "url": "https://developers.openai.com/api/docs/models/gpt-5.6-sol",
         "verifiedOn": "2026-09-16"
       }
+    },
+    "gpt-6-luna": {
+      "inputPerMillion": 0.1,
+      "cachedInputPerMillion": 0.01,
+      "cacheWritePerMillion": 0.125,
+      "outputPerMillion": 0.5,
+      "longContextThresholdTokens": 272000,
+      "source": {
+        "kind": "official",
+        "url": "https://developers.openai.com/api/docs/models/gpt-6-luna",
+        "verifiedOn": "2026-09-22"
+      }
+    },
+    "gpt-6-sol": {
+      "inputPerMillion": 2,
+      "cachedInputPerMillion": 0.2,
+      "cacheWritePerMillion": 2.5,
+      "outputPerMillion": 10,
+      "longContextThresholdTokens": 272000,
+      "source": {
+        "kind": "official",
+        "url": "https://developers.openai.com/api/docs/models/gpt-6-sol",
+        "verifiedOn": "2026-09-22"
+      }
     }
   }
 }

@@ -54,12 +54,15 @@ export async function verifyCandidateTests(options: {
   port: number;
   verify?: typeof runVerification;
 }) {
-  const checks = candidateTestChecks(options.candidateRoot, options.changed, options.task);
-  if (!checks.length) return null;
+  if (!options.changed.some((path) => /\.(?:test|spec)\.[cm]?[jt]sx?$/.test(path))) return null;
   const root = join(options.output, 'candidate-tests-worktree');
   createWorktree(options.project, root, options.delivered);
   restoreReferences(options.project, root, options.baseline, options.delivered, true);
   linkDependencies(options.project, root);
+  // Inspect the immutable delivered commit, not a temporary candidate workspace that
+  // the results-only retention policy may already have removed before reverification.
+  const checks = candidateTestChecks(root, options.changed, options.task);
+  if (!checks.length) return null;
   const output = join(options.output, 'candidate-tests');
   return (options.verify ?? runVerification)({
     root,

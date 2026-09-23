@@ -24,7 +24,7 @@ Use assigned browser ports/endpoints and synthetic data. Stop only processes own
 
 ## Judge and interpret
 
-The judge is fixed: Codex `gpt-5.6-sol`, `high`. It reads the frozen delivery, requirements, checks, traces and privileged dossier. The Golden Dataset is privileged knowledge of intended behavior, constraints and known bugs, not a required literal patch. Do not create a separate judge-evaluation project.
+The judge is fixed: Codex `gpt-6-sol`, `high`. It reads the frozen delivery, requirements, checks, traces and privileged dossier. The Golden Dataset is privileged knowledge of intended behavior, constraints and known bugs, not a required literal patch. Historical judgments retain their original judge identity. Do not create a separate judge-evaluation project.
 
 Report functionality, code quality, test quality, guideline compliance, verification process and report accuracy separately. A judge review finding is not a deterministic reproduction or mutation result. Distinguish prior debt, necessary integration with legacy code and unsolicited scope expansion. Compactions are observed process data, not inherently failures; unknown coverage is not zero.
 

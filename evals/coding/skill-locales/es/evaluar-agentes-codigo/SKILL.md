@@ -24,7 +24,7 @@ Usa puertos/endpoints asignados y datos sintéticos. Detén solo procesos de la 
 
 ## Juzgar e interpretar
 
-Juez fijo: Codex `gpt-5.6-sol`, `high`. Lee entrega congelada, requisitos, checks, trazas y dossier privilegiado. El Golden Dataset es conocimiento privilegiado de comportamiento esperado, restricciones y bugs conocidos; no un patch literal obligatorio. No abras un proyecto independiente de evaluación del juez.
+Juez fijo: Codex `gpt-6-sol`, `high`. Lee entrega congelada, requisitos, checks, trazas y dossier privilegiado. El Golden Dataset es conocimiento privilegiado de comportamiento esperado, restricciones y bugs conocidos; no un patch literal obligatorio. Los juicios históricos conservan la identidad de su juez original. No abras un proyecto independiente de evaluación del juez.
 
 Informa por separado de funcionalidad, código, tests, cumplimiento de directrices, proceso de verificación y precisión del informe. Un hallazgo del juez no equivale a reproducción determinista ni resultado de mutación. Distingue deuda previa, adaptación necesaria a legacy y ampliación de alcance no pedida. Las compactaciones son datos del proceso, no fallos por sí mismas; cobertura desconocida no equivale a cero.
 

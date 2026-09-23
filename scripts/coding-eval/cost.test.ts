@@ -49,7 +49,34 @@ describe('API equivalent token costs', () => {
     ).toBeNull();
     expect(
       estimateCodexCost({ harness: 'opencode', model: 'gpt-5.6-luna', usage }, pricing).reason,
-    ).toBe('unsupported_harness');
+    ).toBe('missing_reported_cost');
+  });
+
+  test('uses provider-reported OpenCode cost without pretending it is a token-price estimate', () => {
+    const result = estimateCodexCost(
+      {
+        harness: 'opencode',
+        model: 'opencode/gemini-3.8-flash',
+        usage,
+        reportedCostUsd: 0.1234,
+      },
+      pricing,
+    );
+    expect(result.estimatedApiCostUsd).toBe(0.1234);
+    expect(result.basis).toBe('provider-reported');
+    expect(result.breakdown).toBeNull();
+    expect(result.reason).toBeNull();
+    expect(
+      estimateCodexCost(
+        {
+          harness: 'opencode',
+          model: 'opencode/gemini-3.8-flash',
+          usage,
+          reportedCostUsd: Number.NaN,
+        },
+        pricing,
+      ).reason,
+    ).toBe('invalid_reported_cost');
   });
 
   test('older CLI absence of cache writes assumes zero explicitly; explicit zero usage costs zero', () => {

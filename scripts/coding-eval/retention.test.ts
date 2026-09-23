@@ -11,6 +11,7 @@ import {
 } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { evaluationRun } from '../workflow-observer/evaluation';
 import { compactEvaluation } from './retention';
 import { createWorktree, git, saveJson } from './workspace';
 
@@ -50,8 +51,18 @@ test('removes finished worktrees and bulk copies, preserves immutable results, p
   mkdirSync(join(run, 'judge-input'), { recursive: true });
   writeFileSync(join(run, 'judge-input', 'files.txt'), 'temporary');
   mkdirSync(join(run, 'candidate-session'));
-  writeFileSync(join(run, 'candidate-session', 'events.jsonl'), 'large trace');
+  writeFileSync(
+    join(run, 'candidate-session', 'events.jsonl'),
+    [
+      JSON.stringify({
+        type: 'item.completed',
+        item: { type: 'agent_message', text: 'Evidence kept' },
+      }),
+      JSON.stringify({ type: 'item.completed', item: { type: 'reasoning', text: 'private' } }),
+    ].join('\n'),
+  );
   writeFileSync(join(run, 'candidate-session', 'compactions.json'), 'summary');
+  writeFileSync(join(run, 'candidate-session', 'collaboration.json'), 'summary');
   writeFileSync(join(run, 'candidate-session', 'final.txt'), 'delivered');
   writeFileSync(join(run, 'candidate.patch'), 'patch');
   const before = readFileSync(join(run, 'result.json'), 'utf8');
@@ -63,6 +74,14 @@ test('removes finished worktrees and bulk copies, preserves immutable results, p
   expect(readFileSync(join(run, 'result.json'), 'utf8')).toBe(before);
   expect(readFileSync(join(run, 'candidate.patch'), 'utf8')).toBe('patch');
   expect(existsSync(join(run, 'candidate-session', 'compactions.json'))).toBe(true);
+  expect(readFileSync(join(run, 'trace-archive/candidate.projected.jsonl'), 'utf8')).toContain(
+    'Evidence kept',
+  );
+  expect(readFileSync(join(run, 'trace-archive/candidate.projected.jsonl'), 'utf8')).not.toContain(
+    'private',
+  );
+  expect(evaluationRun('campaign', '001', run).agents[0]?.traceAvailable).toBe(true);
+  expect(existsSync(join(run, 'candidate-session', 'collaboration.json'))).toBe(true);
   expect(git(root, ['for-each-ref', '--format=%(objectname)', 'refs/coding-evals'])).toContain(
     commit,
   );

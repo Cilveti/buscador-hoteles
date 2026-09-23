@@ -33,6 +33,10 @@ Tras esa confirmación, usa [to-spec](../to-spec/SKILL.md) y guarda `spec.json` 
 
 La misma confirmación autoriza generar la spec y ejecutar; no pidas otra aprobación rutinaria entre ambos pasos. Si el usuario solo encarga la spec, entrega la spec y detente.
 
+Antes de lanzar, deja disponible la sala de control local. Si ya funciona, reutilízala; si no, arráncala desde este repositorio con `bun run eval:coding:ui` en un terminal que permanezca activo. Usa el puerto predeterminado 3415 o, si está ocupado por otro servicio, uno libre mediante `EVAL_UI_PORT`, sin detener procesos ajenos. Comprueba que la vista **Workflows** carga en el navegador del operador: las API requieren acceso local, así que un `curl` anónimo al catálogo devuelve 403 aunque el servidor esté bien. Si ese navegador aún no tiene acceso, usa el enlace local con `#access=` descrito en [acceso al laboratorio](../../../evals/coding/README.md); entrega la capacidad solo al usuario, nunca a la issue, la spec, los prompts ni los logs de los trabajadores.
+
+En cuanto arranque el workflow, pasa al usuario el enlace **verificado** de la sala de control y dile que lo verá en **Workflows**, con fases y trazas en tiempo real. No esperes al resultado para compartirlo. Mantén el servidor disponible durante la ejecución y la revisión; si no puedes ofrecer una URL accesible, explica el bloqueo antes de ejecutar a ciegas. Este visor es distinto del preview del candidato que se prepara al finalizar.
+
 Desde la raíz del buscador:
 
 ```sh

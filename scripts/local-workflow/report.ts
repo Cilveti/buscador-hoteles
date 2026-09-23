@@ -3,7 +3,7 @@ import { join } from 'node:path';
 import type { z } from 'zod';
 import { validateAgents } from './agents';
 import type { reviewSchema } from './contracts';
-import { digest } from './policy';
+import { assertPatchApplies, digest } from './policy';
 import type { runQa } from './qa';
 import type { WorkflowState } from './run-state';
 
@@ -15,6 +15,7 @@ export function writeDelivery(
 ): void {
   validateAgents(state.agents);
   const frozen = digest(patch);
+  assertPatchApplies(state, patch);
   writeFileSync(join(state.directory, 'candidate.patch'), patch);
   writeFileSync(
     join(state.directory, 'RESULTADO.md'),

@@ -1,0 +1,8 @@
+{
+  "id": "single-agent",
+  "title": "Agente único",
+  "description": "Una implementación también es un workflow: candidato, verificación externa y, en evaluaciones, juez y nota.",
+  "engine": "coding-eval",
+  "stages": ["implementing", "verifying", "judging"],
+  "launchable": false
+}

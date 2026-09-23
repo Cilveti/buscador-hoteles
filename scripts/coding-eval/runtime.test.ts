@@ -1,14 +1,6 @@
 import { afterEach, expect, test } from 'bun:test';
 import { spawnSync } from 'node:child_process';
-import {
-  existsSync,
-  mkdirSync,
-  mkdtempSync,
-  readFileSync,
-  readlinkSync,
-  rmSync,
-  writeFileSync,
-} from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { type AgentOptions, runAgent, runJudge } from './runtime';
@@ -130,7 +122,7 @@ test('missing executable fails without hanging or inventing a successful complet
   expect(result.exitCode).toBeNull();
 });
 
-test('OpenCode keeps auth home while isolating settings and redacts secrets across chunks', async () => {
+test('OpenCode uses ephemeral auth/settings and redacts secrets across chunks', async () => {
   const f = fixture(
     `
     await Bun.stdin.text();
@@ -139,7 +131,7 @@ test('OpenCode keeps auth home while isolating settings and redacts secrets acro
     await Bun.sleep(10);
     process.stdout.write(JSON.stringify({type:'text',part:{text:key}}).slice(35)+'\\n');
     console.log(JSON.stringify({type:'step_finish',part:{reason:'stop'}}));
-    console.error(JSON.stringify({home:process.env.HOME,data:process.env.XDG_DATA_HOME, config:process.env.XDG_CONFIG_HOME,steps:JSON.parse(process.env.OPENCODE_CONFIG_CONTENT).agent.build.steps,skills:JSON.parse(process.env.OPENCODE_CONFIG_CONTENT).permission.skill}));
+    console.error(JSON.stringify({home:process.env.HOME,data:process.env.XDG_DATA_HOME, config:process.env.XDG_CONFIG_HOME,steps:JSON.parse(process.env.OPENCODE_CONFIG_CONTENT).agent.build.steps,skills:JSON.parse(process.env.OPENCODE_CONFIG_CONTENT).permission.skill,external:JSON.parse(process.env.OPENCODE_CONFIG_CONTENT).permission.external_directory}));
   `,
     {
       harness: 'opencode',
@@ -154,9 +146,7 @@ test('OpenCode keeps auth home while isolating settings and redacts secrets acro
   f.options.env = { ...f.options.env, XDG_DATA_HOME: join(f.options.root, 'original-data') };
   const result = await runAgent(f.options, f.command);
   expect(result.status).toBe('completed');
-  expect(readlinkSync(join(f.options.output, 'opencode-data/opencode/auth.json'))).toBe(
-    join(authSource, 'auth.json'),
-  );
+  expect(existsSync(join(f.options.output, 'opencode-data/opencode/auth.json'))).toBe(false);
   expect(readFileSync(result.finalPath, 'utf8')).toBe('[REDACTED]');
   expect(readFileSync(result.stdoutPath, 'utf8')).not.toContain('fixture-secret-never-persist');
   const settings = JSON.parse(readFileSync(result.stderrPath, 'utf8'));
@@ -165,6 +155,20 @@ test('OpenCode keeps auth home while isolating settings and redacts secrets acro
   expect(settings.config).toEndWith('opencode-config');
   expect(settings.steps).toBe(5);
   expect(settings.skills).toEqual({ '*': 'deny', 'selected-skill': 'allow' });
+  expect(settings.external).toBe('deny');
+});
+
+test('OpenCode accepts an exit-zero final text even without a trailing stop event', async () => {
+  const f = fixture(
+    `
+    await Bun.stdin.text();
+    console.log(JSON.stringify({type:'text',part:{text:'Delivered'}}));
+  `,
+    { harness: 'opencode', model: 'test/model' },
+  );
+  const result = await runAgent(f.options, f.command);
+  expect(result.status).toBe('completed');
+  expect(readFileSync(result.finalPath, 'utf8')).toBe('Delivered');
 });
 
 test('judge pins Sol high read-only and captures structured last-message output', async () => {
@@ -176,7 +180,7 @@ test('judge pins Sol high read-only and captures structured last-message output'
   `);
   const result = await runJudge(f.options, f.command);
   expect(result.status).toBe('completed');
-  expect(result.command).toContain('gpt-5.6-sol');
+  expect(result.command).toContain('gpt-6-sol');
   expect(result.command).toContain('model_reasoning_effort="high"');
   expect(result.command).toContain('read-only');
   expect(result.command).toContain('--output-schema');
@@ -351,6 +355,11 @@ test('Codex compactions use only its isolated rollout and exclude personal skill
   const saved = readFileSync(join(f.options.output, 'compactions.json'), 'utf8');
   expect(saved).not.toContain('PRIVATE_ROLLOUT_CONTENT');
   expect(JSON.parse(saved).count).toBe(1);
+  expect(result.collaborationPath).toBe(join(f.options.output, 'collaboration.json'));
+  expect(result.collaboration?.rootThreadId).toBe('candidate-thread');
+  const collaboration = readFileSync(join(f.options.output, 'collaboration.json'), 'utf8');
+  expect(collaboration).not.toContain('PRIVATE_ROLLOUT_CONTENT');
+  expect(JSON.parse(collaboration).threads).toHaveLength(1);
 });
 
 test('candidates can search live documentation while judges use their evidence packet', async () => {

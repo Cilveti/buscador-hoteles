@@ -68,6 +68,42 @@ test('saves validated recipes and rejects cross-origin writes and invalid config
     { name: 'base', config: { task: 'demo', repeats: 1 } },
   ]);
 });
+test('workflow recipes use only the task-owned public phase spec', async () => {
+  const { project, request } = fixture();
+  const spec = 'evals/coding/tasks/demo/workflow-spec.json';
+  writeFileSync(
+    join(project, spec),
+    JSON.stringify({
+      id: 'demo',
+      title: 'Tarea demo',
+      objective: 'Verificar una tarea de ejemplo.',
+      scope: ['Ejemplo'],
+      outOfScope: [],
+      acceptance: [{ id: 'AC1', criterion: 'Debe mostrar un resultado.' }],
+      decisions: [],
+    }),
+  );
+  expect(
+    (
+      await request('/api/recipes', {
+        name: 'workflow',
+        config: { task: 'demo', candidateKind: 'workflow', workflowSpec: spec },
+      })
+    ).status,
+  ).toBe(200);
+  expect(
+    (
+      await request('/api/recipes', {
+        name: 'wrong-spec',
+        config: {
+          task: 'demo',
+          candidateKind: 'workflow',
+          workflowSpec: 'evals/coding/tasks/other/workflow-spec.json',
+        },
+      })
+    ).status,
+  ).toBe(400);
+});
 test('listing excludes trace content and confines artifacts even through symlinks', async () => {
   const { project, request } = fixture();
   const run = join(project, '.agent-evals/campaign/runs/001');

@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { git } from '../coding-eval/workspace';
 import { actionSchema, planSchema, specSchema, validatePlan, validQaFinish } from './contracts';
-import { allowedChange, candidatePatch } from './policy';
+import { allowedChange, assertPatchApplies, candidatePatch } from './policy';
 
 const spec = specSchema.parse({
   id: 'demo-task',
@@ -106,7 +106,11 @@ describe('workflow contracts and gates', () => {
       ]);
       const state = { workspace: root, base: git(root, ['rev-parse', 'HEAD']) };
       writeFileSync(join(root, 'apps/web/src/example.ts'), 'export const value = 2;\n');
-      expect(candidatePatch(state)).toContain('value = 2');
+      const patch = candidatePatch(state);
+      expect(patch).toContain('value = 2');
+      expect(patch.endsWith('\n')).toBe(true);
+      expect(() => assertPatchApplies(state, patch)).not.toThrow();
+      expect(() => assertPatchApplies(state, patch.trimEnd())).toThrow('does not apply');
       writeFileSync(join(root, 'package.json'), '{"scripts":{"test":"true"}}\n');
       expect(() => candidatePatch(state)).toThrow('outside task permissions');
       git(root, ['restore', '--source=HEAD', '--staged', '--worktree', 'package.json']);

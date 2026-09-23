@@ -47,20 +47,59 @@ const usageSchema = z
       (usage.reasoning_output_tokens ?? 0) <= usage.output_tokens,
   );
 
-type ExecutionUsage = { harness: string; model: string; usage: Record<string, number> | null };
+type ExecutionUsage = {
+  harness: string;
+  model: string;
+  usage: Record<string, number> | null;
+  reportedCostUsd?: number | null;
+};
 type UnavailableReason =
   | 'unsupported_harness'
   | 'unknown_model'
   | 'missing_usage'
-  | 'invalid_usage';
+  | 'invalid_usage'
+  | 'missing_reported_cost'
+  | 'invalid_reported_cost';
 const component = (tokens: number, ratePerMillion: number) => ({
   tokens,
   ratePerMillion,
   costUsd: (tokens * ratePerMillion) / 1_000_000,
 });
 
+function reportedOpenCodeCost(execution: ExecutionUsage, pricing: Pricing) {
+  const reported = execution.reportedCostUsd;
+  const reason: UnavailableReason | null =
+    reported === null || reported === undefined
+      ? 'missing_reported_cost'
+      : !Number.isFinite(reported) || reported < 0
+        ? 'invalid_reported_cost'
+        : null;
+  return {
+    schemaVersion: 1,
+    model: execution.model,
+    currency: pricing.currency,
+    pricingSchemaVersion: pricing.schemaVersion,
+    calculatedAt: new Date().toISOString(),
+    basis: 'provider-reported',
+    rates: null,
+    source: null,
+    usage: execution.usage,
+    reason,
+    assumptions: [
+      'Cost is the sum emitted by OpenCode/provider for completed steps; it is not independently recalculated.',
+    ],
+    limitations: [
+      'Failed requests without a completed cost event, hidden retries, tool fees or subagents may be missing.',
+      'Provider routing, discounts, subscriptions, credits, taxes and eventual invoice adjustments are not independently attested.',
+    ],
+    estimatedApiCostUsd: reason === null ? reported : null,
+    breakdown: null,
+  };
+}
+
 /** API-equivalent Standard estimate, not a subscription charge or an actual invoice. */
 export function estimateCodexCost(execution: ExecutionUsage, pricing: Pricing) {
+  if (execution.harness === 'opencode') return reportedOpenCodeCost(execution, pricing);
   const rates = pricing.models[execution.model] ?? null;
   const parsed = usageSchema.safeParse(execution.usage);
   const reason: UnavailableReason | null =

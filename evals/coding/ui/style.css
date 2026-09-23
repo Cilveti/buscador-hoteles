@@ -1,6 +1,7 @@
 @import "../../../apps/web/node_modules/tailwindcss";
 @import "./run-table.css";
 @import "./composer.css";
+@import "./workflow-room.css";
 @source "./*.tsx";
 @source "../../../apps/web/src/components/ui";
 @theme inline {

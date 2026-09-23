@@ -1,4 +1,8 @@
+import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
+import { mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { git } from '../coding-eval/workspace';
 import type { WorkflowState } from './run-state';
 
@@ -35,9 +39,39 @@ export function candidatePatch(state: Pick<WorkflowState, 'workspace' | 'base'>)
   const modes = git(state.workspace, ['diff', '--cached', '--raw', '--no-renames', state.base]);
   if (modes.split('\n').some((line) => line && !/^:(?:100644|000000) 100644 /.test(line)))
     throw new Error('Only regular, non-executable source files may change');
-  const patch = git(state.workspace, ['diff', '--cached', '--binary', '--full-index', state.base]);
+  const patch = git(state.workspace, ['diff', '--cached', '--binary', '--full-index', state.base], {
+    trimOutput: false,
+  });
   if (Buffer.byteLength(patch) > 200_000) throw new Error('Patch exceeds 200KB');
   return patch;
+}
+/** Validate the delivered bytes against a clean index at the frozen base, not the edited worktree. */
+export function assertPatchApplies(
+  state: Pick<WorkflowState, 'workspace' | 'base'>,
+  patch: string,
+) {
+  // A no-op candidate is syntactically applicable; acceptance/review decide if it satisfies the task.
+  if (!patch) return;
+  const folder = mkdtempSync(join(tmpdir(), 'workflow-patch-check-'));
+  const env = { ...process.env, GIT_INDEX_FILE: join(folder, 'index') };
+  try {
+    execFileSync('git', ['read-tree', state.base], {
+      cwd: state.workspace,
+      env,
+      stdio: ['pipe', 'pipe', 'pipe'],
+    });
+    execFileSync('git', ['apply', '--cached', '--check', '-'], {
+      cwd: state.workspace,
+      env,
+      input: patch,
+      maxBuffer: 2_000_000,
+      stdio: ['pipe', 'pipe', 'pipe'],
+    });
+  } catch (error) {
+    throw new Error(`Delivered patch does not apply to the frozen base: ${String(error)}`);
+  } finally {
+    rmSync(folder, { recursive: true, force: true });
+  }
 }
 export function digest(value: string) {
   return createHash('sha256').update(value).digest('hex');

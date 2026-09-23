@@ -106,6 +106,53 @@ test('candidate timeout defaults to null and CLI can enable or disable a JSON li
   expect(() => parseConfig(['--task', 'example', '--timeout-seconds', 'unlimited'])).toThrow();
 });
 
+test('OpenCode cost ceiling defaults off and accepts a positive reported USD limit', () => {
+  expect(configSchema.parse({ task: 'example' }).maxReportedCostUsd).toBeNull();
+  expect(
+    parseConfig(['--task', 'example', '--max-reported-cost-usd', '0.75']).maxReportedCostUsd,
+  ).toBe(0.75);
+  expect(() => parseConfig(['--task', 'example', '--max-reported-cost-usd', '0'])).toThrow();
+});
+
+test('judge packet mode defaults to full and accepts an explicit compact packet', () => {
+  expect(configSchema.parse({ task: 'example' }).judgePacketMode).toBe('full');
+  expect(parseConfig(['--task', 'example', '--judge-packet-mode', 'compact']).judgePacketMode).toBe(
+    'compact',
+  );
+  expect(() => parseConfig(['--task', 'example', '--judge-packet-mode', 'minimal'])).toThrow();
+});
+
+test('workflow candidate keeps the same judge and private gates but requires a frozen phase spec', () => {
+  const config = parseConfig([
+    '--task',
+    'example',
+    '--candidate-kind',
+    'workflow',
+    '--workflow-spec',
+    'evals/coding/tasks/example/workflow-spec.json',
+  ]);
+  expect(config.candidateKind).toBe('workflow');
+  expect(config.workflowSpec).toBe('evals/coding/tasks/example/workflow-spec.json');
+  expect(JUDGE.model).toBe('gpt-6-sol');
+  expect(() => configSchema.parse({ task: 'example', candidateKind: 'workflow' })).toThrow();
+  expect(() =>
+    configSchema.parse({
+      task: 'example',
+      candidateKind: 'workflow',
+      workflowSpec: 'evals/coding/tasks/example/workflow-spec.json',
+      candidateChecks: [],
+    }),
+  ).toThrow();
+  expect(() =>
+    configSchema.parse({
+      task: 'example',
+      candidateKind: 'workflow',
+      workflowSpec: 'evals/coding/tasks/example/workflow-spec.json',
+      processSkill: '.agents/skills/abordar-tarea/SKILL.md',
+    }),
+  ).toThrow();
+});
+
 for (const failedCheck of ['lint', 'acceptance']) {
   test(`baseline ${failedCheck} failure ${failedCheck === 'lint' ? 'blocks models' : 'permits evaluation'}`, async () => {
     const { root } = fixture();
@@ -428,12 +475,13 @@ describe('trace evidence', () => {
 });
 
 test.each([
-  { candidateStatus: 'completed', split: false },
-  { candidateStatus: 'timed_out', split: false },
-  { candidateStatus: 'completed', split: true },
+  { candidateStatus: 'completed', split: false, judgePacketMode: 'full' },
+  { candidateStatus: 'timed_out', split: false, judgePacketMode: 'full' },
+  { candidateStatus: 'completed', split: true, judgePacketMode: 'full' },
+  { candidateStatus: 'completed', split: true, judgePacketMode: 'compact' },
 ] as const)(
   'campaign verifies delivery and informs judge of candidate execution: %s',
-  async ({ candidateStatus, split }) => {
+  async ({ candidateStatus, split, judgePacketMode }) => {
     const { root, put } = fixture();
     const rates = {
       inputPerMillion: 2,
@@ -495,6 +543,7 @@ test.each([
         processSkill: split ? 'injected/SKILL.md' : null,
         judgeDossier: split ? join(privateSource, 'dossier') : null,
         privateAcceptance: split ? join(privateSource, 'acceptance') : null,
+        judgePacketMode,
         selfVerify: true,
         browserSkill: false,
       }),
@@ -565,6 +614,58 @@ test.each([
                 ),
               ).toBe(skillContent);
             }
+            const packetManifest = JSON.parse(
+              readFileSync(join(options.root, 'packet-manifest.json'), 'utf8'),
+            );
+            const processSummary = JSON.parse(
+              readFileSync(join(options.root, 'process-summary.json'), 'utf8'),
+            );
+            expect(packetManifest.mode).toBe(judgePacketMode);
+            expect(packetManifest.criticalHashes.task).toBeString();
+            expect(packetManifest.criticalHashes.candidatePatch).toBeString();
+            expect(
+              JSON.parse(readFileSync(join(options.root, 'experiment.json'), 'utf8'))
+                .judgePacketMode,
+            ).toBe(judgePacketMode);
+            if (judgePacketMode === 'compact') {
+              expect(existsSync(join(options.root, 'process.json'))).toBe(false);
+              expect(processSummary).not.toHaveProperty('finalResponse');
+              expect(processSummary).not.toHaveProperty('sessionId');
+              expect(processSummary).not.toHaveProperty('usage');
+              expect(processSummary).not.toHaveProperty('reportedCostUsd');
+              expect(processSummary).not.toHaveProperty('apiCostEstimate');
+              expect(processSummary.commands).toHaveLength(2);
+              expect(processSummary.commands[0].output).toHaveLength(1200);
+              expect(processSummary.commands[0].fullOutput).toBe('process-output/event-0.txt');
+              expect(processSummary.commands[1].fullOutput).toBe('process-output/event-1.txt');
+              expect(
+                readFileSync(join(options.root, processSummary.commands[0].fullOutput), 'utf8'),
+              ).toEndWith('VERIFY_OUTPUT_TAIL');
+              expect(processSummary.verify.callEvents).toEqual([0]);
+              expect(processSummary.verify.timeline).toEqual({
+                lastObservedEditEvent: null,
+                lastVerifyEvent: 0,
+                lastBrowserEvent: 1,
+                lastSuccessfulRelevantCheckEvent: 1,
+                finalStateVerification: 'no-observed-edits',
+              });
+              expect(processSummary.browserCommandEvents).toEqual([1]);
+              expect(JSON.stringify(processSummary).split('VERIFY_OUTPUT_TAIL')).toHaveLength(2);
+              expect(existsSync(join(options.root, 'guidance/.agents/skills/two'))).toBe(false);
+              expect(
+                readFileSync(join(options.root, 'guidance/.agents/skills/one/SKILL.md'), 'utf8'),
+              ).toBe('# one');
+              expect(readdirSync(join(options.root, 'skills')).sort()).toEqual([
+                'one',
+                'task-process',
+              ]);
+              expect(packetManifest.omitted).toContain('process.json');
+            } else {
+              expect(existsSync(join(options.root, 'process.json'))).toBe(true);
+              expect(existsSync(join(options.root, 'guidance/.agents/skills/two/SKILL.md'))).toBe(
+                true,
+              );
+            }
             expect(
               JSON.parse(readFileSync(join(options.root, 'experiment.json'), 'utf8')).selfVerify,
             ).toBeNull();
@@ -612,16 +713,42 @@ test.each([
           }
           writeFileSync(
             eventsPath,
-            `${JSON.stringify({
-              type: 'turn.completed',
-              usage: {
-                input_tokens: 1000,
-                cached_input_tokens: 600,
-                cache_write_input_tokens: 100,
-                output_tokens: 200,
-                reasoning_output_tokens: 50,
+            `${[
+              {
+                type: 'item.completed',
+                item: {
+                  type: 'command_execution',
+                  command: 'bun run verify',
+                  exit_code: 0,
+                  aggregated_output: `${'v'.repeat(1300)}VERIFY_OUTPUT_TAIL`,
+                },
               },
-            })}\n`,
+              {
+                type: 'item.completed',
+                item: {
+                  type: 'command_execution',
+                  command: 'bun run test:eval-browser',
+                  exit_code: 0,
+                  aggregated_output: 'BROWSER_OUTPUT',
+                },
+              },
+              {
+                type: 'item.completed',
+                item: { type: 'agent_message', text: 'TRACE_FINAL_DUPLICATE' },
+              },
+              {
+                type: 'turn.completed',
+                usage: {
+                  input_tokens: 1000,
+                  cached_input_tokens: 600,
+                  cache_write_input_tokens: 100,
+                  output_tokens: 200,
+                  reasoning_output_tokens: 50,
+                },
+              },
+            ]
+              .map((event) => JSON.stringify(event))
+              .join('\n')}\n`,
           );
           return {
             status: options.readOnly ? 'completed' : candidateStatus,
@@ -708,9 +835,13 @@ test.each([
         },
       },
     );
+    const result = JSON.parse(readFileSync(join(campaign, 'runs/001/result.json'), 'utf8'));
+    expect(result.error).toBeUndefined();
+    expect(result.judgePacketMode).toBe(judgePacketMode);
+    expect(result.judgePacket.mode).toBe(judgePacketMode);
+    expect(result.judgePacket.criticalHashes.candidatePatch).toBeString();
     expect(agentCalls).toBe(2);
     expect(verifies).toBe(split ? 4 : 3);
-    const result = JSON.parse(readFileSync(join(campaign, 'runs/001/result.json'), 'utf8'));
     if (split) {
       expect(result.privateAcceptancePassed).toBe(false);
       expect(result.passed).toBe(false);
@@ -745,7 +876,7 @@ test.each([
     expect(readFileSync(join(campaign, 'runs/001', result.candidatePrompt.path), 'utf8')).toBe(
       expectedPrompt,
     );
-    expect(result.process.verify.observed).toBe(false);
+    expect(result.process.verify.observed).toBe(true);
     expect(result.process.compactions.count).toBe(2);
     expect(result.judgeProcess.compactions.count).toBe(2);
     expect(result.referenceChanges.map((change: { path: string }) => change.path)).toContain(
@@ -764,7 +895,11 @@ test.each([
     const frozenPricing = readFileSync(join(campaign, 'pricing.json'), 'utf8');
     expect(JSON.parse(frozenPricing)).toEqual(pricing);
     const inputs = JSON.parse(readFileSync(join(campaign, 'inputs.json'), 'utf8'));
+    expect(inputs.judgePacketMode).toBe(judgePacketMode);
     expect(inputs.pricingSha256).toBe(createHash('sha256').update(frozenPricing).digest('hex'));
+    expect(JSON.parse(readFileSync(join(campaign, 'manifest.json'), 'utf8')).judgePacketMode).toBe(
+      judgePacketMode,
+    );
     saveJson(join(campaign, 'fixture-only.json'), { realModelCalls: 0 });
   },
   30000,
@@ -1228,4 +1363,5 @@ test.each(Array.from({ length: 32 }, (_, mask) => mask))(
       ['lint', 'tests'].filter((id) => enabled.some((check) => check === id)),
     );
   },
+  30_000,
 );

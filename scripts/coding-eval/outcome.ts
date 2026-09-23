@@ -18,6 +18,7 @@ const inputs = z.object({
   taskAcceptancePassed: z.boolean().nullable().optional(),
   privateAcceptancePassed: z.boolean().nullable().optional(),
   candidateTestsPassed: z.boolean().nullable().optional(),
+  workflowCompleted: z.boolean().nullable().optional(),
   judgeTaskVerdict: z.string().nullable().optional(),
   judgmentError: z.string().nullable().optional(),
   verification: verification.nullable().optional(),
@@ -48,6 +49,7 @@ export function evaluationOutcome(value: unknown) {
     run.taskAcceptancePassed,
     run.privateAcceptancePassed,
     run.candidateTestsPassed,
+    run.workflowCompleted,
   ];
   const failed = gates.includes(false) || run.judgeTaskVerdict === 'fail';
   if (failed) return { outcome: 'fail', passed: false, evaluationIssues: [] };

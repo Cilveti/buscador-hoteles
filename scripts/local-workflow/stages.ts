@@ -28,7 +28,11 @@ export const localStages = {
       browser: true,
       profile: 'app',
       timeoutSeconds: 180,
-      env: { TEST_BROWSER_PORT: String(port), TEST_BROWSER_OUTPUT: join(output, 'browser') },
+      env: {
+        TEST_BROWSER_PORT: String(port),
+        TEST_BROWSER_OUTPUT: join(output, 'browser'),
+        ...(state.evaluation ? { TEST_BROWSER_WS_ENDPOINT: state.evaluation.browserEndpoint } : {}),
+      },
     });
     assertCandidateUnchanged(state, frozen);
     return checks;
@@ -44,6 +48,8 @@ export const localStages = {
             root: state.workspace,
             output: join(state.directory, role),
             prompt: taskPrompt(role, state.spec),
+            permissionArgs: state.evaluation?.permissionArgs,
+            persistSession: !state.evaluation,
           },
           researchSchema,
         ),
@@ -59,6 +65,8 @@ export const localStages = {
         root: state.workspace,
         output: join(state.directory, 'plan'),
         prompt: taskPrompt('planner', state.spec, { RESEARCH: research }),
+        permissionArgs: state.evaluation?.permissionArgs,
+        persistSession: !state.evaluation,
       },
       planSchema,
     );
@@ -83,25 +91,30 @@ export const localStages = {
       '.tmp',
       `self-check-${state.round}-${task.id}-${attempt}`,
     );
-    return withBrowserChecks(checksOutput, (env) =>
-      callAgent(
-        state.agents,
-        {
-          role: 'implementer',
-          root: state.workspace,
-          output: join(output, 'agent'),
-          edit: true,
-          env,
-          prompt: taskPrompt('implementer', state.spec, {
-            MODE: state.mode,
-            'SCOPE / PLAN': state.plan,
-            'CURRENT ASSIGNMENT': task.instructions,
-            PROGRESS: state.completedTasks,
-            'PREVIOUS FEEDBACK': feedback,
-          }),
-        },
-        implementationSchema,
-      ),
+    return withBrowserChecks(
+      checksOutput,
+      (env) =>
+        callAgent(
+          state.agents,
+          {
+            role: 'implementer',
+            root: state.workspace,
+            output: join(output, 'agent'),
+            edit: true,
+            permissionArgs: state.evaluation?.permissionArgs,
+            persistSession: !state.evaluation,
+            env,
+            prompt: taskPrompt('implementer', state.spec, {
+              MODE: state.mode,
+              'SCOPE / PLAN': state.plan,
+              'CURRENT ASSIGNMENT': task.instructions,
+              PROGRESS: state.completedTasks,
+              'PREVIOUS FEEDBACK': feedback,
+            }),
+          },
+          implementationSchema,
+        ),
+      state.evaluation?.browserEndpoint,
     );
   },
 
@@ -126,6 +139,8 @@ export const localStages = {
           'VERIFIED PATCH SHA256': digest(patch),
           DIFF: patch,
         }),
+        permissionArgs: state.evaluation?.permissionArgs,
+        persistSession: !state.evaluation,
       },
       reviewSchema,
     );
@@ -138,6 +153,9 @@ export const localStages = {
       output: join(roundDirectory, 'qa'),
       spec: state.spec,
       headed: state.headed,
+      browserEndpoint: state.evaluation?.browserEndpoint,
+      permissionArgs: state.evaluation?.permissionArgs,
+      persistSessions: !state.evaluation,
     });
   },
 

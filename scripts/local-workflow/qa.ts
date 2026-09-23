@@ -28,8 +28,15 @@ export function availablePort(): Promise<number> {
 export async function withBrowserChecks<T>(
   output: string,
   run: (environment: Record<string, string>) => Promise<T>,
+  endpoint?: string,
 ): Promise<T> {
   const port = await availablePort();
+  if (endpoint)
+    return run({
+      TEST_BROWSER_PORT: String(port),
+      TEST_BROWSER_OUTPUT: output,
+      TEST_BROWSER_WS_ENDPOINT: endpoint,
+    });
   const browser = await chromium.launchServer({
     channel: process.env.TEST_BROWSER_CHANNEL ?? 'chrome',
     headless: true,
@@ -93,6 +100,9 @@ type QaOptions = {
   spec: Specification;
   headed?: boolean;
   maxSteps?: number;
+  browserEndpoint?: string;
+  permissionArgs?: string[];
+  persistSessions?: boolean;
 };
 
 async function waitForApp(
@@ -147,7 +157,9 @@ export async function runQa(options: QaOptions) {
   const screenshots: string[] = [];
   try {
     await waitForApp(server, baseURL, () => launchError);
-    browser = await chromium.launch({ channel: 'chrome', headless: !options.headed });
+    browser = options.browserEndpoint
+      ? await chromium.connect(options.browserEndpoint)
+      : await chromium.launch({ channel: 'chrome', headless: !options.headed });
     const context = await browser.newContext({
       viewport: { width: 1280, height: 900 },
       serviceWorkers: 'block',
@@ -192,6 +204,8 @@ export async function runQa(options: QaOptions) {
             output: join(options.output, `step-${step}`),
             images: [image],
             timeoutSeconds: 180,
+            permissionArgs: options.permissionArgs,
+            persistSession: options.persistSessions,
             prompt: qaPrompt({
               spec: options.spec,
               url: page.url(),

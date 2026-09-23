@@ -17,6 +17,8 @@ export type CandidateCheck = (typeof candidateCheckIds)[number];
 export const configSchema = z
   .object({
     task: z.string().regex(/^[a-z0-9-]+$/),
+    candidateKind: z.enum(['single-agent', 'workflow']).default('single-agent'),
+    workflowSpec: z.string().min(1).nullable().default(null),
     harness: z.enum(['codex', 'opencode']).default('codex'),
     model: z.string().min(1).default('gpt-5.6-luna'),
     effort: z.enum(['default', 'minimal', 'low', 'medium', 'high', 'xhigh', 'max']).default('high'),
@@ -26,6 +28,7 @@ export const configSchema = z
     timeoutSeconds: z.number().int().min(10).max(7200).nullable().default(null),
     checkTimeoutSeconds: z.number().int().min(5).max(1800).default(180),
     maxSteps: z.number().int().min(1).max(500).default(60),
+    maxReportedCostUsd: z.number().positive().nullable().default(null),
     selfVerify: z.boolean().default(true),
     browserSkill: z.boolean().default(true),
     skills: z
@@ -45,6 +48,7 @@ export const configSchema = z
     instructions: z.string().nullable().default(null),
     judgeDossier: z.string().min(1).nullable().default(null),
     privateAcceptance: z.string().min(1).nullable().default(null),
+    judgePacketMode: z.enum(['full', 'compact']).default('full'),
     prepareOnly: z.boolean().default(false),
   })
   .strict()
@@ -76,6 +80,49 @@ export const configSchema = z
         path: ['model'],
         message: 'OpenCode requiere proveedor/modelo.',
       });
+    if (value.candidateKind === 'workflow' && (!value.workflowSpec || value.harness !== 'codex'))
+      context.addIssue({
+        code: 'custom',
+        path: ['workflowSpec'],
+        message: 'El workflow evaluado requiere workflowSpec y arnés Codex.',
+      });
+    if (value.candidateKind === 'single-agent' && value.workflowSpec)
+      context.addIssue({
+        code: 'custom',
+        path: ['workflowSpec'],
+        message: 'workflowSpec sólo corresponde a candidateKind=workflow.',
+      });
+    if (
+      value.candidateKind === 'workflow' &&
+      !['low', 'medium', 'high', 'xhigh', 'max'].includes(value.effort)
+    )
+      context.addIssue({
+        code: 'custom',
+        path: ['effort'],
+        message: 'El workflow requiere esfuerzo low, medium, high, xhigh o max.',
+      });
+    if (value.candidateKind === 'workflow' && value.candidateChecks !== null)
+      context.addIssue({
+        code: 'custom',
+        path: ['candidateChecks'],
+        message: 'El workflow necesita todos los checks de su fase verify.',
+      });
+    if (
+      value.candidateKind === 'workflow' &&
+      (value.processSkill ||
+        value.promptFile ||
+        value.promptSource ||
+        value.taskFile ||
+        value.specificationText !== null ||
+        value.promptText !== null ||
+        value.initialSkills.length)
+    )
+      context.addIssue({
+        code: 'custom',
+        path: ['candidateKind'],
+        message:
+          'La primera modalidad workflow usa sus prompts de fase; no acepta prompt/skill inline.',
+      });
   });
 export type EvalConfig = z.infer<typeof configSchema>;
 export const taskSchema = z
@@ -89,7 +136,7 @@ export const taskSchema = z
   })
   .passthrough();
 export type EvalTask = z.infer<typeof taskSchema>;
-export const JUDGE = { harness: 'codex', model: 'gpt-5.6-sol', effort: 'high' } as const;
+export const JUDGE = { harness: 'codex', model: 'gpt-6-sol', effort: 'high' } as const;
 export function listTasks(project: string): EvalTask[] {
   const folder = resolve(project, 'evals/coding/tasks');
   return readdirSync(folder, { withFileTypes: true })
@@ -100,6 +147,8 @@ export function listTasks(project: string): EvalTask[] {
 }
 const optionNames = [
   'task',
+  'candidate-kind',
+  'workflow-spec',
   'harness',
   'model',
   'effort',
@@ -109,6 +158,7 @@ const optionNames = [
   'timeout-seconds',
   'check-timeout-seconds',
   'max-steps',
+  'max-reported-cost-usd',
   'self-verify',
   'browser-skill',
   'skills',
@@ -120,6 +170,7 @@ const optionNames = [
   'instructions',
   'judge-dossier',
   'private-acceptance',
+  'judge-packet-mode',
   'config',
 ] as const;
 const booleanValue = (value: string) =>
@@ -134,6 +185,7 @@ function cliValue(name: string, value: unknown): unknown {
     'timeout-seconds',
     'check-timeout-seconds',
     'max-steps',
+    'max-reported-cost-usd',
   ]);
   return name === 'timeout-seconds' && value === 'off'
     ? null
@@ -180,17 +232,20 @@ export const HELP = `Evaluación de agentes de código · buscador convencional
 Flags: --task --harness codex|opencode --model --effort --baseline working-tree|REF
 --repeats N --concurrency N --timeout-seconds off|N --check-timeout-seconds N
 --max-steps N (solo OpenCode; candidato sin timeout por defecto)
+--max-reported-cost-usd N (tope OpenCode entre requests; puede sobrepasarse una request)
 --self-verify on|off --browser-skill on|off --skills nombre,nombre (vacío = ninguna)
 --skill-language en|es (overrides por skill: skillLanguages en JSON)
 --candidate-prompt ARCHIVO --instructions ARCHIVO --config JSON --prepare-only
 --prompt-file ARCHIVO (prompt completo exacto; sustituye plantilla, tarea, instructions y self-verify)
 --task-file ESPECIFICACION --process-skill SKILL.md (requisitos + skill inyectada; sin self-verify duplicado)
 --judge-dossier DIRECTORIO --private-acceptance DIRECTORIO (bundles fuera de Git; solo evaluador)
+--judge-packet-mode full|compact (full por defecto; compact elimina duplicación del paquete del juez)
+--candidate-kind single-agent|workflow --workflow-spec ARCHIVO (spec del workflow; mismo juez y aceptación privada)
 --reverify-delivery DIRECTORIO_RUN (repite checks y juez; conserva candidato/original)
 --rejudge-run DIRECTORIO_RUN --judge-dossier DIRECTORIO (nuevo juicio; conserva el original)
 --clean-finished (elimina worktrees y evidencias temporales de campañas terminadas; conserva resultados finales)
 
-Juez fijo: Codex gpt-5.6-sol high. --prepare-only congela entrada y ejecuta baseline,
+Juez fijo: Codex gpt-6-sol high. --prepare-only congela entrada y ejecuta baseline,
 sin llamadas a modelos. Resultados: .agent-evals/<campaña>/ (ignorado).
 `;
 export async function interactiveConfig(project: string): Promise<EvalConfig | null> {

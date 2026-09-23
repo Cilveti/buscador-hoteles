@@ -3,6 +3,7 @@ import { closeSync, mkdirSync, openSync } from 'node:fs';
 import { resolve } from 'node:path';
 import tailwind from '@tailwindcss/postcss';
 import postcss from 'postcss';
+import { createWorkflowApi, spawnWorkflowWorker } from '../workflow-observer/api';
 import { accessBootstrap, createAccessGuard, loadAccess } from './access';
 import { createLabApi } from './api';
 
@@ -37,7 +38,8 @@ const css = await postcss([tailwind({ base: resolve(project, 'apps/web') })]).pr
   { from: cssFile },
 );
 await Bun.write(resolve(output, 'style.css'), css.css);
-const api = createLabApi(project, randomBytes(32).toString('hex'), async (configPath, logPath) => {
+const sessionToken = randomBytes(32).toString('hex');
+const api = createLabApi(project, sessionToken, async (configPath, logPath) => {
   const descriptor = openSync(logPath, 'w', 0o600);
   try {
     const child = Bun.spawn(
@@ -55,6 +57,9 @@ const api = createLabApi(project, randomBytes(32).toString('hex'), async (config
     closeSync(descriptor);
   }
 });
+const workflowApi = createWorkflowApi(project, sessionToken, (directory, approvePlan) =>
+  spawnWorkflowWorker(project, directory, approvePlan),
+);
 const port = Number(process.env.EVAL_UI_PORT ?? 3415);
 const access = createAccessGuard(loadAccess(resolve(project, '.agent-evals/ui/access.json')));
 const html =
@@ -73,6 +78,7 @@ const server = Bun.serve({
     let response: Response;
     const denied = await access(request);
     if (denied) response = denied;
+    else if (url.pathname.startsWith('/api/workflows')) response = await workflowApi(request);
     else if (url.pathname.startsWith('/api/')) response = await api(request);
     else if (request.method !== 'GET')
       response = new Response('Method not allowed', { status: 405 });

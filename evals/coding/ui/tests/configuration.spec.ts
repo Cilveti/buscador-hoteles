@@ -59,7 +59,7 @@ for (const retained of [true, false]) {
     const processEditor = page.getByRole('textbox', { name: 'Prompt de proceso', exact: true });
     await expect(processEditor).toBeEnabled();
     await processEditor.fill('Mi borrador pendiente');
-    await page.getByRole('button', { name: /^Ejecuciones/ }).click();
+    await page.getByRole('button', { name: /^Evaluaciones/ }).click();
     const readsBefore = sourceReads;
     await page
       .getByRole('button', { name: 'Ver configuración de run 002 de historical-campaign' })
@@ -91,7 +91,7 @@ for (const retained of [true, false]) {
     await page.keyboard.press('Escape');
     expect(sourceReads).toBe(readsBefore);
     expect(writes).toBe(0);
-    await page.getByRole('button', { name: 'Volver a ejecuciones' }).click();
+    await page.getByRole('button', { name: 'Volver a evaluaciones' }).click();
     await page.getByRole('button', { name: 'Abrir run 002 de historical-campaign' }).click();
     await page.getByRole('button', { name: 'Ver configuración', exact: true }).click();
     await expect(processEditor).toBeDisabled();

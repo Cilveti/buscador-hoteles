@@ -142,6 +142,18 @@ bun run workflow resume RUTA_DEL_RUN --approve-plan
 
 ## Dónde mirar
 
+### Sala de control local
+
+`bun run eval:coding:ui` abre `http://127.0.0.1:3415/` (o `EVAL_UI_PORT`), con una sección **Workflows** reservada al trabajo normal. En ella se pueden escoger una spec registrada, el arnés, modelo y esfuerzo principales, y personalizarlos por fase sin guardar un preset ligado a otra tarea. También se puede iniciar el workflow normal o Ralph, aprobar un plan pausado y ver en vivo fases, checks, agentes, mensajes de feedback, entregables y trazas. La lista de arneses solo ofrece los adaptadores realmente instalados; actualmente solo Codex. La disponibilidad de un modelo concreto depende de la cuenta y se comprueba al ejecutar. El lanzamiento crea un snapshot aislado; no integra cambios, publica ni toca el servidor habitual. Si el agente de confianza usa `bun run workflow start` en la terminal, la ejecución también aparece automáticamente en esa lista. Las campañas y runs con juez y nota viven en **Evaluaciones**; «Ver recorrido» reutiliza la visualización sin añadirlas a la lista de Workflows.
+
+Cada tarjeta de agente abre la traza y el resultado estructurado de ese paso, si existe. La cifra de checks resume únicamente los ya registrados: durante una implementación puede mostrar el baseline verde aunque la verificación del cambio, review y QA sigan pendientes.
+
+`workflows/definitions/` contiene el contrato declarativo de los recorridos visibles. El adaptador de `delivery` muestra el workflow local; el de `single-agent` representa como workflow incluso una evaluación con un único implementador. Ambos usan la misma estructura de `WorkflowRun` y la misma vista. Las evaluaciones añaden nota y juez, sin que esos conceptos sean obligatorios para los workflows normales.
+
+Cada agente Codex de un **nuevo workflow local** conserva su sesión. La UI permite copiar `codex -C 'workspace' resume ID` para reabrirla en Codex CLI y ofrece la traza dentro de la propia aplicación. Las sesiones históricas lanzadas con `--ephemeral` y las de evaluación no se pueden reanudar. No se ha comprobado un deep link nativo para abrirlas directamente en Codex Desktop; OpenCode y Cursor aún no tienen adaptador de ejecución ni enlace de sesión en este workflow. La UI no inventa esos enlaces.
+
+Las trazas se muestran por páginas y se actualizan mientras el agente trabaja. Los eventos de razonamiento interno no se muestran; las salidas individuales muy largas se acortan. Si una evaluación nueva se compacta, se conserva una proyección navegable de mensajes, comandos, herramientas y errores, pero no la traza bruta ni el paquete necesario para rejuiciar. Las evaluaciones ya compactadas antes de esta función solo muestran la evidencia que quedó guardada. El visor marca ausencia de evidencia como desconocida, no como éxito; además comprueba que el patch de entrega de un workflow completado sea aplicable al snapshot base.
+
 Cada ejecución imprime su directorio `.tmp/local-workflows/<id>/`:
 
 - `spec.json`, `plan.md` y `progress.md`: intención, plan y avance.

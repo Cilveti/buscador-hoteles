@@ -5,6 +5,10 @@ import { z } from 'zod';
 
 const accessSchema = z.object({ version: z.literal(2), token: z.string().regex(/^[a-f0-9]{64}$/) });
 
+export function isLocalLabHost(hostname: string) {
+  return hostname === 'localhost' || hostname === '127.0.0.1';
+}
+
 /** Controller-only capability. Version 2 rotates the former cookie credential. */
 export function loadAccess(file: string) {
   mkdirSync(dirname(file), { recursive: true });
@@ -35,15 +39,34 @@ export function createAccessGuard(token: string) {
 
 // Persisted per origin (including port), never automatically sent to another localhost server.
 export const accessBootstrap = `
+addEventListener('hashchange', () => {
+  if (new URLSearchParams(location.hash.slice(1)).has('access')) location.reload();
+});
 const params = new URLSearchParams(location.hash.slice(1));
 const token = params.get('access') || localStorage.getItem('harness-lab-access');
 if (params.has('access')) history.replaceState(null, '', location.pathname + location.search);
-const response = await fetch('/api/bootstrap', { headers: token ? { Authorization: 'Bearer ' + token } : {} });
-if (response.ok) {
-  localStorage.setItem('harness-lab-access', token);
-  await import('/entry.js');
+if (location.hostname === '127.0.0.1') {
+  const target = new URL(location.href);
+  target.hostname = 'localhost';
+  target.hash = token ? 'access=' + encodeURIComponent(token) : '';
+  location.replace(target.href);
+} else if (!token && !sessionStorage.getItem('harness-lab-legacy-checked')) {
+  // localStorage is per hostname. Recover an existing authorization once before asking again.
+  sessionStorage.setItem('harness-lab-legacy-checked', '1');
+  const previous = new URL(location.href);
+  previous.hostname = '127.0.0.1';
+  previous.hash = '';
+  location.replace(previous.href);
 } else {
-  localStorage.removeItem('harness-lab-access');
-  document.getElementById('root').textContent = 'Abre el laboratorio desde su enlace local de acceso.';
+  const response = await fetch('/api/bootstrap', { headers: token ? { Authorization: 'Bearer ' + token } : {} });
+  if (response.ok) {
+    localStorage.setItem('harness-lab-access', token);
+    await import('/entry.js');
+  } else if (response.status === 403) {
+    localStorage.removeItem('harness-lab-access');
+    document.getElementById('root').textContent = 'Este navegador aún no tiene acceso. Abre una vez el enlace local de autorización; después podrás entrar directamente en ' + location.origin + ' o guardarlo en favoritos. La autorización protege los resultados privados de los agentes evaluados.';
+  } else {
+    document.getElementById('root').textContent = 'No se pudo cargar el laboratorio. Recarga la página para reintentar; tu acceso sigue guardado.';
+  }
 }
 `;

@@ -10,6 +10,7 @@ import {
 } from 'node:fs';
 import { isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { z } from 'zod';
+import { isLocalLabHost } from '../coding-eval-ui/access';
 import {
   agentConfigSchema,
   installedHarnesses,
@@ -154,7 +155,7 @@ export type WorkflowLauncher = (directory: string, approvePlan?: boolean) => voi
 export function createWorkflowApi(project: string, token: string, launch: WorkflowLauncher) {
   return async (request: Request): Promise<Response> => {
     const url = new URL(request.url);
-    if (url.hostname !== '127.0.0.1' || request.headers.get('host') !== url.host)
+    if (!isLocalLabHost(url.hostname) || request.headers.get('host') !== url.host)
       return Response.json({ error: 'Solo loopback.' }, { status: 403 });
     if (
       request.method !== 'GET' &&

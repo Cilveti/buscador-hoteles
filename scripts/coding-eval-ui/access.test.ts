@@ -2,7 +2,14 @@ import { expect, test } from 'bun:test';
 import { mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { createAccessGuard, loadAccess } from './access';
+import { createAccessGuard, isLocalLabHost, loadAccess } from './access';
+
+test('allows the two local aliases without accepting arbitrary hosts', () => {
+  expect(isLocalLabHost('localhost')).toBe(true);
+  expect(isLocalLabHost('127.0.0.1')).toBe(true);
+  for (const host of ['localhost.example.com', 'example.com', '0.0.0.0', '192.168.1.5'])
+    expect(isLocalLabHost(host)).toBe(false);
+});
 
 test('private capability protects every API method; cookies cannot authenticate across localhost ports', () => {
   const root = mkdtempSync(join(tmpdir(), 'lab-access-'));

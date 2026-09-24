@@ -4,7 +4,7 @@ import { resolve } from 'node:path';
 import tailwind from '@tailwindcss/postcss';
 import postcss from 'postcss';
 import { createWorkflowApi, spawnWorkflowWorker } from '../workflow-observer/api';
-import { accessBootstrap, createAccessGuard, loadAccess } from './access';
+import { accessBootstrap, createAccessGuard, isLocalLabHost, loadAccess } from './access';
 import { createLabApi } from './api';
 
 const project = resolve(import.meta.dir, '../..');
@@ -71,7 +71,7 @@ const server = Bun.serve({
   async fetch(request) {
     const url = new URL(request.url);
     if (
-      url.hostname !== '127.0.0.1' ||
+      !isLocalLabHost(url.hostname) ||
       (request.headers.get('host') && request.headers.get('host') !== url.host)
     )
       return new Response('Solo loopback', { status: 403 });
@@ -103,5 +103,5 @@ const server = Bun.serve({
     return response;
   },
 });
-console.log(`Laboratorio de arneses: ${server.url}`);
+console.log(`Laboratorio de arneses: http://localhost:${server.port}/`);
 console.log('Proceso aislado. Preparar ejecuta checks; Lanzar consume modelos según la receta.');

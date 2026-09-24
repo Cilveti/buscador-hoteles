@@ -20,6 +20,7 @@ import { candidateCheckIds, configSchema, type EvalConfig, listTasks } from '../
 import { effectiveRun } from '../coding-eval/reverify';
 import { skillSource } from '../coding-eval/skill-language';
 import { specSchema } from '../local-workflow/contracts';
+import { isLocalLabHost } from './access';
 
 const object = z.record(z.string(), z.unknown());
 const id = z.string().regex(/^[a-zA-Z0-9][a-zA-Z0-9_.-]{0,160}$/);
@@ -514,7 +515,7 @@ export function createLabApi(project: string, token: string, launch: Launch) {
   return async function api(request: Request): Promise<Response> {
     const url = new URL(request.url);
     const host = request.headers.get('host') ?? url.host;
-    if (url.hostname !== '127.0.0.1' || host !== url.host)
+    if (!isLocalLabHost(url.hostname) || host !== url.host)
       return Response.json({ error: 'Solo loopback.' }, { status: 403 });
     if (
       request.method !== 'GET' &&

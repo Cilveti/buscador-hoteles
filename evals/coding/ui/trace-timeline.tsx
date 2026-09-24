@@ -188,7 +188,7 @@ function ActionGroup({ items }: { items: Action[] }) {
   );
 }
 
-function EventRow({ item }: { item: TraceItem }) {
+function EventRow({ item, resultTitle }: { item: TraceItem; resultTitle?: string }) {
   if (item.kind === 'lifecycle') {
     const title =
       {
@@ -214,12 +214,20 @@ function EventRow({ item }: { item: TraceItem }) {
     );
   return (
     <div className="trace-message">
-      <ResultContent text={item.body || 'Mensaje vacío'} />
+      <ResultContent text={item.body || 'Mensaje vacío'} title={resultTitle} />
     </div>
   );
 }
 
-export function TraceTimeline({ items, loading }: { items: TraceItem[]; loading: boolean }) {
+export function TraceTimeline({
+  items,
+  loading,
+  resultTitle,
+}: {
+  items: TraceItem[];
+  loading: boolean;
+  resultTitle?: string;
+}) {
   return (
     <section className="workflow-trace-events" aria-label="Eventos de la traza">
       {blocks(items).map((block) =>
@@ -229,7 +237,11 @@ export function TraceTimeline({ items, loading }: { items: TraceItem[]; loading:
             items={block.items}
           />
         ) : (
-          <EventRow key={`event-${block.item.itemId ?? block.item.index}`} item={block.item} />
+          <EventRow
+            key={`event-${block.item.itemId ?? block.item.index}`}
+            item={block.item}
+            resultTitle={resultTitle}
+          />
         ),
       )}
       {loading && <p role="status">Leyendo traza…</p>}

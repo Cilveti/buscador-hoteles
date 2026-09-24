@@ -28,6 +28,15 @@ const roleNames: Record<AgentRole, string> = {
   qa: 'QA',
 };
 const agentNames: Record<string, string> = { ...roleNames, candidate: 'Candidato' };
+const resultTitles: Record<string, string> = {
+  'research-product': 'Resultado de la investigación de producto',
+  'research-verification': 'Resultado de la investigación técnica',
+  planner: 'Plan de implementación',
+  implementer: 'Resultado de la implementación',
+  reviewer: 'Resultado de la revisión',
+  qa: 'Resultado de QA en navegador',
+  candidate: 'Resultado del candidato',
+};
 const efforts = ['low', 'medium', 'high', 'xhigh', 'max', 'ultra'] as const;
 const modelSuggestions = ['gpt-6-luna', 'gpt-6-sol', 'gpt-6-astra', 'gpt-5.6-luna'];
 
@@ -299,7 +308,10 @@ export function WorkflowRoom({
                     size="sm"
                     variant="outline"
                     onClick={() => {
-                      setArtifact({ label: `${name} · resultado`, text: agent.output ?? '' });
+                      setArtifact({
+                        label: resultTitles[agent.role] ?? `Resultado · ${name}`,
+                        text: agent.output ?? '',
+                      });
                       setAgentId(null);
                     }}
                   >
@@ -753,7 +765,13 @@ export function WorkflowRoom({
                 </Button>
               </p>
             )}
-            <TraceTimeline items={traceItems} loading={!trace} />
+            <TraceTimeline
+              items={traceItems}
+              loading={!trace}
+              resultTitle={
+                (selectedAgent && resultTitles[selectedAgent.role]) ?? 'Resultado de la fase'
+              }
+            />
           </section>
         </div>
       )}

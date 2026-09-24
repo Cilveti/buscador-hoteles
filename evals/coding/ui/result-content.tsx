@@ -183,9 +183,11 @@ function ResultValue({
 export function ResultContent({
   text,
   plain = 'prose',
+  title,
 }: {
   text: string;
   plain?: 'prose' | 'code';
+  title?: string;
 }) {
   const source = text.trim().replace(/^```(?:json)?\s*\n([\s\S]*?)\n```$/i, '$1');
   let value: unknown;
@@ -211,6 +213,7 @@ export function ResultContent({
     );
   return (
     <div className="result-content">
+      {title && <h3 className="result-phase-title">{title}</h3>}
       <ResultValue value={value} />
       <details className="result-source">
         <summary>Ver JSON original</summary>

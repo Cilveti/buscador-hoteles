@@ -4,6 +4,7 @@ import { StringDecoder } from 'node:string_decoder';
 export type TraceItem = {
   index: number;
   kind: 'message' | 'command' | 'tool' | 'file' | 'error' | 'lifecycle';
+  itemId?: string;
   title: string;
   body: string;
   status: string | null;
@@ -15,12 +16,22 @@ const object = (value: unknown): Record<string, unknown> =>
 const string = (value: unknown) => (typeof value === 'string' ? value : null);
 const limit = (value: string, size = 12_000) =>
   value.length > size ? `${value.slice(0, size)}\n… salida truncada` : value;
+const isInspectableTool = (type: string, itemType: string) =>
+  itemType.includes('tool') ||
+  itemType.includes('collab') ||
+  (type.startsWith('item.') && !!itemType);
+function toolTitle(item: Record<string, unknown>, fallback: string) {
+  const name = string(item.name) ?? string(item.tool);
+  const server = string(item.server);
+  return server && name ? `${server} · ${name}` : (name ?? fallback);
+}
 
 function project(raw: unknown, index: number): TraceItem | null {
   const event = object(raw);
   const type = string(event.type) ?? string(event.event) ?? '';
   const item = object(event.item);
   const itemType = string(item.type) ?? '';
+  const itemId = string(item.id) ?? undefined;
   const status = string(item.status);
   if (itemType.includes('reasoning') || type.includes('reasoning')) return null;
   if (type === 'thread.started')
@@ -45,14 +56,16 @@ function project(raw: unknown, index: number): TraceItem | null {
     return {
       index,
       kind: 'message',
+      itemId,
       title: 'Agente',
-      body: limit(string(item.text) ?? ''),
+      body: limit(string(item.text) ?? '', 200_000),
       status,
     };
   if (itemType === 'command_execution')
     return {
       index,
       kind: 'command',
+      itemId,
       title: string(item.command) ?? 'Comando',
       body: limit(string(item.aggregated_output) ?? ''),
       status,
@@ -61,15 +74,21 @@ function project(raw: unknown, index: number): TraceItem | null {
     return {
       index,
       kind: 'file',
+      itemId,
       title: 'Cambio de archivos',
       body: limit(JSON.stringify(item.changes ?? item)),
       status,
     };
-  if (itemType.includes('tool') || itemType.includes('collab'))
-    return { index, kind: 'tool', title: itemType, body: limit(JSON.stringify(item)), status };
   // Unknown JSONL is still inspectable, but never render private reasoning text.
-  if (type.startsWith('item.') && itemType)
-    return { index, kind: 'tool', title: itemType, body: limit(JSON.stringify(item)), status };
+  if (isInspectableTool(type, itemType))
+    return {
+      index,
+      kind: 'tool',
+      itemId,
+      title: toolTitle(item, itemType),
+      body: limit(JSON.stringify(item)),
+      status,
+    };
   return null;
 }
 

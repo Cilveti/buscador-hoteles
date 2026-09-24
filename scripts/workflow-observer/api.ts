@@ -21,6 +21,7 @@ import { createRun, load } from '../local-workflow/run-state';
 import { type WorkflowRun, type WorkflowSource, workflowDefinitionSchema } from './contracts';
 import { evaluationRun } from './evaluation';
 import { localAgentLog, localWorkflowRun, localWorkflowSummary } from './local';
+import { qaDirectoryForAgent, qaTracePage } from './qa-trace';
 import { tracePage } from './trace';
 
 const refSchema = z
@@ -293,17 +294,26 @@ export function createWorkflowApi(project: string, token: string, launch: Workfl
           });
         }
         if (match[3]) {
+          const root = runRoot(project, ref);
+          const workflow = root.source === 'local' ? root.path : join(root.path, 'workflow');
+          const archived =
+            root.source === 'evaluation' &&
+            existsSync(join(root.path, 'trace-archive', `${match[3]}.projected.jsonl`));
+          const qa =
+            !archived && existsSync(workflow) ? qaDirectoryForAgent(workflow, match[3]) : null;
           const file = traceFile(project, ref, match[3]);
           const cursor = url.searchParams.get('before');
           const before = cursor === null ? undefined : Number(cursor);
           if (before !== undefined && (!Number.isSafeInteger(before) || before <= 0))
             throw new Error('Cursor de traza inválido.');
-          return file
-            ? Response.json(tracePage(file, before))
-            : Response.json(
-                { error: 'Esta traza no se conservó o aún no existe.' },
-                { status: 404 },
-              );
+          return qa
+            ? Response.json(qaTracePage(qa, before))
+            : file
+              ? Response.json(tracePage(file, before))
+              : Response.json(
+                  { error: 'Esta traza no se conservó o aún no existe.' },
+                  { status: 404 },
+                );
         }
         if (match[4]) {
           const root = runRoot(project, ref);

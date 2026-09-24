@@ -2,6 +2,7 @@
 @import "./run-table.css";
 @import "./composer.css";
 @import "./workflow-room.css";
+@import "./result-content.css";
 @source "./*.tsx";
 @source "../../../apps/web/src/components/ui";
 @theme inline {

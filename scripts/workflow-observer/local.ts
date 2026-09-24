@@ -19,6 +19,8 @@ import type {
   WorkflowRun,
   WorkflowStep,
 } from './contracts';
+import { qaSessions } from './qa-trace';
+import { resultText } from './result';
 
 type Json = Record<string, unknown>;
 const object = (value: unknown): Json =>
@@ -74,8 +76,9 @@ function sessionId(log: string): string | null {
   }
 }
 export function localAgents(directory: string, workspace?: string): WorkflowAgent[] {
-  return files(directory)
+  const calls = files(directory)
     .filter((path) => basename(path) === 'agent.json')
+    .filter((path) => !/^round-\d+\/qa\/step-\d+$/.test(relative(directory, join(path, '..'))))
     .map((path) => {
       const folder = join(path, '..');
       const relativePath = relative(directory, folder);
@@ -97,17 +100,17 @@ export function localAgents(directory: string, workspace?: string): WorkflowAgen
         startedAt: string(timing.startedAt) ?? statSync(path).birthtime.toISOString(),
         durationMs: number(timing.durationMs),
         traceAvailable: existsSync(log),
-        output: existsSync(join(folder, 'result.json'))
-          ? boundedText(join(folder, 'result.json'), 12_000)
-          : null,
+        output: resultText(join(folder, 'result.json')),
         sessionId: thread,
         resumeCommand:
           persisted && thread && (!workspace || existsSync(workspace))
             ? `codex${workspace ? ` -C ${shellQuote(workspace)}` : ''} resume ${thread}`
             : null,
       } satisfies WorkflowAgent;
-    })
-    .sort((a, b) => (a.startedAt ?? '').localeCompare(b.startedAt ?? ''));
+    });
+  return [...calls, ...qaSessions(directory)].sort((a, b) =>
+    (a.startedAt ?? '').localeCompare(b.startedAt ?? ''),
+  );
 }
 const phaseTitles: Record<string, string> = {
   research: 'Investigación',
@@ -220,7 +223,7 @@ function localHandoffs(directory: string): WorkflowHandoff[] {
             id: rel,
             kind: 'review' as const,
             title: `Review · ${string(value.status) ?? 'sin estado'}`,
-            content: JSON.stringify(value, null, 2).slice(0, 10_000),
+            content: resultText(path) ?? 'Resultado no disponible.',
           },
         ];
       }
@@ -231,7 +234,7 @@ function localHandoffs(directory: string): WorkflowHandoff[] {
             id: rel,
             kind: 'qa' as const,
             title: `QA · ${value.passed === true ? 'pasó' : 'no pasó'}`,
-            content: JSON.stringify(value.results ?? value, null, 2).slice(0, 10_000),
+            content: JSON.stringify(value.results ?? value, null, 2),
           },
         ];
       }

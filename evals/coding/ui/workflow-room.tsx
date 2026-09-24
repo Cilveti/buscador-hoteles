@@ -3,11 +3,15 @@ import { Button } from '../../../apps/web/src/components/ui/button';
 import type { AgentConfig, AgentRole, AgentTarget } from '../../../scripts/local-workflow/agents';
 import type {
   StepStatus,
+  WorkflowAgent,
   WorkflowDefinition,
   WorkflowRun,
 } from '../../../scripts/workflow-observer/contracts';
+import { placeAgents } from '../../../scripts/workflow-observer/step-agents';
 import type { TraceItem } from '../../../scripts/workflow-observer/trace';
 import { apiFetch } from './api-fetch';
+import { ResultContent } from './result-content';
+import { TraceTimeline } from './trace-timeline';
 
 type Catalog = {
   definitions: WorkflowDefinition[];
@@ -23,6 +27,7 @@ const roleNames: Record<AgentRole, string> = {
   reviewer: 'Review',
   qa: 'QA',
 };
+const agentNames: Record<string, string> = { ...roleNames, candidate: 'Candidato' };
 const efforts = ['low', 'medium', 'high', 'xhigh', 'max', 'ultra'] as const;
 const modelSuggestions = ['gpt-6-luna', 'gpt-6-sol', 'gpt-6-astra', 'gpt-5.6-luna'];
 
@@ -256,6 +261,72 @@ export function WorkflowRoom({
     (item, index, items) => items.findIndex((other) => other.index === item.index) === index,
   );
   const olderCursor = older === null ? trace?.before : older.before;
+  const placedAgents = run ? placeAgents(run) : null;
+  function agentRows(agents: WorkflowAgent[]) {
+    return (
+      <div className="workflow-step-agents">
+        {agents.map((agent, index) => {
+          const name = agentNames[agent.role] ?? agent.role;
+          const repeated = agents.filter((item) => item.role === agent.role).length > 1;
+          const position = agents
+            .slice(0, index + 1)
+            .filter((item) => item.role === agent.role).length;
+          return (
+            <div key={agent.id} className="workflow-step-agent">
+              <div className="workflow-step-agent-info">
+                <strong>{repeated ? `${name} ${position}` : name}</strong>
+                {status(agent.status)}
+                <small>
+                  {agent.harness} · {agent.model ?? 'modelo por defecto'} ·{' '}
+                  {elapsed(agent.durationMs)}
+                  {agent.role === 'qa' ? ' de modelo' : ''}
+                </small>
+              </div>
+              <div className="workflow-agent-actions">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  disabled={!agent.traceAvailable}
+                  onClick={() => {
+                    setAgentId(agent.id);
+                    setArtifact(null);
+                  }}
+                >
+                  {agent.traceAvailable ? 'Ver traza en vivo' : 'Traza no conservada'}
+                </Button>
+                {agent.output && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      setArtifact({ label: `${name} · resultado`, text: agent.output ?? '' });
+                      setAgentId(null);
+                    }}
+                  >
+                    Ver resultado
+                  </Button>
+                )}
+                {agent.resumeCommand && (
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() =>
+                      void navigator.clipboard
+                        .writeText(agent.resumeCommand ?? '')
+                        .then(() => setCopiedAgent(agent.id))
+                        .catch((failure) => setError(`No se pudo copiar: ${String(failure)}`))
+                    }
+                  >
+                    {copiedAgent === agent.id ? 'Comando copiado' : 'Copiar comando para reabrir'}
+                  </Button>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
   function updateDefault(patch: Partial<AgentTarget>) {
     agentSettingsEdited.current = true;
     setAgentConfig((current) => ({
@@ -562,77 +633,26 @@ export function WorkflowRoom({
                           <time>{date(step.at)}</time>
                         </div>
                         <p>{step.message}</p>
+                        {placedAgents?.byStep.get(step.id)?.length
+                          ? agentRows(placedAgents.byStep.get(step.id) ?? [])
+                          : null}
                       </div>
                     </li>
                   ))}
+                  {placedAgents?.unplaced.length ? (
+                    <li className="step-unknown">
+                      <span className="workflow-step-icon">?</span>
+                      <div>
+                        <div className="workflow-step-head">
+                          <strong>Sin fase identificada</strong>
+                          {status('unknown')}
+                        </div>
+                        <p>No hay evidencia suficiente para asociar estas sesiones a un paso.</p>
+                        {agentRows(placedAgents.unplaced)}
+                      </div>
+                    </li>
+                  ) : null}
                 </ol>
-              </section>
-              <section className="workflow-section">
-                <h3>Agentes y sesiones</h3>
-                {run.agents.length ? (
-                  <div className="workflow-agent-grid">
-                    {run.agents.map((agent) => (
-                      <article key={agent.id} className="workflow-agent-card">
-                        <div>
-                          <strong>{agent.role}</strong>
-                          {status(agent.status)}
-                        </div>
-                        <small>
-                          {agent.harness} · {agent.model ?? 'modelo por defecto'} ·{' '}
-                          {elapsed(agent.durationMs)}
-                        </small>
-                        <div className="workflow-agent-actions">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            disabled={!agent.traceAvailable}
-                            onClick={() => {
-                              setAgentId(agent.id);
-                              setArtifact(null);
-                            }}
-                          >
-                            {agent.traceAvailable ? 'Ver traza en vivo' : 'Traza no conservada'}
-                          </Button>
-                          {agent.output && (
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => {
-                                setArtifact({
-                                  label: `${agent.role} · resultado`,
-                                  text: agent.output ?? '',
-                                });
-                                setAgentId(null);
-                              }}
-                            >
-                              Ver resultado
-                            </Button>
-                          )}
-                          {agent.resumeCommand && (
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              onClick={() =>
-                                void navigator.clipboard
-                                  .writeText(agent.resumeCommand ?? '')
-                                  .then(() => setCopiedAgent(agent.id))
-                                  .catch((failure) =>
-                                    setError(`No se pudo copiar: ${String(failure)}`),
-                                  )
-                              }
-                            >
-                              {copiedAgent === agent.id
-                                ? 'Comando copiado'
-                                : 'Copiar comando para reabrir'}
-                            </Button>
-                          )}
-                        </div>
-                      </article>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="workflow-empty">Aún no hay agentes registrados.</p>
-                )}
               </section>
               <section className="workflow-section">
                 <h3>Checks</h3>
@@ -663,7 +683,7 @@ export function WorkflowRoom({
                         <span>{handoff.kind}</span>
                         <strong>{handoff.title}</strong>
                       </summary>
-                      <pre>{handoff.content}</pre>
+                      <ResultContent text={handoff.content} plain="code" />
                     </details>
                   ))
                 ) : (
@@ -708,7 +728,11 @@ export function WorkflowRoom({
             <div className="workflow-trace-head">
               <div>
                 <span className="workflow-eyebrow">Traza del agente</span>
-                <h2>{selectedAgent?.role ?? 'Agente'}</h2>
+                <h2>
+                  {selectedAgent
+                    ? (agentNames[selectedAgent.role] ?? selectedAgent.role)
+                    : 'Agente'}
+                </h2>
                 <small>{selectedAgent?.model ?? 'Modelo no registrado'}</small>
               </div>
               <Button variant="outline" onClick={() => setAgentId(null)}>
@@ -729,19 +753,7 @@ export function WorkflowRoom({
                 </Button>
               </p>
             )}
-            <div className="workflow-trace-events">
-              {traceItems.map((item) => (
-                <article key={`${item.index}-${item.kind}`} className={`trace-${item.kind}`}>
-                  <div>
-                    <span>{item.kind}</span>
-                    <strong>{item.title}</strong>
-                    {item.status && <small>{item.status}</small>}
-                  </div>
-                  {item.body && <pre>{item.body}</pre>}
-                </article>
-              ))}
-              {!trace && <p role="status">Leyendo traza…</p>}
-            </div>
+            <TraceTimeline items={traceItems} loading={!trace} />
           </section>
         </div>
       )}
@@ -765,7 +777,7 @@ export function WorkflowRoom({
                 Cerrar
               </Button>
             </div>
-            <pre className="workflow-artifact-text">{artifact.text}</pre>
+            <ResultContent text={artifact.text} plain="code" />
           </section>
         </div>
       )}

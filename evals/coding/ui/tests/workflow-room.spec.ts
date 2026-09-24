@@ -46,6 +46,8 @@ test('muestra la cadena, la traza y el fallo actualizado en vivo sin llamar a mo
   mkdirSync(agent, { recursive: true });
   mkdirSync(evalRun, { recursive: true });
   const now = new Date().toISOString();
+  const implementationAt = new Date(Date.parse(now) - 2_000).toISOString();
+  const agentAt = new Date(Date.parse(now) - 1_000).toISOString();
   const state = {
     id,
     project,
@@ -79,7 +81,7 @@ test('muestra la cadena, la traza y el fallo actualizado en vivo sin llamar a mo
   writeFileSync(join(run, 'running.lock'), String(process.pid));
   writeFileSync(
     join(run, 'events.jsonl'),
-    `${JSON.stringify({ at: now, status: 'verifying', message: 'Ejecutando checks' })}\n`,
+    `${JSON.stringify({ at: implementationAt, status: 'implementing', message: 'Implementando' })}\n${JSON.stringify({ at: now, status: 'verifying', message: 'Ejecutando checks' })}\n`,
   );
   writeFileSync(
     join(agent, 'agent.json'),
@@ -90,8 +92,37 @@ test('muestra la cadena, la traza y el fallo actualizado en vivo sin llamar a mo
       sessionPersisted: true,
     }),
   );
+  writeFileSync(join(agent, 'timing.json'), JSON.stringify({ startedAt: agentAt }));
   const agentEvents = [
     JSON.stringify({ type: 'thread.started', thread_id: '12345678-1234-1234-1234-123456789012' }),
+    JSON.stringify({
+      type: 'item.started',
+      item: {
+        id: 'item_1',
+        type: 'command_execution',
+        command: "/bin/zsh -lc 'bun run verify'",
+        status: 'in_progress',
+      },
+    }),
+    JSON.stringify({
+      type: 'item.completed',
+      item: {
+        id: 'item_1',
+        type: 'command_execution',
+        command: "/bin/zsh -lc 'bun run verify'",
+        aggregated_output: '4 checks passed',
+        status: 'completed',
+      },
+    }),
+    JSON.stringify({
+      type: 'item.completed',
+      item: {
+        id: 'item_2',
+        type: 'file_change',
+        changes: [{ path: 'apps/web/src/catalog-search.tsx', kind: 'update' }],
+        status: 'completed',
+      },
+    }),
     JSON.stringify({
       type: 'item.completed',
       item: { type: 'agent_message', text: 'Cambio entregado al controlador.' },
@@ -143,11 +174,36 @@ test('muestra la cadena, la traza y el fallo actualizado en vivo sin llamar a mo
     await page.getByRole('button', { name: /Caso UI de trazabilidad/ }).click();
     await expect(page.getByRole('heading', { name: 'Caso UI de trazabilidad' })).toBeVisible();
     await expect(page.getByText('Ejecutando checks').first()).toBeVisible();
+    const implementation = page.locator('.workflow-timeline > li').filter({
+      hasText: 'Implementando',
+    });
+    await expect(implementation.locator('.workflow-step-head > strong')).toHaveText(
+      'Implementación',
+    );
+    await expect(implementation.getByRole('button', { name: 'Ver traza en vivo' })).toBeVisible();
+    await expect(
+      page
+        .locator('.workflow-timeline > li')
+        .filter({ hasText: 'Ejecutando checks' })
+        .getByRole('button', { name: 'Ver traza en vivo' }),
+    ).toHaveCount(0);
+    await expect(page.getByRole('heading', { name: 'Agentes y sesiones' })).toHaveCount(0);
     await page.getByRole('button', { name: 'Ver traza en vivo' }).click();
     await expect(page.getByText('Cambio entregado al controlador.')).toBeVisible();
+    await expect(
+      page.locator('.workflow-trace-events').getByText('Agente', { exact: true }),
+    ).toHaveCount(0);
+    await expect(page.getByRole('button', { name: /2 acciones/ })).toHaveCount(1);
+    await expect(page.getByText('4 checks passed')).toBeHidden();
+    await page.getByRole('button', { name: /2 acciones/ }).click();
+    await expect(page.getByRole('button', { name: /Comando bun run verify/ })).toBeVisible();
+    await expect(page.getByText('4 checks passed')).toBeHidden();
+    await page.getByRole('button', { name: /Comando bun run verify/ }).click();
+    await expect(page.getByText("/bin/zsh -lc 'bun run verify'", { exact: true })).toBeVisible();
+    await expect(page.getByText('4 checks passed')).toBeVisible();
     await page.getByRole('button', { name: 'Cerrar', exact: true }).click();
     await page.getByRole('button', { name: 'Ver resultado' }).click();
-    await expect(page.getByText(/Resultado del implementador/)).toBeVisible();
+    await expect(page.getByText('Resultado del implementador', { exact: true })).toBeVisible();
     await page.getByRole('button', { name: 'Cerrar', exact: true }).click();
     await page.context().grantPermissions(['clipboard-read', 'clipboard-write']);
     await page.getByRole('button', { name: 'Copiar comando para reabrir' }).click();
@@ -182,6 +238,12 @@ test('muestra la cadena, la traza y el fallo actualizado en vivo sin llamar a mo
     ).toBeVisible();
     await expect(page.getByText('7.5/10').first()).toBeVisible();
     await expect(page.getByText('Agente candidato')).toBeVisible();
+    await expect(
+      page
+        .locator('.workflow-timeline > li')
+        .filter({ hasText: 'Agente candidato' })
+        .getByRole('button', { name: 'Traza no conservada' }),
+    ).toBeDisabled();
     await expect(page.locator('.workflow-list')).toHaveCount(0);
     await expect(page.getByRole('button', { name: '＋ Lanzar workflow' })).toHaveCount(0);
     await page.getByRole('button', { name: 'Volver a evaluaciones' }).click();

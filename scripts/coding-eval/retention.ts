@@ -7,11 +7,13 @@ import {
   readFileSync,
   realpathSync,
   rmSync,
+  writeFileSync,
 } from 'node:fs';
 import { isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { z } from 'zod';
 import type { WorkflowAgent } from '../workflow-observer/contracts';
 import { localAgentLog, localAgents } from '../workflow-observer/local';
+import { qaDirectoryForAgent, qaTraceItems } from '../workflow-observer/qa-trace';
 import { archiveTrace } from '../workflow-observer/trace';
 import { git, saveJson } from './workspace';
 
@@ -170,6 +172,23 @@ export function compactEvaluation(project: string, directory: string) {
     const workflow = join(run, 'workflow');
     if (existsSync(workflow))
       for (const agent of localAgents(workflow)) {
+        const qa = qaDirectoryForAgent(workflow, agent.id);
+        if (qa) {
+          mkdirSync(archive, { recursive: true, mode: 0o700 });
+          const items = qaTraceItems(qa);
+          writeFileSync(
+            join(archive, `${agent.id}.projected.jsonl`),
+            items.map((item) => JSON.stringify(item)).join('\n') + (items.length ? '\n' : ''),
+            { mode: 0o600 },
+          );
+          traces.push({
+            ...agent,
+            traceAvailable: true,
+            resumeCommand: null,
+            events: items.length,
+          });
+          continue;
+        }
         const source = localAgentLog(workflow, agent.id);
         if (source) preserve(agent, source);
       }

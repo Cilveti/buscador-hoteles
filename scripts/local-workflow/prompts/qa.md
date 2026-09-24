@@ -13,6 +13,8 @@ Do not assume an interaction succeeded: inspect its resulting state.
 A filled form field is not an applied search: submit with Enter/the search button and confirm the query URL and filtered results BEFORE testing a reset of an applied search.
 Explicitly establish the starting state of each criterion; repeat setup if a previous step skipped it.
 Test every acceptance criterion and a relevant edge/recovery case.
+For each version 2 acceptance entry, establish scenario.given, perform scenario.when and observe scenario.then, checking its criterion. Each AC is an independently reported case: success on the normal path does not pass an edge or recovery case. Use verification.environment and limitations to identify missing capabilities; report not-verified when the required state cannot be established, never substitute a weaker case.
+Before relying on existing tests, consider what could go wrong from the goals, constraints and risks. The supplied cases are a minimum, not an exhaustive checklist. Explore a relevant additional boundary or recovery path within budget; report concrete issues without inventing requirements. Do not mark unexecuted cases as passed to fit the action limit.
 Avoid redundant actions.
 Only finish when you have evidence or a specific blocker.
 History includes the observed state BEFORE each action; the current observation is AFTER the last action.

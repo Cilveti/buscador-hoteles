@@ -1,23 +1,90 @@
 import { z } from 'zod';
 
+const text = z.string().trim().min(1);
+const scenarioSchema = z
+  .object({
+    kind: z.enum(['normal', 'edge', 'recovery']),
+    given: text,
+    when: text,
+    // biome-ignore lint/suspicious/noThenProperty: Given/When/Then data contract; this is not a callable thenable.
+    then: text,
+  })
+  .strict();
+const specificationDetails = {
+  context: text,
+  goals: z.array(text).min(1),
+  constraints: z.array(text),
+  risks: z.array(text),
+  agreedDecisions: z.array(text),
+  verification: z
+    .object({
+      environment: text,
+      checks: z.array(text).min(1),
+      limitations: z.array(text),
+    })
+    .strict(),
+};
+
 export const specSchema = z
   .object({
+    version: z.literal(2).optional(),
     id: z.string().regex(/^[a-z0-9][a-z0-9-]{1,60}$/),
     title: z.string().min(5),
     objective: z.string().min(15),
     scope: z.array(z.string().min(1)).min(1),
     outOfScope: z.array(z.string()),
     acceptance: z
-      .array(z.object({ id: z.string().regex(/^AC[0-9]+$/), criterion: z.string().min(8) }))
+      .array(
+        z
+          .object({
+            id: z.string().regex(/^AC[0-9]+$/),
+            criterion: z.string().trim().min(8),
+            scenario: scenarioSchema.optional(),
+          })
+          .strict(),
+      )
       .min(1),
     decisions: z.array(z.string()),
+    ...z.object(specificationDetails).partial().shape,
+    issue: z.object({ url: z.httpUrl(), updatedAt: z.iso.datetime() }).strict().optional(),
   })
   .strict()
   .superRefine((spec, ctx) => {
     if (new Set(spec.acceptance.map((item) => item.id)).size !== spec.acceptance.length)
       ctx.addIssue({ code: 'custom', message: 'Acceptance IDs must be unique' });
+    // Existing frozen specs remain valid. New specs carry the complete agreement to every role.
+    if (spec.version === 2) {
+      const details = z.object(specificationDetails).safeParse(spec);
+      if (!details.success)
+        for (const issue of details.error.issues)
+          ctx.addIssue({ code: 'custom', path: issue.path, message: issue.message });
+      spec.acceptance.forEach((item, index) => {
+        if (!item.scenario)
+          ctx.addIssue({
+            code: 'custom',
+            path: ['acceptance', index, 'scenario'],
+            message: 'A verifiable scenario is required',
+          });
+      });
+    }
   });
 export type Specification = z.infer<typeof specSchema>;
+
+/** Readiness is structural, not proof of user approval or successful implementation. */
+export const readySpecSchema = specSchema.superRefine((spec, ctx) => {
+  if (spec.version !== 2)
+    ctx.addIssue({
+      code: 'custom',
+      path: ['version'],
+      message: 'New ready tasks require specification v2',
+    });
+  if (spec.decisions.length)
+    ctx.addIssue({
+      code: 'custom',
+      path: ['decisions'],
+      message: 'Resolve pending decisions before marking ready',
+    });
+});
 
 export const researchSchema = z
   .object({

@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { parseArgs } from 'node:util';
 import { readAgents } from './agents';
-import { specSchema } from './contracts';
+import { readySpecSchema, specSchema } from './contracts';
 import { createRun, load } from './run-state';
 import { executeWorkflow } from './workflow';
 
@@ -11,6 +11,7 @@ const help = `Workflow local · roles configurables · Codex por defecto
 bun run workflow start --spec docs/workflows/examples/copy-search.json [--mode normal|ralph] [--agents workflow.agents.json] [--plan-review] [--headed]
 bun run workflow status <directorio-del-run>
 bun run workflow resume <directorio-del-run> --approve-plan
+bun run workflow validate --spec RUTA/spec.json
 
 Default: sin PostgreSQL, 2 intentos por subtarea y 2 rondas de revisión/QA.
 Opciones: --max-rounds 1..3 --max-task-attempts 1..3
@@ -38,6 +39,14 @@ async function main(): Promise<void> {
     return;
   }
   const command = positionals[0];
+  if (command === 'validate') {
+    if (!values.spec) throw new Error('Missing --spec');
+    const spec = readySpecSchema.parse(JSON.parse(readFileSync(resolve(values.spec), 'utf8')));
+    console.log(
+      `Especificación válida: ${spec.title} (${spec.acceptance.length} casos). No publica, etiqueta ni ejecuta agentes; falta confirmar el acuerdo humano.`,
+    );
+    return;
+  }
   if (command === 'status' || command === 'resume') {
     const directory = positionals[1];
     if (!directory) throw new Error('Missing run directory');

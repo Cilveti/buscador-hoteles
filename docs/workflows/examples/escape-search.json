@@ -1,7 +1,35 @@
 {
+  "version": 2,
   "id": "escape-search",
   "title": "Borrar la búsqueda con Escape",
   "objective": "Permitir borrar el texto de búsqueda con el teclado sin perder los filtros elegidos.",
+  "context": "El buscador ya permite borrar el texto con un botón. Se quiere ofrecer la misma acción con Escape dentro del campo, sin alterar el resto de la búsqueda.",
+  "goals": [
+    "Borrar una consulta con el teclado sin perder filtros ni foco.",
+    "Conservar el comportamiento del control de borrado existente."
+  ],
+  "agreedDecisions": [
+    "Escape actúa solo dentro del buscador.",
+    "Borrar una consulta activa vuelve a la primera página; con el campo vacío es una operación sin efectos."
+  ],
+  "constraints": [
+    "No modificar las suites existentes, configuración ni dependencias.",
+    "Mantener el acceso por teclado y los parámetros de URL ajenos al texto de búsqueda."
+  ],
+  "risks": [
+    "Confundir texto editado con búsqueda aplicada puede ocultar un fallo de reset.",
+    "Una implementación global de Escape podría interferir con otros controles."
+  ],
+  "verification": {
+    "environment": "QA local con React, handlers y tres hoteles sintéticos; preparar los estados mediante las URLs indicadas y confirmar que se han cargado.",
+    "checks": [
+      "Verificación determinista del producto con bun run verify:app.",
+      "QA con interacción real por AC y capturas antes/después; observar foco, URL, resultados y recuento de peticiones."
+    ],
+    "limitations": [
+      "No verifica PostgreSQL, Payload, administración ni SSR; no son necesarios para esta tarea."
+    ]
+  },
   "scope": [
     "Buscador del catálogo: campo Nombre del hotel o destino y su interacción con la consulta existente.",
     "Reutilizar el comportamiento del botón Borrar texto de búsqueda.",
@@ -14,15 +42,33 @@
   "acceptance": [
     {
       "id": "AC1",
-      "criterion": "Con la búsqueda Málaga aplicada y el campo enfocado, pulsar Escape vacía el campo y elimina q de la URL; se muestran de nuevo los resultados correspondientes a los demás filtros."
+      "criterion": "Con la búsqueda Málaga aplicada y el campo enfocado, pulsar Escape vacía el campo y elimina q de la URL; se muestran de nuevo los resultados correspondientes a los demás filtros.",
+      "scenario": {
+        "kind": "normal",
+        "given": "Abrir /?q=Málaga y confirmar la consulta aplicada, el campo con Málaga y un resultado. Enfocar el campo.",
+        "when": "Pulsar Escape dentro del campo de búsqueda.",
+        "then": "El campo queda vacío, q desaparece de la URL y aparecen los tres hoteles sintéticos."
+      }
     },
     {
       "id": "AC2",
-      "criterion": "Si country=Spain y sort=rating están activos, Escape conserva ambos parámetros y el foco en el campo; los resultados siguen filtrados por España y ordenados por valoración."
+      "criterion": "Si country=Spain y sort=rating están activos, Escape conserva ambos parámetros y el foco en el campo; los resultados siguen filtrados por España y ordenados por valoración.",
+      "scenario": {
+        "kind": "normal",
+        "given": "Abrir /?q=Málaga&country=Spain&sort=rating y confirmar esos parámetros y el resultado Málaga. Enfocar el campo.",
+        "when": "Pulsar Escape.",
+        "then": "Se elimina q, permanecen country=Spain y sort=rating y el foco; aparecen Sevilla antes de Málaga y no aparece Lisboa."
+      }
     },
     {
       "id": "AC3",
-      "criterion": "Con el campo ya vacío, pulsar Escape no hace nada: conserva foco, filtros, ordenación, página y resultados. No inicia una consulta nueva. El buscador sigue operativo."
+      "criterion": "Con el campo ya vacío, pulsar Escape no hace nada: conserva foco, filtros, ordenación, página y resultados. No inicia una consulta nueva. El buscador sigue operativo.",
+      "scenario": {
+        "kind": "edge",
+        "given": "Abrir /?country=Spain&sort=rating&pageSize=1&page=2. Confirmar Málaga, campo vacío, página 2 y el número de peticiones ya realizadas. Enfocar el campo.",
+        "when": "Pulsar Escape sin introducir texto.",
+        "then": "La URL, campo, foco, página y resultados no cambian; el recuento de peticiones del catálogo no aumenta."
+      }
     }
   ],
   "decisions": []

@@ -8,8 +8,8 @@ Abre **este repositorio** en Cursor, Codex u otro agente con terminal y di:
 
 1. El agente lee la issue y sus comentarios con `gh` y consulta el código.
 2. Hace un grill-me conciso, con un máximo de tres preguntas por tanda.
-3. Resume lo acordado y pregunta **«¿Lo paso a spec y lanzo el workflow?»**. Espera tu confirmación.
-4. Con tu confirmación, genera y valida la spec y ejecuta el script. Espera hasta que termine, comunicando avances.
+3. Resume lo acordado y pregunta **«¿Guardo la especificación en la issue, la marco `ready` y lanzo el workflow local?»**. Espera tu confirmación. Si solo quieres especificar, lo confirma sin incluir ejecución.
+4. Con tu confirmación, genera y valida la spec, publica su contenido completo en la issue y añade `ready`. Si también encargaste ejecutar, lanza el script y espera hasta que termine, comunicando avances.
 5. Te avisa con el resultado y las evidencias para que revises el candidato. La integración es posterior y requiere tu encargo.
 
 Puedes pedir **Ralph** para implementar por subtareas, «quiero aprobar el plan» o «quiero ver el navegador del QA»; ninguno es obligatorio. La confirmación al terminar el grill-me es distinta de la aprobación opcional del plan técnico.
@@ -18,6 +18,22 @@ Las skills canónicas están en `.agents/skills/`; `.claude/skills/` las enlaza,
 
 La pausa de confirmación es una instrucción de la skill conversacional, no una puerta técnica del CLI. Ejecutar directamente `bun run workflow start` con una spec preparada omite la entrevista y esa pausa.
 
+### De petición breve a tarea preparada
+
+La [plantilla de especificación](spec-template.md) contiene contexto, objetivo, goals/non-goals, alcance, decisiones y restricciones, criterios con casos Dado/Cuando/Entonces, verificación, riesgos y pendientes. No se exige rellenarla al crear una issue: el formulario «Tarea para el workflow local» empieza con una petición breve y el agente completa el acuerdo mediante preguntas.
+
+`ready` significa **especificación acordada y comprobable**, no implementada ni aprobada por QA. Existe como etiqueta independiente en GitHub y no dispara ejecución de modelos. **No confundir con `factory:ready`**, que activa la fábrica cloud. Solo se añade después de confirmar el acuerdo, validar los archivos y guardar la especificación completa en la issue (por defecto como comentario, conservando la descripción original). Si cambian requisitos, se retira hasta confirmar una nueva versión. El agente comprueba estos pasos; GitHub no impide a un humano poner manualmente la etiqueta.
+
+Nuevas specs usan `version: 2` en `spec.json`, con los mismos requisitos que `spec.md`. El JSON conserva también goals, decisiones acordadas, restricciones, riesgos y entorno: todos los roles reciben ese contenido. Los specs y runs históricos siguen siendo compatibles, sin migrarlos ni reescribir su evidencia. [Ejemplo completo](examples/escape-search.json).
+
+Cada AC contiene un `criterion` (regla) y un `scenario` (tipo normal/límite/recuperación, estado inicial, acción y resultado). Un caso independiente tiene un ID propio, de modo que QA informa sobre cada uno y no cubre varios con un solo pass. Los ejemplos no eximen a review/QA de buscar otros fallos pertinentes. Una validación estructural no garantiza exhaustividad ni sustituye al acuerdo humano.
+
+```sh
+bun run workflow validate --spec docs/workflows/tasks/<id>/spec.json
+```
+
+Este comando no consume modelos ni publica nada. Rechaza el formato incompleto y decisiones pendientes; no evalúa por sí solo la calidad de los requisitos. El entorno debe permitir comprobar los casos: el QA ligero usa tres hoteles sintéticos, no el catálogo de 180 de `bun dev`. Si se necesitan otros datos, persistencia o SSR, hay que resolver ese entorno antes de declarar la tarea preparada; no cambiar la aceptación para lograr un verde.
+
 [Ensayos y evidencias locales](EVIDENCIAS.md): resultados de los recorridos y ejemplos de fallos detectados. [Prueba real tras corregir el timeout](timeout-implementador-2026-09-21.md): Luna high, implementación, checks, revisión y QA completos.
 
 ## Qué necesitas
@@ -25,9 +41,9 @@ La pausa de confirmación es una instrucción de la skill conversacional, no una
 - Las dependencias del buscador instaladas: `bun install --frozen-lockfile`.
 - Bun, Node y Chrome según el README principal.
 - Codex CLI instalado y autenticado: `codex login status`. La configuración inicial no requiere Claude Code.
-- Para empezar desde un ticket: `gh` autenticado con acceso al repositorio. La skill usa `gh issue view URL --json number,title,body,comments,labels,url,state,updatedAt`; no modifica la issue ni activa Actions.
+- Para empezar desde un ticket: `gh` autenticado con acceso al repositorio. La lectura usa `gh issue view URL --json number,title,body,comments,labels,url,state,updatedAt`. Solo tras confirmar el acuerdo se publica la spec y se añade `ready`; esto no activa la fábrica cloud.
 - Permiso de tu cuenta para usar Codex. El consumo depende de tu plan. El arnés y el modelo se eligen en `workflow.agents.json`; sin `model`, se usa el predeterminado del CLI con configuración de usuario omitida. No se leen las antiguas variables `WORKFLOW_CLAUDE_MODEL` ni `WORKFLOW_CODEX_MODEL`.
-- El recorrido de catálogo no requiere Docker, PostgreSQL, Penpot alojado ni servidores permanentes. GitHub solo hace falta para leer un ticket remoto; también se puede partir de una petición o spec local.
+- El recorrido de catálogo no requiere Docker, PostgreSQL, Penpot alojado ni servidores permanentes. GitHub permite leer el ticket y guardar la spec/etiqueta; también se puede partir de una petición o spec local, sin publicar ni etiquetar.
 
 Entorno comprobado el 20/09/2026: Bun 1.4.2, Node 24.6.0, Codex CLI 0.149.1 en macOS. El controlador usa opciones de esas versiones; comprobar compatibilidad si se emplean CLIs anteriores.
 
@@ -73,8 +89,8 @@ Con la configuración inicial, implementación, revisión y QA usan Codex en con
 |---|---|---|
 | Lectura de tarea | Issue + comentarios → contexto contrastado con el repo | Agente padre con `gh` |
 | Grill-me | Petición → decisiones resueltas | Tú y el agente padre |
-| Confirmación | Resumen acordado → permiso para generar spec y ejecutar | Tú; el agente espera |
-| To-spec | Decisiones → contrato con aceptación observable | Agente padre; no inventa respuestas |
+| Confirmación | Resumen → permiso para guardar/etiquetar y, si se encarga, ejecutar | Tú; el agente espera |
+| To-spec / ready | Acuerdo → contrato verificable, copia en la issue y etiqueta | Agente padre; no inventa respuestas |
 | Research | Spec + snapshot → código relevante y riesgos | Dos investigadores de solo lectura |
 | Plan | Spec + research → subtareas verificables | Planificador; pausa humana opcional |
 | Implementación | Plan + feedback → cambio y checks relevantes | Implementador con escritura en su workspace |

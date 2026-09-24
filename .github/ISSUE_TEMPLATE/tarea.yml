@@ -1,0 +1,22 @@
+name: Tarea para el workflow local
+description: Empezar con una petición breve y concretarla con el agente antes de marcarla ready.
+body:
+  - type: textarea
+    id: request
+    attributes:
+      label: Qué queremos conseguir
+      description: Describe el cambio en una o dos frases. No necesitas escribir la especificación todavía.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Contexto o límites conocidos
+      description: Opcional. Añade ejemplos, capturas o lo que debe quedar fuera.
+  - type: markdown
+    attributes:
+      value: |
+        Después, trabaja esta issue con la skill `.agents/skills/abordar-tarea/SKILL.md`.
+        El agente hará preguntas y completará la plantilla `docs/workflows/spec-template.md`.
+        Con tu confirmación guardará la especificación aquí y añadirá `ready`.
+        Crear la issue o marcarla `ready` no lanza el workflow ni GitHub Actions.

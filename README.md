@@ -24,7 +24,9 @@ Con Bun instalado, ejecuta `bun install --frozen-lockfile` una vez. Después:
 bun dev
 ```
 
-Abre <http://127.0.0.1:3184>. Usa el buscador y las fichas reales con los **3 hoteles en memoria** de `tests/browser/fixtures.ts`. No necesita Docker, `.env.local` ni PostgreSQL; no incluye administración ni SSR. Reutiliza el servidor del QA, con puerto y salida separados de los tests. Tras editar el frontend, reinicia el comando y recarga la página; este modo no tiene recarga automática.
+Abre <http://localhost:3184>. Usa el buscador y las fichas con **180 hoteles y URLs de fotografías**, desde `data/demo/hotels.json`. Nombres y marcas ficticios, descripciones reescritas y datos de una captura de Barceló del 10 de septiembre de 2026; no es una oferta actual. Consulta [la procedencia](docs/provenance.md).
+
+No necesita Docker, `.env.local` ni PostgreSQL. Los datos son locales; las fotos se cargan desde sus URLs y requieren conexión a Internet. No incluye administración ni SSR. Reutiliza el servidor del QA con `--demo`, puerto y salida separados; los tests mantienen sus **3 hoteles sintéticos**, sin cargar esta captura. Tras editar el frontend, reinicia el comando y recarga la página; este modo no tiene recarga automática.
 
 ### Aplicación completa con administración y 60 hoteles
 

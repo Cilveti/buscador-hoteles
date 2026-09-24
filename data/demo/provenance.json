@@ -1,0 +1,1267 @@
+{
+  "sourceUrl": "https://www.barcelo.com/es-es/hoteles/",
+  "capturedAt": "2026-09-10T17:31:23.403Z",
+  "note": "Educational snapshot. Names and brands replaced; descriptions rewritten. Original factual attributes and photos retained. Not a current offer, and no image rights transfer is implied.",
+  "hotels": [
+    {
+      "hotelId": "demo-7390",
+      "originalName": "Barceló Punta Umbría Beach Resort",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-punta-umbria-beach-resort/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BPUBR_POOL_022:Square?wid=300&hei=300&fit=crop,1&qlt=40&fmt=avif-alpha&cache=update,on,on&defaultImage=default-dm&dpr=off",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BPUBR_POOL_022:Square?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7278",
+      "originalName": "Royal Hideaway Sancti Petri",
+      "sourceUrl": "https://www.barcelo.com/es-es/royal-hideaway-sancti-petri/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/RHSANC_VIEW_21-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/RHSANC_VIEW_21-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7331",
+      "originalName": "Barceló Punta Umbría Mar",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-punta-umbria-mar/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BPUM_POOL_037-2?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BPUM_POOL_037-2?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7398",
+      "originalName": "Barceló Cabo de Gata",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-cabo-de-gata/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BCGAT_POOL_57?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BCGAT_POOL_57?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7401",
+      "originalName": "Barceló Costa Ballena Golf & Spa",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-costa-ballena-golf-spa/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BCBALL_ROOM_009-2?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BCBALL_ROOM_009-2?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7330",
+      "originalName": "Barceló Isla Canela",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-isla-canela/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BICAN_POOL_38?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BICAN_POOL_38?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7361",
+      "originalName": "Occidental Jandía Mar - All Inclusive",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-jandia-mar/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OJMAR_VIEW_77?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OJMAR_VIEW_77?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7380",
+      "originalName": "Barceló Lanzarote Active Resort",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-lanzarote-active-resort/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BLANAR_VIEW_08?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BLANAR_VIEW_08?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-40961",
+      "originalName": "Barceló Playa Blanca",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-playa-blanca/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BPLAYAB_POOL_011?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BPLAYAB_POOL_011?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7291",
+      "originalName": "Occidental Jandía Playa",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-jandia-playa/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/ojpla_view_4s?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/ojpla_view_4s?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7349",
+      "originalName": "Barceló Portinatx - Adults Only",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-portinatx/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/bpor_pool_07?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/bpor_pool_07?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7357",
+      "originalName": "Barceló Montecastillo Golf",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-montecastillo-golf/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMONT_VIEW_57?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMONT_VIEW_57?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-45062",
+      "originalName": "Barceló Coconut Island",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-coconut-island/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BCOCOI_EXT_05-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BCOCOI_EXT_05-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-97590",
+      "originalName": "Barceló Business Bay Dubai",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-business-bay-dubai/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BBD_POOL_001-6?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BBD_POOL_001-6?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-8939",
+      "originalName": "Barceló Al Jaddaf, Dubai",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-al-jaddaf/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BALJA_EXT_001-3?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BALJA_EXT_001-3?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7386",
+      "originalName": "Barceló Istanbul",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-istanbul/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BIST_VIEW_002-2?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BIST_VIEW_002-2?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7358",
+      "originalName": "Barceló Sevilla Renacimiento",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-sevilla-renacimiento/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BSEV_POOL_039?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BSEV_POOL_039?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7284",
+      "originalName": "Barceló Marbella",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-marbella/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMARB_POOL_003?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMARB_POOL_003?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-39972",
+      "originalName": "Canfranc Estación, a Royal Hideaway Hotel",
+      "sourceUrl": "https://www.barcelo.com/es-es/canfranc-estacion-a-royal-hideaway-hotel/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/RHCE_EXT_08?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/RHCE_EXT_08?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7326",
+      "originalName": "Asia Gardens Hotel & Thai Spa, a Royal Hideaway Hotel",
+      "sourceUrl": "https://www.barcelo.com/es-es/asia-gardens-hotel-thai-spa-a-royal-hideaway-hotel/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/RHASIA_POOL_23?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/RHASIA_POOL_23?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7397",
+      "originalName": "Barceló Bávaro Palace - All Inclusive",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-bavaro-palace/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BBAVP_VIEW_43?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BBAVP_VIEW_43?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-31299",
+      "originalName": "Barceló Tenerife",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-tenerife/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BTEN_VIEW_05?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BTEN_VIEW_05?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-35214",
+      "originalName": "Occidental Torremolinos Playa",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-torremolinos-playa/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OTORREP_POOL_01?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OTORREP_POOL_01?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7282",
+      "originalName": "Barceló Fuerteventura Mar",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-fuerteventura-mar/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BFUE_POOL_039?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BFUE_POOL_039?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7333",
+      "originalName": "Barceló Torre de Madrid",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-torre-de-madrid/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BTMAD_POOL_003?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BTMAD_POOL_003?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7323",
+      "originalName": "Barceló Margaritas",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-margaritas/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMAR_POOL_05?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMAR_POOL_05?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7300",
+      "originalName": "Barceló Santiago - Adults Only",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-santiago/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BSANTI_VIEW_01-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BSANTI_VIEW_01-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7327",
+      "originalName": "Barceló Bilbao Nervión",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-bilbao-nervion/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BBIL_INT_036-3?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BBIL_INT_036-3?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7281",
+      "originalName": "Barceló Cáceres V Centenario",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-caceres-v-centenario/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BCAC_POOL_18-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BCAC_POOL_18-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7368",
+      "originalName": "Occidental Punta Cana - All Inclusive",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-punta-cana/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OPCANA_VIEW_11?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OPCANA_VIEW_11?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-34677",
+      "originalName": "Barceló La Nucía Palms - Adults Recommended",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-la-nucia-palms/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BLNP_POOL_007-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BLNP_POOL_007-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-29682",
+      "originalName": "Barceló Aracena",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-aracena/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BARAC_POOL_005?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BARAC_POOL_005?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-42181",
+      "originalName": "Barceló Playa Blanca Royal Level Adults Only",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-playa-blanca-royal-level/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BPLAYABRL_POOL_025?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BPLAYABRL_POOL_025?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7391",
+      "originalName": "Barceló Teguise Beach - Adults Only",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-teguise-beach/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BTEG_POOL_22?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BTEG_POOL_22?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7393",
+      "originalName": "Santa Catalina, a Royal Hideaway Hotel",
+      "sourceUrl": "https://www.barcelo.com/es-es/santa-catalina-a-royal-hideaway-hotel/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/RHSCATA_POOL_040?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/RHSCATA_POOL_040?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7371",
+      "originalName": "Royal Hideaway Corales Suites",
+      "sourceUrl": "https://www.barcelo.com/es-es/royal-hideaway-corales-suites/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/RHCS_POOL_01-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/RHCS_POOL_01-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-41985",
+      "originalName": "Occidental Mar Menor",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-mar-menor/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OMMENOR_POOL_003-2?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OMMENOR_POOL_003-2?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7352",
+      "originalName": "Occidental Aranjuez",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-aranjuez/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OARAN_ROOM_041?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OARAN_ROOM_041?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7329",
+      "originalName": "Barceló Emperatriz",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-emperatriz/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BEMP_INT_01?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BEMP_INT_01?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7301",
+      "originalName": "Barceló Sants",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-sants/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BSANTS_MICE_008?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BSANTS_MICE_008?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7320",
+      "originalName": "Barceló Maya Palace - All Inclusive",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-maya-palace/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMAYAP_VIEW_118?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMAYAP_VIEW_118?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7338",
+      "originalName": "Barceló Costa Vasca",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-costa-vasca/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BCVAS_VIEW_005?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BCVAS_VIEW_005?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7389",
+      "originalName": "Barceló Bávaro Beach - Adults only - All Inclusive",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-bavaro-beach/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BBAVB_BEA_21?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BBAVB_BEA_21?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-37971",
+      "originalName": "Occidental Roca Negra - Adults Only",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-roca-negra/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OROCN_VIEW_02?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OROCN_VIEW_02?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7354",
+      "originalName": "Occidental Cádiz",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-cadiz/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OCAD_VIEW_80?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OCAD_VIEW_80?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-36456",
+      "originalName": "Barceló Margaritas Royal Level - Adults Only",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-margaritas-royal-level/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMARRL_POOL_04?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMARRL_POOL_04?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-41514",
+      "originalName": "Occidental Pueblo Acantilado",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-pueblo-acantilado/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OPACA_VIEW_01?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OPACA_VIEW_01?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-36454",
+      "originalName": "Barceló Lanzarote Royal Level",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-lanzarote-royal-level/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BLANPRL_POOL_01?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BLANPRL_POOL_01?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7313",
+      "originalName": "Barceló Imagine",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-imagine/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BIMAG_INT_046?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BIMAG_INT_046?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7304",
+      "originalName": "Barceló Granada Congress",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-granada-congress/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BGRAC_POOL_005?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BGRAC_POOL_005?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7360",
+      "originalName": "Barceló Valencia",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-valencia/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BVAL_GAST_019?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BVAL_GAST_019?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7399",
+      "originalName": "Barceló Carmen Granada",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-carmen-granada/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BCGRA_POOL_002?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BCGRA_POOL_002?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-41055",
+      "originalName": "Barceló Benidorm Beach - Adults Recommended",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-benidorm-beach/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BBENIDORM_POOL_04-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BBENIDORM_POOL_04-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-36074",
+      "originalName": "Barceló Tenerife Royal Level",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-tenerife-royal-level/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BTENRL_VIEW_21?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BTENRL_VIEW_21?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7363",
+      "originalName": "Barceló Santa Cruz Contemporáneo",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-santa-cruz-contemporaneo/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BSCRU_POOL_003-2?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BSCRU_POOL_003-2?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-36993",
+      "originalName": "Barceló León Conde Luna",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-leon-conde-luna/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BLCL_VIEW_01?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BLCL_VIEW_01?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7318",
+      "originalName": "Barceló Jerez Montecastillo",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-jerez-montecastillo-convention-center/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BJER_ROOM_18-5?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BJER_ROOM_18-5?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-33126",
+      "originalName": "Barceló La Nucía Hills",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-la-nucia-hills/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BLNH_POOL_007-2?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BLNH_POOL_007-2?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7400",
+      "originalName": "Barceló Fuerteventura Castillo",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-fuerteventura-castillo/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/bfuec_pool_34?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/bfuec_pool_34?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-39239",
+      "originalName": "Occidental Puerto Banús",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-puerto-banus/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OPBAN_POOL_02-4?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OPBAN_POOL_02-4?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-43672",
+      "originalName": "Occidental Pamplona",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-pamplona/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OPAM_EXT_01-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OPAM_EXT_01-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7394",
+      "originalName": "Occidental Granada",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-granada/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OGRA_ROOM_06-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OGRA_ROOM_06-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7287",
+      "originalName": "Barceló Oviedo Cervantes",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-oviedo-cervantes/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BOVIC_VIEW_18-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BOVIC_VIEW_18-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7277",
+      "originalName": "Barceló Murcia Siete Coronas",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-murcia-siete-coronas/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMUR_ROOM_073?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMUR_ROOM_073?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7403",
+      "originalName": "Barceló Hamilton Menorca - Adults Only",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-hamilton-menorca/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/bhmen_view_36?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/bhmen_view_36?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7385",
+      "originalName": "Occidental Vigo",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-vigo/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OVIGO_ROOM_042?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OVIGO_ROOM_042?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7365",
+      "originalName": "Occidental Fuengirola",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-fuengirola/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OFUEN_POOL_04-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OFUEN_POOL_04-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7662",
+      "originalName": "Barceló Corralejo Sands",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-corralejo-sands/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BCORR_POOL_017-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BCORR_POOL_017-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-36457",
+      "originalName": "Barceló Fuerteventura Royal Level - Adults Only",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-fuerteventura-royal-level-adults-only/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BFUERLAO_POOL_07?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BFUERLAO_POOL_07?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-10851",
+      "originalName": "Novo Resort The Residence Luxury Apartments by Barceló",
+      "sourceUrl": "https://www.barcelo.com/es-es/novo-resort-the-residence-luxury-apartments-by-barcelo/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/RHSANC_POOL_051?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/RHSANC_POOL_051?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7343",
+      "originalName": "Barceló Málaga",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-malaga/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMAL_POOL_001?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMAL_POOL_001?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-36558",
+      "originalName": "Occidental Barcelona 1929",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-barcelona-1929/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OB1929_POOL_012?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OB1929_POOL_012?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-45710",
+      "originalName": "Royal Hideaway Corales Villas",
+      "sourceUrl": "https://www.barcelo.com/es-es/royal-hideaway-corales-villas/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/rh-corales-villas-sesion-manolo-yllera-feb-25-7?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/rh-corales-villas-sesion-manolo-yllera-feb-25-7?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-12093",
+      "originalName": "Occidental Las Palmas",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-las-palmas/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OPALM_ROOM_01-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OPALM_ROOM_01-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-8938",
+      "originalName": "Barceló Maya Riviera - Adults only - All Inclusive",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-maya-riviera/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMAYARI_VIEW_11?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMAYARI_VIEW_11?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7335",
+      "originalName": "Barceló Ourense",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-ourense/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BOUR_ROOM_013?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BOUR_ROOM_013?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-30584",
+      "originalName": "Occidental Sevilla Viapol",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-sevilla-viapol/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OSEVP_POOL_003?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OSEVP_POOL_003?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7395",
+      "originalName": "Occidental Ibiza - All Inclusive",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-ibiza/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/oibi_pool_27?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/oibi_pool_27?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7308",
+      "originalName": "Occidental Bilbao",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-bilbao/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OBIL_EXT_010-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OBIL_EXT_010-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7288",
+      "originalName": "Barceló Ponent Beach",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-ponent-beach/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BPBEACH_POOL_012?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BPBEACH_POOL_012?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7298",
+      "originalName": "Barceló Aruba - All Inclusive",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-aruba/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BARU_VIEW_033-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BARU_VIEW_033-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7309",
+      "originalName": "Occidental Caribe - All Inclusive",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-caribe/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OCARI_VIEW_047-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OCARI_VIEW_047-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7334",
+      "originalName": "Royal Hideaway Corales Beach - Adults Only",
+      "sourceUrl": "https://www.barcelo.com/es-es/royal-hideaway-corales-beach/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/RHCB_POOL_12?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/RHCB_POOL_12?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7328",
+      "originalName": "Barceló Corralejo Bay - Adults Only",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-corralejo-bay/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BCORRB_VIEW_001?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BCORRB_VIEW_001?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-45448",
+      "originalName": "Barceló Valladolid",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-valladolid/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BVALL_ROOM_050?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BVALL_ROOM_050?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7373",
+      "originalName": "Barceló Illetas Albatros - Adults Only",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-illetas-albatros/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BILLE_POOL_39?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BILLE_POOL_39?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7316",
+      "originalName": "Occidental Jandía Royal Level",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-jandia-royal-level/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/ojandrl_pool_28?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/ojandrl_pool_28?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7355",
+      "originalName": "Occidental Cala Viñas",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-cala-vinas/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OCVIN_VIEW_008?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OCVIN_VIEW_008?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-46741",
+      "originalName": "Barceló Roma",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-roma/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BROM_POOL_009?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BROM_POOL_009?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-35681",
+      "originalName": "Barceló Nura",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-nura/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BNURA_VIEW_003?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BNURA_VIEW_003?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-36992",
+      "originalName": "Occidental León Alfonso V",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-leon-alfonso-v/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OLAV_VIEW_02?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OLAV_VIEW_02?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7340",
+      "originalName": "Barceló Huatulco - All Inclusive",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-huatulco/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BHUA_VIEW_28?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BHUA_VIEW_28?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7382",
+      "originalName": "Occidental Playa de Palma",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-playa-de-palma/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/oppal_pool_103?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/oppal_pool_103?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7337",
+      "originalName": "Barceló Fuerteventura Royal Level",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-fuerteventura-royal-level/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BFUERLFC_POOL_02?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BFUERLFC_POOL_02?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-41473",
+      "originalName": "Occidental Murcia Agalia",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-murcia-agalia/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OMUAG_POOL_010?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OMUAG_POOL_010?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-9030",
+      "originalName": "Occidental Diagonal 414",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-diagonal-414/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OD414_POOL_001?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OD414_POOL_001?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-8940",
+      "originalName": "Barceló Budapest",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-budapest/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BBUDA_ROOM_44-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BBUDA_ROOM_44-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-43025",
+      "originalName": "Occidental Las Canteras",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-las-canteras/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OLCANT_GAST_16?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OLCANT_GAST_16?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7383",
+      "originalName": "Occidental at Xcaret Destination - All Inclusive",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-at-xcaret-destination/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OXCA_VIEW_119-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OXCA_VIEW_119-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7285",
+      "originalName": "Barceló Maya Beach - All Inclusive",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-maya-beach/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMAYAB_VIEW_40?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMAYAB_VIEW_40?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-41477",
+      "originalName": "Allegro Murcia Azarbe",
+      "sourceUrl": "https://www.barcelo.com/es-es/allegro-murcia-azarbe/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/AMAZA_EXT_01-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/AMAZA_EXT_01-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7402",
+      "originalName": "Barceló Hamburg",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-hamburg/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BHAMB_ROOM_30-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BHAMB_ROOM_30-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7286",
+      "originalName": "Barceló Maya Colonial - All Inclusive",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-maya-colonial/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMAYACO_POOL_04?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMAYACO_POOL_04?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7289",
+      "originalName": "Barceló Raval",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-raval/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BRAV_VIEW_020?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BRAV_VIEW_020?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7344",
+      "originalName": "Barceló Maya Tropical - All Inclusive",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-maya-tropical/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMAYAT_VIEW_54?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMAYAT_VIEW_54?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7345",
+      "originalName": "Barceló México Reforma",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-mexico-reforma/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMEXR_EXT_04?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMEXR_EXT_04?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-30624",
+      "originalName": "Occidental Taksim",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-taksim/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OTAK_VIEW_01?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OTAK_VIEW_01?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7353",
+      "originalName": "Occidental Atenea Mar - Adults Only",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-atenea-mar/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OAMAR_POOL_032?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OAMAR_POOL_032?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7342",
+      "originalName": "Barceló Ixtapa - All Inclusive",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-ixtapa/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BIXT_VIEW_031-5?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BIXT_VIEW_031-5?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-48958",
+      "originalName": "Barceló Marine Boa Vista - Adults Only",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-marine-boa-vista/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMARBOA_EXT_007-3?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMARBOA_EXT_007-3?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7302",
+      "originalName": "Occidental Praha Wilson",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-praha-wilson/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OPWIL_VIEW_04?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OPWIL_VIEW_04?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7377",
+      "originalName": "Occidental Aurelia",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-aurelia/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OAUR_POOL_004-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OAUR_POOL_004-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7306",
+      "originalName": "Barceló Tanger",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-tanger/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BTANGER_GAST_57?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BTANGER_GAST_57?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-8934",
+      "originalName": "Barceló Palmeraie Oasis Resort",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-palmeraie-oasis-resort/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BPALME_VIEW_009-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BPALME_VIEW_009-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7396",
+      "originalName": "Allegro Playacar - All Inclusive",
+      "sourceUrl": "https://www.barcelo.com/es-es/allegro-playacar/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/APLA_VIEW_10?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/APLA_VIEW_10?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7375",
+      "originalName": "Barceló Maya Caribe - All Inclusive",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-maya-caribe/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMAYACA_ROOM_39-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMAYACA_ROOM_39-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-96353",
+      "originalName": "Occidental Paris Levallois",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-paris-levallois/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OPARLE_EXT_001-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OPARLE_EXT_001-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-95924",
+      "originalName": "Occidental Faro",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-faro/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OFARO_EXT_001?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OFARO_EXT_001?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-29681",
+      "originalName": "Occidental Alicante",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-alicante/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OAL_EXT_01?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OAL_EXT_01?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-41983",
+      "originalName": "Barceló Warsaw Powisle",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-warsaw-powisle/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BWARPOW_EXT_02?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BWARPOW_EXT_02?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7376",
+      "originalName": "Barceló Santo Domingo",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-santo-domingo/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BSDOM_VIEW_07?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BSDOM_VIEW_07?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-40963",
+      "originalName": "Palacio Gran Vía, a Royal Hideaway Hotel",
+      "sourceUrl": "https://www.barcelo.com/es-es/palacio-gran-via-a-royal-hideaway-hotel/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/RHPGV_INT_06?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/RHPGV_INT_06?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7299",
+      "originalName": "Barceló San Salvador",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-san-salvador/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BSSAN_EXT_04?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BSSAN_EXT_04?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7359",
+      "originalName": "Barceló Tambor - All Inclusive",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-tambor/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BTAM_VIEW_017-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BTAM_VIEW_017-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-42034",
+      "originalName": "Hotel Albahia",
+      "sourceUrl": "https://www.barcelo.com/es-es/hotel-albahia/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/ALBAH_POOL_02-5?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/ALBAH_POOL_02-5?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7661",
+      "originalName": "Royal Hideaway Playacar - Adults only - All Inclusive",
+      "sourceUrl": "https://www.barcelo.com/es-es/royal-hideaway-playacar/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/rhpla_pool_19?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/rhpla_pool_19?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7348",
+      "originalName": "Barceló Montelimar - All Inclusive",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-montelimar/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMON_POOL_009-4?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMON_POOL_009-4?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-45997",
+      "originalName": "Occidental Tanger",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-tanger/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OTANG_POOL_007-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OTANG_POOL_007-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7319",
+      "originalName": "Barceló Guatemala City",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-guatemala-city/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BGUA_EXT_001-3?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BGUA_EXT_001-3?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-42024",
+      "originalName": "Occidental Ljubljana",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-ljubljana/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OLJU_EXT_01-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OLJU_EXT_01-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-47343",
+      "originalName": "Occidental Boa Vista Beach",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-boa-vista-beach/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OBVB_VIEW_004-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OBVB_VIEW_004-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-48037",
+      "originalName": "Barceló Dresden Newa",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-dresden-newa/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BDRESNE_EXT_005?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BDRESNE_EXT_005?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7351",
+      "originalName": "Occidental Aran Park",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-aran-park/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OAPAR_ROOM_12?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OAPAR_ROOM_12?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7311",
+      "originalName": "Occidental Praha",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-praha/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OPRA_ROOM_34-2?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OPRA_ROOM_34-2?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7290",
+      "originalName": "Barceló San José",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-san-jose/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BSJOS_POOL_28?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BSJOS_POOL_28?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-41054",
+      "originalName": "Allegro Barcelona",
+      "sourceUrl": "https://www.barcelo.com/es-es/allegro-barcelona/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/ABARC_ROOM_062?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/ABARC_ROOM_062?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-42327",
+      "originalName": "Barceló Fortina Malta",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-fortina-malta/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BFORMAL_ROOM_97-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BFORMAL_ROOM_97-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-39604",
+      "originalName": "Barceló Funchal Oldtown",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-funchal-oldtown/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BFUNCH_EXT_01-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BFUNCH_EXT_01-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7659",
+      "originalName": "El Embajador, a Royal Hideaway Hotel",
+      "sourceUrl": "https://www.barcelo.com/es-es/el-embajador-a-royal-hideaway-hotel/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/RHEMB_EXT_15?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/RHEMB_EXT_15?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-41190",
+      "originalName": "Barceló Guadalajara",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-guadalajara/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BGUAD_VIEW_018-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BGUAD_VIEW_018-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7332",
+      "originalName": "Barceló Tiran Sharm",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-tiran-sharm/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BTIR_ROOM_07-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BTIR_ROOM_07-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-97785",
+      "originalName": "Barceló Monterrey Valle",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-monterrey-valle/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMONTV_EXT_001-2?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMONTV_EXT_001-2?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7374",
+      "originalName": "Barceló Karmina - All Inclusive",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-karmina/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BKAR_POOL_19?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BKAR_POOL_19?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7364",
+      "originalName": "Occidental Cozumel - All Inclusive",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-cozumel/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OCOZ_POOL_53-2?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OCOZ_POOL_53-2?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-97764",
+      "originalName": "Occidental Cairo Grand Museum",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-cairo-grand-museum/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OCAGM_EXT_001?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OCAGM_EXT_001?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7384",
+      "originalName": "Barceló Fès Medina",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-fes-medina/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BFES_INT_017-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BFES_INT_017-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7312",
+      "originalName": "Occidental Praha Five",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-praha-five/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OPFIV_EXT_12-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OPFIV_EXT_12-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7280",
+      "originalName": "Allegro Madeira - Adults Only",
+      "sourceUrl": "https://www.barcelo.com/es-es/allegro-madeira/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/AMADE_EXT_03?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/AMADE_EXT_03?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7350",
+      "originalName": "Barceló Puerto Vallarta - All Inclusive",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-puerto-vallarta/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/bpvall_view_70?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/bpvall_view_70?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7372",
+      "originalName": "Occidental Sharjah Grand",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-sharjah-grand/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OSHAR_POOL_002?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OSHAR_POOL_002?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-46179",
+      "originalName": "Barceló Praia Cape Verde",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-praia-cape-verde/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BPCV_POOL_007-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BPCV_POOL_007-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7387",
+      "originalName": "Occidental Tucancún - All Inclusive",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-tucancun/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OTUC_BEA_024-3?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OTUC_BEA_024-3?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-97805",
+      "originalName": "Palacio San Juan, a Royal Hideaway Hotel",
+      "sourceUrl": "https://www.barcelo.com/es-es/palacio-de-san-juan-a-royal-hideaway-hotel/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/RHPSJ_ROOM_007?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/RHPSJ_ROOM_007?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7381",
+      "originalName": "Occidental Papagayo - Adults only - All Inclusive",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-papagayo/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OPAP_VIEW_15?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OPAP_VIEW_15?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-46505",
+      "originalName": "Quinta Funchal Gardens - Adults Only",
+      "sourceUrl": "https://www.barcelo.com/es-es/quinta-funchal-gardens/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BQUINTA_VIEW_03-2?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BQUINTA_VIEW_03-2?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7378",
+      "originalName": "Occidental Costa Cancún - All Inclusive",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-costa-cancun/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OCCAN_BEA_016-3?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OCCAN_BEA_016-3?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7294",
+      "originalName": "Barceló Anfa Casablanca",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-anfa-casablanca/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BANFACAS_SERV_009-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BANFACAS_SERV_009-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7296",
+      "originalName": "Barceló Cairo Pyramids",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-cairo-pyramids/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BCAI_GAST_01?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BCAI_GAST_01?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7303",
+      "originalName": "Barceló Casablanca",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-casablanca/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BCAS_ROOM_59-2?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BCAS_ROOM_59-2?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-45092",
+      "originalName": "Hotel Borj Rabat - A member of Barceló Hotel Group",
+      "sourceUrl": "https://www.barcelo.com/es-es/hotel-borj-rabat/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/FRABA_VIEW_01-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/FRABA_VIEW_01-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-46876",
+      "originalName": "Barceló Nasandhura Malé",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-nasandhura-male/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BNASM_ROOM_027-3?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BNASM_ROOM_027-3?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-46198",
+      "originalName": "Barceló Cappadocia",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-cappadocia/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BCAPP_EXT_05-2?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BCAPP_EXT_05-2?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-98978",
+      "originalName": "Occidental Casablanca Medina",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-casablanca-medina/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OCASM_INT_015-3?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OCASM_INT_015-3?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7321",
+      "originalName": "Occidental Nuevo Vallarta - All Inclusive",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-nuevo-vallarta/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/ONVALL_VIEW_045-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/ONVALL_VIEW_045-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7388",
+      "originalName": "Allegro Agadir",
+      "sourceUrl": "https://www.barcelo.com/es-es/allegro-agadir/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/AAGADIR_VIEW_08?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/AAGADIR_VIEW_08?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-36658",
+      "originalName": "The Orient Jakarta, a Royal Hideaway Hotel",
+      "sourceUrl": "https://www.barcelo.com/es-es/the-orient-jakarta-a-royal-hideaway-hotel/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/RHORIENT_ROOM_01-2?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/RHORIENT_ROOM_01-2?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7339",
+      "originalName": "Barceló Residences Dubai Marina",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-residences-dubai-marina/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BRESMA_VIEW_012-2?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BRESMA_VIEW_012-2?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-98924",
+      "originalName": "Occidental Istanbul City",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-istanbul-city/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OISTC_EXT_001-2?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OISTC_EXT_001-2?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7314",
+      "originalName": "Barceló Royal Beach - All Inclusive",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-royal-beach/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BRBEA_VIEW_05?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BRBEA_VIEW_05?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-10319",
+      "originalName": "Occidental Sousse Marhaba",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-sousse-marhaba/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OSOMA_VIEW_06-3?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OSOMA_VIEW_06-3?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7370",
+      "originalName": "Occidental Tamarindo - All Inclusive",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-tamarindo/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OTAMA_VIEW_36?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OTAMA_VIEW_36?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-43465",
+      "originalName": "Royal Hideaway Casablanca",
+      "sourceUrl": "https://www.barcelo.com/es-es/royal-hideaway-casablanca/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/RHCASA_INT_008?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/RHCASA_INT_008?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-7297",
+      "originalName": "Allegro Cozumel - All Inclusive",
+      "sourceUrl": "https://www.barcelo.com/es-es/allegro-cozumel/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/ACOZ_VIEW_58?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/ACOZ_VIEW_58?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-99246",
+      "originalName": "Barceló Riyadh Olaya",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-riyadh-olaya/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BRIYO_GAST_046?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BRIYO_GAST_046?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-101298",
+      "originalName": "Occidental Bang Tao Beach Resort",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-bang-tao-beach-resort/",
+      "imageSourceUrl": "https://preview3.assetsadobe.com/is/image/barcelo/BBANTAB_EXT_004-1?&",
+      "imageUrl": "https://preview3.assetsadobe.com/is/image/barcelo/BBANTAB_EXT_004-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-46851",
+      "originalName": "Barceló Hotel & Residences, Bahrain",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-hotel-residences-bahrain/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BBCC_ROOM_03-5?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BBCC_ROOM_03-5?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-97784",
+      "originalName": "Barceló México Santa Fe",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-mexico-santa-fe/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMEXSF_EXT_002-2?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMEXSF_EXT_002-2?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-49348",
+      "originalName": "Palmeraie Oasis Camp",
+      "sourceUrl": "https://www.barcelo.com/es-es/palmeraie-oasis-camp/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/POC_EXT_10-1?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/POC_EXT_10-1?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-35872",
+      "originalName": "Barceló Mussanah Resort, Sultanate of Oman",
+      "sourceUrl": "https://www.barcelo.com/es-es/barcelo-mussanah-resort/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMUSSRA_VIEW_001?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/BMUSSRA_VIEW_001?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    },
+    {
+      "hotelId": "demo-37997",
+      "originalName": "Occidental Ankara",
+      "sourceUrl": "https://www.barcelo.com/es-es/occidental-ankara/",
+      "imageSourceUrl": "https://static-dm.barcelo.com/is/image/barcelo/OANK_INT_02?&",
+      "imageUrl": "https://static-dm.barcelo.com/is/image/barcelo/OANK_INT_02?wid=960&hei=640&fit=crop%2C1&qlt=78&fmt=webp"
+    }
+  ]
+}

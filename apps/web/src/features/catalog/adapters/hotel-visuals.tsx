@@ -54,6 +54,7 @@ export function HotelImage({
 }
 
 export function GuestRating({ hotel }: { hotel: CatalogHotel }) {
+  const observed = hotel.attributes?.provenance.kind === 'observed-public';
   return hotel.guestRating !== null ? (
     <div className="flex flex-wrap items-center gap-2 text-xs">
       <span className="inline-flex items-center gap-1 rounded-md bg-primary px-2 py-1 font-medium">
@@ -63,8 +64,10 @@ export function GuestRating({ hotel }: { hotel: CatalogHotel }) {
       </span>
       <span className="rounded-md bg-white/95 px-1.5 py-1 text-muted-foreground">
         {hotel.reviewCount !== null
-          ? `${numbers.format(hotel.reviewCount)} valoraciones simuladas`
-          : 'Valoración simulada'}
+          ? `${numbers.format(hotel.reviewCount)} ${observed ? 'valoraciones en la captura' : 'valoraciones simuladas'}`
+          : observed
+            ? 'Valoración de la captura'
+            : 'Valoración simulada'}
       </span>
     </div>
   ) : (

@@ -29,7 +29,7 @@ export const CatalogAttributesSchema = z.object({
   }),
   adultsOnly: z.boolean().nullable(),
   provenance: z.object({
-    kind: z.literal('synthetic'),
+    kind: z.enum(['synthetic', 'observed-public']),
     sourceUrl: z.httpUrl(),
     capturedAt: z.iso.datetime(),
   }),

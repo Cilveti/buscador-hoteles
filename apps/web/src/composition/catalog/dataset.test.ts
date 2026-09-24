@@ -66,3 +66,49 @@ test('el catálogo completo enlaza sus atributos e imágenes y produce una respu
     ),
   ).toBe(true);
 });
+
+const demoHotels = CatalogHotelSchema.array().parse(
+  JSON.parse(
+    readFileSync(new URL('../../../../../data/demo/hotels.json', import.meta.url), 'utf8'),
+  ),
+);
+
+test('la demo contiene 180 hoteles con nombres únicos, procedencia y URLs de fotos', () => {
+  expect(demoHotels).toHaveLength(180);
+  expect(new Set(demoHotels.map((hotel) => hotel.id)).size).toBe(180);
+  expect(new Set(demoHotels.map((hotel) => hotel.name)).size).toBe(180);
+  expect(new Set(demoHotels.map((hotel) => hotel.country)).size).toBeGreaterThan(20);
+  for (const hotel of demoHotels) {
+    expect(hotel.image?.url).toMatch(
+      /^https:\/\/(static-dm\.barcelo\.com|preview3\.assetsadobe\.com)\/is\/image\//u,
+    );
+    expect(hotel.attributes?.provenance.kind).toBe('observed-public');
+    expect(
+      [
+        hotel.name,
+        hotel.description,
+        ...(hotel.highlights ?? []),
+        ...(hotel.labels ?? []),
+        hotel.attributes?.pets.policyText,
+      ].join(' '),
+    ).not.toMatch(/\bbarcel[oó]\b|occidental|allegro|royal hideaway/iu);
+  }
+});
+
+test('la demo permite buscar destinos, filtrar, ordenar y recorrer páginas sin repetir hoteles', () => {
+  const madrid = searchCatalog(
+    demoHotels,
+    CatalogQuerySchema.parse({ q: 'Madrid', country: 'Spain' }),
+  );
+  expect(madrid.total).toBeGreaterThan(0);
+  expect(madrid.hotels.every((hotel) => hotel.country === 'Spain')).toBe(true);
+  const allIds: string[] = [];
+  for (let page = 1; page <= 8; page++) {
+    const response = CatalogResponseSchema.parse(
+      searchCatalog(demoHotels, CatalogQuerySchema.parse({ page, pageSize: 24, sort: 'rating' })),
+    );
+    expect(response.total).toBe(180);
+    allIds.push(...response.hotels.map((hotel) => hotel.id));
+  }
+  expect(new Set(allIds).size).toBe(180);
+});

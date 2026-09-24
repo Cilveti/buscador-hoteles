@@ -3,13 +3,21 @@ import tailwind from '@tailwindcss/postcss';
 import postcss from 'postcss';
 import { createCatalogHotelHandler } from '../../apps/web/src/app/api/catalog/hotels/[hotelId]/handler';
 import { createCatalogHandler } from '../../apps/web/src/app/api/catalog/hotels/handler';
+import { CatalogHotelSchema } from '../../packages/contracts/src/catalog';
 import { hotels } from './fixtures';
 
 const directory = import.meta.dir;
 const projectRoot = resolve(directory, '../..');
 const output = resolve(process.env.TEST_BROWSER_OUTPUT ?? 'test-results/browser');
-const searchHandler = createCatalogHandler(async () => structuredClone(hotels));
-const detailHandler = createCatalogHotelHandler(async () => structuredClone(hotels));
+// Explicit opt-in: automated browser checks retain their small deterministic fixtures.
+const demo = process.argv.includes('--demo');
+const catalog = demo
+  ? CatalogHotelSchema.array().parse(
+      await Bun.file(resolve(projectRoot, 'data/demo/hotels.json')).json(),
+    )
+  : hotels;
+const searchHandler = createCatalogHandler(async () => structuredClone(catalog));
+const detailHandler = createCatalogHotelHandler(async () => structuredClone(catalog));
 const build = await Bun.build({
   entrypoints: [resolve(directory, 'entry.tsx')],
   outdir: resolve(output, 'web'),
@@ -41,14 +49,20 @@ const css = await postcss([tailwind({ base: resolve(projectRoot, 'apps/web/src')
   { from: styles },
 );
 await Bun.write(resolve(output, 'web/style.css'), css.css);
-const html =
-  '<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Buscador · Pruebas locales</title><link rel="stylesheet" href="/style.css"></head><body><div style="background:#040066;color:white;padding:8px;text-align:center">Pruebas locales · Datos sintéticos · Sin servicios externos</div><div id="root"></div><script type="module" src="/entry.js"></script></body></html>';
+const banner = demo
+  ? `Demo local · ${catalog.length} hoteles · Nombres ficticios · Datos y fotos de una captura de septiembre de 2026`
+  : 'Pruebas locales · Datos sintéticos · Sin servicios externos';
+const html = `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Buscador · ${demo ? 'Demo' : 'Pruebas locales'}</title><link rel="stylesheet" href="/style.css"></head><body><div style="background:#040066;color:white;padding:8px;text-align:center">${banner}</div><div id="root"></div><script type="module" src="/entry.js"></script></body></html>`;
 const server = Bun.serve({
   hostname: '127.0.0.1',
   port: Number(process.env.TEST_BROWSER_PORT ?? 3181),
   async fetch(request) {
     const url = new URL(request.url);
-    if (url.pathname === '/api/health') return Response.json({ status: 'catalog-test' });
+    if (url.pathname === '/api/health')
+      return Response.json({
+        status: demo ? 'catalog-demo' : 'catalog-test',
+        hotels: catalog.length,
+      });
     if (url.pathname === '/api/catalog/hotels') return searchHandler(request);
     const id = url.pathname.match(/^\/api\/catalog\/hotels\/([^/]+)$/)?.[1];
     if (id)
@@ -62,4 +76,6 @@ const server = Bun.serve({
     return new Response('Not found in isolated catalog harness', { status: 404 });
   },
 });
-console.log(`Test catalog: ${server.url} (source: ${projectRoot})`);
+console.log(
+  `${demo ? 'Demo' : 'Test'} catalog: http://localhost:${server.port} (source: ${projectRoot})`,
+);

@@ -46,8 +46,8 @@ export function CatalogFooter() {
   return (
     <footer className="border-t py-6">
       <div className="page-width flex flex-col justify-between gap-3 text-[11px] text-muted-foreground sm:flex-row">
-        <p>Catálogo ficticio para formación · Hoteles y valoraciones inventados</p>
-        <p>Ilustraciones propias · Sin reservas</p>
+        <p>Catálogo de demostración · Nombres ficticios</p>
+        <p>Sin reservas ni disponibilidad en tiempo real</p>
       </div>
     </footer>
   );

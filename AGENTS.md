@@ -18,6 +18,8 @@ Proyecto independiente para enseñar desarrollo y verificación determinista. Ma
 
 El catálogo, sus cinco marcas, sus valoraciones y sus ilustraciones son ficticios. Mantener esa indicación en la interfaz y no incorporar capturas ni datos de cadenas reales.
 
+Excepción explícita de Iñigo (24 de septiembre de 2026): la demo rápida (`bun dev`) usa `data/demo/`, una captura de 180 hoteles de Barceló con nombres y marcas sustituidos y URLs de fotos (sin copias locales). Conservar su procedencia y fecha; no afirmar que sus datos y fotografías son inventados ni que representan una oferta vigente. No trasladarla al seed de Payload ni a los fixtures de QA, que siguen siendo sintéticos.
+
 ## Laboratorio de arneses
 
 Petición de Iñigo del 15 de septiembre: continuar aquí todo el laboratorio, con skills en inglés y castellano y selección de idioma por evaluación. Leer `.agents/skills/evaluar-agentes-codigo/SKILL.md`. Las aceptaciones privadas y el dossier del juez deben permanecer fuera del checkout y del historial visible para el candidato. Conservar la procedencia de resultados anteriores sin importar el producto antiguo.

@@ -18,7 +18,7 @@ export type CatalogAttributes = {
     sourceConflict: boolean;
   };
   adultsOnly: boolean | null;
-  provenance: { kind: 'synthetic'; sourceUrl: string; capturedAt: string };
+  provenance: { kind: 'synthetic' | 'observed-public'; sourceUrl: string; capturedAt: string };
 };
 
 /** Public hotel facts, without operational availability or administrative state. */

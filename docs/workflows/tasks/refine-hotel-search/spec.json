@@ -1,0 +1,168 @@
+{
+  "version": 2,
+  "id": "refine-hotel-search",
+  "title": "Afinar la búsqueda según las características del hotel",
+  "objective": "Poder afinar el listado por destino, categoría exacta de estrellas, servicios, tipo de estancia y admisión de mascotas, y conservar esa búsqueda al compartir la dirección o volver desde una ficha.",
+  "context": "El listado ya busca por nombre o destino y filtra por país, marca y valoración de huéspedes. El catálogo ya puede filtrar por destino, estrellas exactas, servicios disponibles, temáticas y mascotas, pero la pantalla no deja elegirlos: para saber si un hotel encaja hay que abrir su ficha. La ficha arrastra la consulta al volver, y el listado no lee destino, estrellas, servicios, temáticas ni mascotas en la dirección, así que un enlace compartido los pierde. La issue 19 pide combinar esas preferencias, ver lo elegido, quitar una si hay pocas opciones y recuperar la búsqueda, en ordenador y en móvil, sin rediseñar el buscador ni añadir reservas.",
+  "goals": [
+    "Elegir un destino, una categoría exacta de estrellas, varios servicios disponibles, varias temáticas y la admisión de mascotas, combinados con el texto, el país, la marca, la valoración y el orden ya existentes.",
+    "Ver cada valor elegido y quitar uno sin perder los demás.",
+    "Conservar la búsqueda en la dirección del listado, al abrirla de nuevo y al volver desde la ficha."
+  ],
+  "agreedDecisions": [
+    "Destino: todos los niveles que ya publica el catálogo, un solo valor, con la opción Todos los destinos.",
+    "Tipo de estancia: todas las temáticas del catálogo activo, tal cual, sin un subconjunto fijo. Varias se exigen todas.",
+    "Mascotas: un solo control, Admite mascotas, equivalente a pets=allowed-or-conditional. Incluye la admisión publicada y la admisión con condiciones. No se listan el resto de políticas. Junto al control se lee: Incluye las que las admiten con condiciones.",
+    "Servicios: una casilla por cada servicio disponible que devuelva el catálogo. Hacen falta todos y solo cuenta la disponibilidad publicada. El aparcamiento condicional de Hotel Demo Sevilla no cumple Aparcamiento.",
+    "Estrellas exactas: 4 estrellas no incluye un hotel de 5. Sigue siendo distinto de la valoración de huéspedes.",
+    "Compartir es abrir la dirección del listado. No hay otro control."
+  ],
+  "constraints": [
+    "Reutilizar el contrato ya existente: destination, stars, services, themes y pets. Los servicios y las temáticas viajan como valores separados por comas en un solo parámetro.",
+    "No cambiar la semántica del catálogo: estrellas exactas, servicios en conjunción y solo disponibles, temáticas en conjunción y mascotas allowed-or-conditional para el control Admite mascotas.",
+    "Los controles nuevos van en Afinar búsqueda, después de país, marca y valoración mínima, dentro del mismo bloque del panel lateral y de la hoja Filtros.",
+    "El nombre accesible de cada casilla es la etiqueta de la faceta, sin el recuento. Los desplegables se llaman Destino y Estrellas.",
+    "Cada valor elegido tiene su ficha Quitar filtro seguida de ese valor. El contador del botón Filtros suma cada valor elegido.",
+    "Elegir o quitar un filtro aplica la búsqueda al momento, vuelve a la página 1 y conserva el resto de criterios y el orden.",
+    "Limpiar filtros quita país, marca, valoración, destino, estrellas, servicios, tipo de estancia y mascotas, y deja el texto buscado y el orden. Ver todos los hoteles, en la pantalla sin resultados, vacía también el texto y restaura el orden por nombre.",
+    "El QA recorre AC1 a AC9 en ese orden. La observación siguiente a cada interacción es la evidencia, sin acciones inspect añadidas. AC10 es abrir la dirección compartida. El veredicto entra en el máximo de 16 acciones."
+  ],
+  "risks": [
+    "En la demo de 180 hoteles los destinos, servicios y temáticas son listas largas, con etiquetas repetidas y algunos nombres que contienen Barceló. El QA no ve esa demo.",
+    "En esa demo no hay admisión de mascotas sin condiciones; el control acordado también devuelve las que tienen condiciones.",
+    "Limpiar filtros o la vuelta desde la ficha pueden olvidar un criterio nuevo.",
+    "Serializar mal las listas hace que el enlace compartido pierda servicios o temáticas.",
+    "El presupuesto de 16 acciones no admite repetir cada caso desde cero ni acciones inspect de más."
+  ],
+  "verification": {
+    "environment": "QA local con React, handlers HTTP y los tres hoteles sintéticos, en una ventana de 1280×900. Hotel Demo Málaga: 5 estrellas, destino Málaga (city/malaga), piscina y aparcamiento disponibles, temática Playa (beach), mascotas admitidas, valoración 4,5. Hotel Demo Sevilla: 4 estrellas, destino Sevilla (city/sevilla), piscina disponible, aparcamiento condicional, temática Ciudad, mascotas con condiciones, valoración 4,8. Hotel Demo Lisboa no tiene estos atributos. La primera observación ya es /.",
+    "checks": [
+      "Verificación determinista del producto con bun run verify:app.",
+      "QA del workflow con la interacción de cada AC y la captura de su resultado. Recorrer AC1 a AC9 en el orden indicado y usar AC10 como navegación directa. El veredicto forma parte de las 16 acciones."
+    ],
+    "limitations": [
+      "El agente QA no cambia el ancho. A 1280×900 se ve el panel lateral y el botón Filtros permanece oculto, así que la hoja móvil y su contador no tienen un caso en este QA: los controles nuevos están en el bloque que esa hoja ya muestra.",
+      "Con tres hoteles solo hay una página, así que la vuelta a la página 1 no se observa aquí.",
+      "No verifica PostgreSQL, Payload, administración, SSR ni la demo de 180 hoteles."
+    ]
+  },
+  "scope": [
+    "Listado público: añadir Destino, Estrellas, Servicios, Tipo de estancia y Admite mascotas en Afinar búsqueda, después de país, marca y valoración mínima. El mismo bloque alimenta el panel lateral y la hoja Filtros.",
+    "Destino y estrellas son un solo valor, con Todos los destinos y Todas las categorías. Servicios y tipo de estancia son casillas de todas las facetas publicadas y se exigen todas. Admite mascotas incluye admisión publicada y con condiciones.",
+    "Cada valor elegido se ve y se puede quitar por separado. La dirección del listado guarda los criterios. Abrirla reproduce controles, fichas y hoteles. Volver a resultados restaura ese listado.",
+    "Se mantienen el texto, el país, la marca, la valoración, el orden, la paginación y el recorrido listado-ficha-resultados."
+  ],
+  "outOfScope": [
+    "Reservas, precios, fechas y disponibilidad.",
+    "Cambios de diseño en la ficha, las tarjetas o la cabecera, y un botón distinto para compartir.",
+    "Cambiar la semántica del catálogo, limpiar etiquetas de la demo o inventar otra taxonomía de estancia u otro estado de mascotas.",
+    "Administración, base de datos, dependencias y configuración del arnés."
+  ],
+  "acceptance": [
+    {
+      "id": "AC1",
+      "criterion": "Elegir el destino Málaga deja solo ese hotel, guarda el destino en la dirección y muestra su ficha para quitarlo.",
+      "scenario": {
+        "kind": "normal",
+        "given": "Abrir / y confirmar Hotel Demo Málaga, Hotel Demo Sevilla y Hotel Demo Lisboa.",
+        "when": "Elegir Málaga en el desplegable Destino.",
+        "then": "Solo está Hotel Demo Málaga. La dirección contiene destination=city%2Fmalaga. Aparece Quitar filtro Málaga."
+      }
+    },
+    {
+      "id": "AC2",
+      "criterion": "Tras quitar el destino, elegir 4 estrellas deja solo el hotel de esa categoría. El hotel de 5 estrellas no aparece.",
+      "scenario": {
+        "kind": "normal",
+        "given": "Tras AC1, activar Quitar filtro Málaga y confirmar que vuelven los tres hoteles.",
+        "when": "Elegir 4 estrellas en el desplegable Estrellas.",
+        "then": "Solo está Hotel Demo Sevilla. Hotel Demo Málaga no está. La dirección contiene stars=4. Aparece Quitar filtro 4 estrellas."
+      }
+    },
+    {
+      "id": "AC3",
+      "criterion": "Piscina y aparcamiento se exigen a la vez. El aparcamiento condicional no cuenta, así que solo queda el hotel con ambos disponibles.",
+      "scenario": {
+        "kind": "normal",
+        "given": "Tras AC2, pulsar Limpiar filtros y confirmar que vuelven los tres hoteles.",
+        "when": "Marcar las casillas Piscina y Aparcamiento.",
+        "then": "Solo está Hotel Demo Málaga. Hotel Demo Sevilla no está."
+      }
+    },
+    {
+      "id": "AC4",
+      "criterion": "Añadir un destino que no tiene esos servicios deja el listado vacío y conserva las fichas para poder quitar una.",
+      "scenario": {
+        "kind": "edge",
+        "given": "El listado dejado por AC3, con Piscina y Aparcamiento activos y solo Hotel Demo Málaga.",
+        "when": "Elegir Sevilla en Destino.",
+        "then": "No queda ningún hotel. Se lee Todavía no hemos encontrado tu hotel. Siguen Quitar filtro Sevilla, Quitar filtro Piscina y Quitar filtro Aparcamiento."
+      }
+    },
+    {
+      "id": "AC5",
+      "criterion": "Quitar el aparcamiento conserva la piscina y el destino, y recupera el hotel que sí tiene la piscina disponible.",
+      "scenario": {
+        "kind": "recovery",
+        "given": "El listado vacío dejado por AC4.",
+        "when": "Activar Quitar filtro Aparcamiento.",
+        "then": "Aparece Hotel Demo Sevilla. Siguen Quitar filtro Piscina y Quitar filtro Sevilla. Aparcamiento desaparece de la dirección y de las fichas."
+      }
+    },
+    {
+      "id": "AC6",
+      "criterion": "Limpiar filtros devuelve los tres hoteles y retira de la dirección destino, estrellas, servicios, tipo de estancia y mascotas.",
+      "scenario": {
+        "kind": "recovery",
+        "given": "El listado dejado por AC5.",
+        "when": "Pulsar Limpiar filtros.",
+        "then": "Vuelven Hotel Demo Málaga, Hotel Demo Sevilla y Hotel Demo Lisboa. La dirección ya no contiene destination, stars, services, themes ni pets."
+      }
+    },
+    {
+      "id": "AC7",
+      "criterion": "Admite mascotas incluye la admisión publicada y la admisión con condiciones, y excluye el hotel sin política conocida.",
+      "scenario": {
+        "kind": "normal",
+        "given": "El listado dejado por AC6, con los tres hoteles.",
+        "when": "Marcar la casilla Admite mascotas.",
+        "then": "Están Hotel Demo Málaga y Hotel Demo Sevilla. Hotel Demo Lisboa no está. Se lee Incluye las que las admiten con condiciones. La dirección contiene pets=allowed-or-conditional."
+      }
+    },
+    {
+      "id": "AC8",
+      "criterion": "Añadir la temática Playa a la admisión de mascotas deja solo el hotel que tiene las dos.",
+      "scenario": {
+        "kind": "normal",
+        "given": "El listado dejado por AC7.",
+        "when": "Marcar la casilla Playa.",
+        "then": "Solo está Hotel Demo Málaga. La dirección conserva pets=allowed-or-conditional y contiene themes=beach."
+      }
+    },
+    {
+      "id": "AC9",
+      "criterion": "Abrir la ficha y volver restaura el mismo listado, la temática y la admisión de mascotas.",
+      "scenario": {
+        "kind": "recovery",
+        "given": "El listado dejado por AC8, con solo Hotel Demo Málaga.",
+        "when": "Abrir Ver hotel Hotel Demo Málaga y, en la ficha, activar Volver a resultados.",
+        "then": "El listado sigue con solo Hotel Demo Málaga, Playa y Admite mascotas."
+      }
+    },
+    {
+      "id": "AC10",
+      "criterion": "Abrir una dirección con país, orden, destino, estrellas, servicios, temática y mascotas reproduce esos controles, sus fichas y el único hotel que los cumple.",
+      "scenario": {
+        "kind": "normal",
+        "given": "La dirección /?country=Spain&sort=rating&destination=city%2Fmalaga&stars=5&services=pool%2Cparking&themes=beach&pets=allowed-or-conditional.",
+        "when": "Abrir esa dirección y esperar el listado.",
+        "then": "Solo está Hotel Demo Málaga. Destino Málaga, 5 estrellas, Piscina, Aparcamiento, Playa y Admite mascotas aparecen elegidos, cada uno con su ficha. La dirección conserva country=Spain y sort=rating."
+      }
+    }
+  ],
+  "decisions": [],
+  "issue": {
+    "url": "https://github.com/Cilveti/buscador-hoteles/issues/19",
+    "updatedAt": "2026-09-24T11:48:14Z"
+  }
+}

@@ -13,6 +13,7 @@ export function useCatalog(port: CatalogPort) {
   const [query, setQuery] = useState(initialQuery);
   const [initialized, setInitialized] = useState(false);
   const [state, setState] = useState<LoadState>({ status: 'loading', data: null });
+  const [options, setOptions] = useState<LoadState>({ status: 'loading', data: null });
   const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
@@ -24,6 +25,22 @@ export function useCatalog(port: CatalogPort) {
     window.addEventListener('popstate', restore);
     return () => window.removeEventListener('popstate', restore);
   }, []);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: attempt retries the complete facet request.
+  useEffect(() => {
+    const controller = new AbortController();
+    setOptions((previous) => ({ status: 'loading', data: previous.data }));
+    port
+      .search(initialQuery, controller.signal)
+      .then((data) => {
+        if (!controller.signal.aborted) setOptions({ status: 'ready', data });
+      })
+      .catch(() => {
+        if (!controller.signal.aborted)
+          setOptions((previous) => ({ status: 'error', data: previous.data }));
+      });
+    return () => controller.abort();
+  }, [port, attempt]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: attempt is an explicit retry trigger even when query and port have not changed.
   useEffect(() => {
@@ -53,5 +70,17 @@ export function useCatalog(port: CatalogPort) {
     setQuery(next);
   }
 
-  return { query, state, update, retry: () => setAttempt((value) => value + 1) };
+  const combinedState: LoadState =
+    options.status === 'error'
+      ? { status: 'error', data: state.data }
+      : options.status === 'loading' && state.status !== 'error'
+        ? { status: 'loading', data: state.data }
+        : state;
+  return {
+    query,
+    state: combinedState,
+    facets: options.data?.facets,
+    update,
+    retry: () => setAttempt((value) => value + 1),
+  };
 }

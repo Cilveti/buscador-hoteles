@@ -25,3 +25,24 @@ test('una URL inválida recupera un estado válido sin romper la pantalla', () =
     sort: 'name',
   });
 });
+
+test('restaura todos los atributos de una dirección compartida', () => {
+  const query = readQuery(
+    new URLSearchParams(
+      'country=Spain&sort=rating&destination=city%2Fmalaga&stars=5&services=pool%2Cparking&themes=beach&pets=allowed-or-conditional',
+    ),
+  );
+  expect(query).toMatchObject({
+    country: 'Spain',
+    sort: 'rating',
+    destination: 'city/malaga',
+    stars: 5,
+    services: ['pool', 'parking'],
+    themes: ['beach'],
+    pets: 'allowed-or-conditional',
+  });
+  expect(readQuery(new URLSearchParams(serializeQuery(query)))).toEqual(query);
+  expect(serializeQuery(changeQuery(query, { services: [], themes: [] }))).not.toMatch(
+    /services|themes/,
+  );
+});

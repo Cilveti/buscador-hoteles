@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/sheet';
 import { Skeleton } from '@/components/ui/skeleton';
 import { hotelHref } from '../application/hotel-navigation';
-import { initialQuery } from '../application/query';
+import { clearedFilters, countFilters, initialQuery } from '../application/query';
 import { CatalogFilters } from './catalog-filters';
 import { CatalogFooter, CatalogHeader } from './catalog-shell';
 import { HotelCard } from './hotel-card';
@@ -23,21 +23,19 @@ import { httpCatalog } from './http-catalog';
 import { useCatalog } from './use-catalog';
 
 export function CatalogSearch() {
-  const { query, state, update, retry } = useCatalog(httpCatalog);
+  const { query, state, facets, update, retry } = useCatalog(httpCatalog);
   const [text, setText] = useState(query.q);
   const [filtersOpen, setFiltersOpen] = useState(false);
   useEffect(() => setText(query.q), [query.q]);
   const data = state.data;
-  const filterCount = [query.country, query.brand, query.minRating].filter(
-    (value) => value !== undefined && value !== '',
-  ).length;
+  const filterCount = countFilters(query);
   const countryLabel =
-    data?.facets.countries.find((item) => item.value === query.country)?.label ?? query.country;
+    facets?.countries.find((item) => item.value === query.country)?.label ?? query.country;
   const brandLabel =
-    data?.facets.brands.find((item) => item.value === query.brand)?.label ?? query.brand;
+    facets?.brands.find((item) => item.value === query.brand)?.label ?? query.brand;
   const reset = () => {
     setText('');
-    update({ ...initialQuery, country: undefined, brand: undefined, minRating: undefined });
+    update({ ...initialQuery, ...clearedFilters });
   };
 
   return (
@@ -115,7 +113,7 @@ export function CatalogSearch() {
           className="grid scroll-mt-5 gap-6 lg:grid-cols-[224px_minmax(0,1fr)] lg:gap-8"
         >
           <aside className="hidden self-start rounded-lg border bg-white p-5 lg:block">
-            <CatalogFilters query={query} facets={data?.facets} onChange={update} />
+            <CatalogFilters query={query} facets={facets} onChange={update} />
           </aside>
           <div className="min-w-0">
             <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
@@ -150,7 +148,7 @@ export function CatalogSearch() {
                       <SheetDescription>Encuentra el hotel que va contigo.</SheetDescription>
                     </SheetHeader>
                     <div className="px-6 py-4">
-                      <CatalogFilters query={query} facets={data?.facets} onChange={update} />
+                      <CatalogFilters query={query} facets={facets} onChange={update} />
                       <Button className="mt-8 h-12 w-full" onClick={() => setFiltersOpen(false)}>
                         Ver resultados
                       </Button>
@@ -196,6 +194,39 @@ export function CatalogSearch() {
                   <FilterChip
                     label={`${query.minRating.toLocaleString('es-ES')} o más`}
                     onRemove={() => update({ minRating: undefined })}
+                  />
+                )}
+                {query.destination && (
+                  <FilterChip
+                    label={
+                      facets?.destinations?.find((item) => item.value === query.destination)
+                        ?.label ?? query.destination
+                    }
+                    onRemove={() => update({ destination: undefined })}
+                  />
+                )}
+                {query.stars !== undefined && (
+                  <FilterChip
+                    label={`${query.stars} estrellas`}
+                    onRemove={() => update({ stars: undefined })}
+                  />
+                )}
+                {(['services', 'themes'] as const).flatMap((field) =>
+                  (query[field] ?? []).map((value) => (
+                    <FilterChip
+                      key={`${field}-${value}`}
+                      label={facets?.[field]?.find((item) => item.value === value)?.label ?? value}
+                      onRemove={() => {
+                        const remaining = query[field]?.filter((item) => item !== value);
+                        update({ [field]: remaining?.length ? remaining : undefined });
+                      }}
+                    />
+                  )),
+                )}
+                {query.pets && (
+                  <FilterChip
+                    label={query.pets === 'allowed-or-conditional' ? 'Admite mascotas' : query.pets}
+                    onRemove={() => update({ pets: undefined })}
                   />
                 )}
               </fieldset>

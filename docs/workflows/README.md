@@ -7,7 +7,7 @@ Abre **este repositorio** en Cursor, Codex u otro agente con terminal y di:
 > Usa la skill .agents/skills/abordar-tarea/SKILL.md con https://github.com/Cilveti/buscador-hoteles/issues/16. Quiero usar Luna high.
 
 1. El agente lee la issue y sus comentarios con `gh` y consulta el código.
-2. Hace un grill-me conciso, con un máximo de tres preguntas por tanda.
+2. Hace un grill-me conciso, con un máximo de tres preguntas por tanda. Cada pregunta ofrece opciones a), b), c)… y siempre una última opción «Otra»; puedes contestar con la letra o explicar tu preferencia.
 3. Resume lo acordado y pregunta **«¿Guardo la especificación en la issue, la marco `ready` y lanzo el workflow local?»**. Espera tu confirmación. Si solo quieres especificar, lo confirma sin incluir ejecución.
 4. Con tu confirmación, genera y valida la spec, publica su contenido completo en la issue y añade `ready`. Si también encargaste ejecutar, lanza el script y espera hasta que termine, comunicando avances.
 5. Te avisa con el resultado y las evidencias para que revises el candidato. La integración es posterior y requiere tu encargo.

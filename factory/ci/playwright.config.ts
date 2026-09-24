@@ -2,7 +2,12 @@ import { defineConfig } from '@playwright/test';
 
 /** Real Next/Payload/PostgreSQL E2E, separate from the fast browser fixture suite. */
 export default defineConfig({
-  testDir: '../../tests/e2e',
+  projects: [
+    { name: 'application', testDir: '../../tests/e2e' },
+    ...(process.env.FACTORY_DESIGN_ID === 'hotel-empty-v1'
+      ? [{ name: 'penpot', testDir: '../checks/browser', testMatch: '**/*.pw.ts' }]
+      : []),
+  ],
   fullyParallel: false,
   workers: 1,
   retries: 0,

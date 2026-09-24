@@ -17,6 +17,7 @@ export type Task = {
   schemaVersion: 1;
   issue: number;
   baseSha: string;
+  workerSha?: string;
   specification: { title: string; body: string; author: string };
   specificationSha: string;
   profile: Profile;
@@ -162,6 +163,7 @@ export function recover(
   actor: string,
   operators: readonly string[],
   max: number,
+  workerSha?: string,
 ): Task {
   if (!operators.includes(actor)) throw new Error('Unauthorized recovery actor');
   if (
@@ -170,10 +172,20 @@ export function recover(
   )
     throw new Error('Recovery does not match a recoverable run');
   if (task.attempts >= max) throw new Error('Recovery cannot reset the attempt budget');
+  if (workerSha !== undefined && !/^[a-f0-9]{40}$/.test(workerSha))
+    throw new Error('Invalid worker revision');
   return {
     ...task,
+    ...(workerSha ? { workerSha } : {}),
     status: 'ready',
-    history: [...task.history, entry('recovered', actor, `completed run=${previousRun}`)],
+    history: [
+      ...task.history,
+      entry(
+        'recovered',
+        actor,
+        `completed run=${previousRun}; worker=${workerSha ?? task.workerSha ?? task.baseSha}; base=${task.baseSha}`,
+      ),
+    ],
   };
 }
 

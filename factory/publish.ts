@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import { config } from './config';
 import { api, number, object, parseTask, readTask, repoPath, string, writeTask } from './github';
 import { git, validateIndex } from './policy';
+import { publicationEvidence, pullRequestBody } from './presentation';
 import { hash, reservePublication } from './state';
 
 const temp = process.env.RUNNER_TEMP ?? '/tmp';
@@ -22,6 +23,12 @@ if (git(process.cwd(), 'rev-parse', 'HEAD') !== task.baseSha)
 validateIndex(process.cwd(), task.profile, config.limits.patchBytes);
 const patch = execFileSync('git', ['diff', '--cached', '--binary', '--full-index']);
 if (hash(patch) !== process.env.PATCH_SHA) throw new Error('Publication patch was not verified');
+const evidence = publicationEvidence(
+  task,
+  string(process.env.PATCH_SHA),
+  JSON.parse(readFileSync(join(temp, 'proposal/proposal.json'), 'utf8')),
+  JSON.parse(readFileSync(join(temp, 'review/feedback.json'), 'utf8')),
+);
 if (!state) throw new Error('Missing publication state');
 writeTask(reservePublication(state.task, run), state.sha);
 const branch = `factory/issue-${task.issue}/attempt-${task.attempts}-${run}`;
@@ -34,7 +41,7 @@ git(
   'core.hooksPath=/dev/null',
   'commit',
   '-m',
-  `Factory: issue #${task.issue}, attempt ${task.attempts}`,
+  `Resolver #${task.issue}: ${task.specification.title.slice(0, 100)}`,
 );
 execFileSync('gh', ['auth', 'setup-git'], { stdio: 'pipe' });
 git(process.cwd(), 'push', 'origin', branch);
@@ -42,16 +49,20 @@ const sha = git(process.cwd(), 'rev-parse', 'HEAD');
 const runUrl = `https://github.com/${config.repository}/actions/runs/${run}`;
 const pr = object(
   api(repoPath('pulls'), 'POST', {
-    title: `Factory: ${task.specification.title}`.slice(0, 240),
+    title: task.specification.title.replace(/^\[Factory\]\s*/i, '').slice(0, 240),
     head: branch,
     base: config.baseBranch,
     draft: true,
-    body: `Related to #${task.issue}.\n\nAttempt **${task.attempts}/${config.limits.attempts}**, profile **${task.profile}**.\n\nIndependent application checks and model review passed. **SonarQube quality gate is pending.** This draft is not approval to merge.\n\n[Evidence](${runUrl})\n\n- Base: \`${task.baseSha}\`\n- Specification: \`${task.specificationSha}\`\n- Verified patch: \`${process.env.PATCH_SHA}\`\n\nNo merge or deployment was performed.`,
+    body: pullRequestBody({
+      task,
+      runUrl,
+      summary: evidence.summary,
+    }),
   }),
 );
 for (const [context, state, description] of [
-  ['Factory / acceptance', 'success', 'Isolated unit, E2E, build and model review passed'],
-  ['Factory / quality', 'pending', 'Waiting for SonarQube'],
+  ['Factory / acceptance', 'success', 'Tests, navegador, build y revisión superados'],
+  ['Factory / quality', 'pending', 'Pendiente del análisis de Sonar'],
 ] as const)
   api(repoPath(`statuses/${sha}`), 'POST', { context, state, description, target_url: runUrl });
 appendFileSync(
